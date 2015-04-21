@@ -1,0 +1,19 @@
+<{if $block.bootstrap_version=='3'}>
+  <!-- for bootstrap3-->
+  <ul class="list-group">
+    <{foreach from=$block.content item=data}>
+      <li class="list-group-item">
+        <a href="<{$xoops_url}>/modules/jill_booking/index.php?jb_sn=<{$data.jb_sn}>"><{$data.jb_booking_time}></a>
+      </li>
+    <{/foreach}>
+  </ul>
+<{else}>
+   <!-- for bootstrap2-->
+  <ul>
+    <{foreach from=$block.content item=data}>
+      <li>
+        <a href="<{$xoops_url}>/modules/jill_booking/index.php?jb_sn=<{$data.jb_sn}>"><{$data.jb_booking_time}></a>
+      </li>
+    <{/foreach}>
+  </ul>
+<{/if}>
