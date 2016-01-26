@@ -48,14 +48,14 @@
       </div>
 
       <!--場地排序-->
-      <div class="row">
+      <!-- <div class="row">
         <label class="col-md-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_SORT}>
         </label>
         <div class="col-md-2">
           <input type="text" name="jbi_sort" id="jbi_sort" class="col-md-12" value="<{$jbi_sort}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_SORT}>">
         </div>
-      </div>
+      </div> -->
 
       <!--是否可借-->
       <div class="row">
@@ -72,23 +72,6 @@
         </label>
         </div>
       </div>
-
-      <!--是否需審核-->
-      <div class="row">
-        <label class="col-md-2">
-          <{$smarty.const._MA_JILLBOOKIN_JBI_APPROVAL}>
-        </label>
-        <div class="col-md-10">
-
-        <label class="radio-inline">
-          <input type="radio" name="jbi_approval" id="jbi_approval_0" value="0" <{if $jbi_approval == "0"}>checked="checked"<{/if}>><{$smarty.const._NO}>
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="jbi_approval" id="jbi_approval_1" value="1" <{if $jbi_approval == "1"}>checked="checked"<{/if}>><{$smarty.const._YES}>
-        </label>
-        </div>
-      </div>
-
 
 
       <div class="text-center">
@@ -160,9 +143,9 @@
     </div>
   </div>
 
-  <!--是否需審核-->
+  <!--審核者-->
   <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-md-3  text-right">
       <{$smarty.const._MA_JILLBOOKIN_JBI_APPROVAL}>
     </label>
     <div class="col-md-9">
@@ -170,13 +153,13 @@
     </div>
   </div>
 
-
   <div class="text-right">
     <{if $isAdmin}>
       <a href="javascript:delete_jill_booking_item_func(<{$jbi_sn}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form&jbi_sn=<{$jbi_sn}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
       <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form" class="btn btn-primary"><{$smarty.const._MA_JILLBOOKIN_ADD}></a>
       <a href="<{$xoops_url}>/modules/jill_booking/admin/time.php?op=list_jill_booking_time&jbi_sn=<{$jbi_sn}>" class="btn btn-success"><{$smarty.const._MA_JILLBOOKIN_SETTIME}></a>
+      <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?op=list_jill_booking_approval&jbi_sn=<{$jbi_sn}>" class="btn btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
     <{/if}>
     <a href="<{$action}>" class="btn btn-info"><{$smarty.const._MA_JILLBOOKIN_BACK}></a>
   </div>
@@ -206,7 +189,7 @@
             <{$smarty.const._MA_JILLBOOKIN_JBI_ENABLE}>
           </th>
           <th>
-            <!--是否需審核-->
+            <!--審核者-->
             <{$smarty.const._MA_JILLBOOKIN_JBI_APPROVAL}>
           </th>
           <{if $isAdmin}>
@@ -232,7 +215,7 @@
               <{$data.jbi_enable}>
             </td>
             <td>
-              <!--是否需審核-->
+              <!--審核者-->
               <{$data.jbi_approval}>
             </td>
 
@@ -241,6 +224,7 @@
                 <a href="javascript:delete_jill_booking_item_func(<{$data.jbi_sn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form&jbi_sn=<{$data.jbi_sn}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/time.php?op=list_jill_booking_time&jbi_sn=<{$data.jbi_sn}>" class="btn btn-xs btn-success"><{$smarty.const._MA_JILLBOOKIN_SETTIME}></a>
+                <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?op=list_jill_booking_approval&jbi_sn=<{$data.jbi_sn}>" class="btn btn-xs btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
               </td>
             <{/if}>
           </tr>

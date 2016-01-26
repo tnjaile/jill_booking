@@ -1,97 +1,122 @@
 <?php
-/*
-function xoops_module_update_¼Ò²Õ¥Ø¿ı(&$module, $old_version) {
-    GLOBAL $xoopsDB;
 
-    //if(!chk_chk1()) go_update1();
+function xoops_module_update_jill_booking(&$module, $old_version)
+{
+    global $xoopsDB;
+
+    if (chk_chk1()) {
+        go_update1();
+    }
+    if (chk_chk2()) {
+        go_update2();
+    }
 
     return true;
 }
 
-//ÀË¬d¬YÄæ¦ì¬O§_¦s¦b
-function chk_chk1(){
-  global $xoopsDB;
-  $sql="select count(`Äæ¦ì`) from ".$xoopsDB->prefix("¸ê®Æªí");
-  $result=$xoopsDB->query($sql);
-  if(empty($result)) return false;
-  return true;
-}
-
-//°õ¦æ§ó·s
-function go_update1(){
-  global $xoopsDB;
-  $sql="ALTER TABLE ".$xoopsDB->prefix("¸ê®Æªí")." ADD `Äæ¦ì` smallint(5) NOT NULL";
-  $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL,3,  mysql_error());
-
-  return true;
-}
-
-
-//«Ø¥ß¥Ø¿ı
-function mk_dir($dir=""){
-  //­YµL¥Ø¿ı¦WºÙ¨q¥XÄµ§i°T®§
-  if(empty($dir))return;
-  //­Y¥Ø¿ı¤£¦s¦bªº¸Ü«Ø¥ß¥Ø¿ı
-  if (!is_dir($dir)) {
-    umask(000);
-    //­Y«Ø¥ß¥¢±Ñ¨q¥XÄµ§i°T®§
-    mkdir($dir, 0777);
-  }
-}
-
-//«ş¨©¥Ø¿ı
-function full_copy( $source="", $target=""){
-  if ( is_dir( $source ) ){
-    @mkdir( $target );
-    $d = dir( $source );
-    while ( FALSE !== ( $entry = $d->read() ) ){
-      if ( $entry == '.' || $entry == '..' ){
-        continue;
-      }
-
-      $Entry = $source . '/' . $entry;
-      if ( is_dir( $Entry ) ) {
-        full_copy( $Entry, $target . '/' . $entry );
-        continue;
-      }
-      copy( $Entry, $target . '/' . $entry );
+//æª¢æŸ¥jbt_snæ¬„ä½ è‡ªå‹•éå¢æ˜¯å¦å­˜åœ¨
+function chk_chk1()
+{
+    global $xoopsDB;
+    $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Extra='auto_increment' ";
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
     }
-    $d->close();
-  }else{
-    copy( $source, $target );
-  }
+
+    return true;
 }
 
+//ä¿®æ­£jbt_snæ¬„ä½ï¼Œå–æ¶ˆè‡ªå‹•éå¢
+function go_update1()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " CHANGE `jbt_sn` `jbt_sn` mediumint(8) unsigned NOT NULL COMMENT 'æ™‚æ®µç·¨è™Ÿ' AFTER `jb_date` ";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL, 3, mysql_error());
+    return true;
+}
+//æª¢æŸ¥jbi_approval æ¬„ä½ enum('1','0')æ˜¯å¦å­˜åœ¨
+function chk_chk2()
+{
+    global $xoopsDB;
+    $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+//ä¿®æ­£jbi_approvalæ¬„ä½ï¼Œæ”¹ç‚ºvarchar(255)
+function go_update2()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_item") . " CHANGE `jbi_approval` `jbi_approval` varchar(255) COLLATE 'utf8_general_ci' NOT NULL COMMENT 'å¯©æ ¸äººå“¡' AFTER `jbi_enable` ";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL, 3, mysql_error());
+    return true;
+}
+/*//å»ºç«‹ç›®éŒ„
+function mk_dir($dir=""){
+//è‹¥ç„¡ç›®éŒ„åç¨±ç§€å‡ºè­¦å‘Šè¨Šæ¯
+if(empty($dir))return;
+//è‹¥ç›®éŒ„ä¸å­˜åœ¨çš„è©±å»ºç«‹ç›®éŒ„
+if (!is_dir($dir)) {
+umask(000);
+//è‹¥å»ºç«‹å¤±æ•—ç§€å‡ºè­¦å‘Šè¨Šæ¯
+mkdir($dir, 0777);
+}
+}
+
+//æ‹·è²ç›®éŒ„
+function full_copy( $source="", $target=""){
+if ( is_dir( $source ) ){
+@mkdir( $target );
+$d = dir( $source );
+while ( FALSE !== ( $entry = $d->read() ) ){
+if ( $entry == '.' || $entry == '..' ){
+continue;
+}
+
+$Entry = $source . '/' . $entry;
+if ( is_dir( $Entry ) ) {
+full_copy( $Entry, $target . '/' . $entry );
+continue;
+}
+copy( $Entry, $target . '/' . $entry );
+}
+$d->close();
+}else{
+copy( $source, $target );
+}
+}
 
 function rename_win($oldfile,$newfile) {
- if (!rename($oldfile,$newfile)) {
-  if (copy ($oldfile,$newfile)) {
-   unlink($oldfile);
-   return TRUE;
-  }
-  return FALSE;
- }
- return TRUE;
+if (!rename($oldfile,$newfile)) {
+if (copy ($oldfile,$newfile)) {
+unlink($oldfile);
+return TRUE;
 }
-
+return FALSE;
+}
+return TRUE;
+}
 
 function delete_directory($dirname) {
-  if (is_dir($dirname))
-    $dir_handle = opendir($dirname);
-  if (!$dir_handle)
-    return false;
-  while($file = readdir($dir_handle)) {
-    if ($file != "." && $file != "..") {
-      if (!is_dir($dirname."/".$file))
-        unlink($dirname."/".$file);
-      else
-        delete_directory($dirname.'/'.$file);
-    }
-  }
-  closedir($dir_handle);
-  rmdir($dirname);
-  return true;
+if (is_dir($dirname))
+$dir_handle = opendir($dirname);
+if (!$dir_handle)
+return false;
+while($file = readdir($dir_handle)) {
+if ($file != "." && $file != "..") {
+if (!is_dir($dirname."/".$file))
+unlink($dirname."/".$file);
+else
+delete_directory($dirname.'/'.$file);
 }
-
-*/
-?>
+}
+closedir($dir_handle);
+rmdir($dirname);
+return true;
+}
+ */

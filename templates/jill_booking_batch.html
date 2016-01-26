@@ -83,10 +83,13 @@
 
               <!--預約編號-->
               <input type='hidden' name="jbi_sn" value="<{$itemArr.jbi_sn}>">
+              <input type='hidden' name="max_date" value="<{$max_date}>">
+
 
                 <{$token_form}>
 
                 <input type="hidden" name="op" value="<{$next_op}>">
+
                 <button type="submit" class="btn btn-primary"><{$smarty.const._MD_SUMIT}></button>
               </div>
             </form>
