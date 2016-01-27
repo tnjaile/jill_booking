@@ -1,0 +1,10 @@
+
+Version 1.1 	     NOT RELEASED
+================================
+- Small changes, English translation (mamba)
+- added standard XOOPS help (mamba)
+
+
+Version 1.0:  (XOOPS Taiwan)
+===================================
+- original release (Jill)
