@@ -24,6 +24,7 @@ define('_MD_JILLBOOKIN_JB_STATUS', 'Status');
 define('_MD_JILLBOOKIN_SMNAME1', 'Reservation');
 define('_MD_JILLBOOKIN_SMNAME2', 'Batch reservation');
 define('_MD_JILLBOOKIN_SMNAME3', 'Reservation list');
+define("_MD_JILLBOOKIN_SMNAME4", "Approval list");
 define('_MD_JILLBOOKIN_CHOOSEITEM', 'Please select the field');
 define('_MD_JILLBOOKIN_W0', 'Sunday');
 define('_MD_JILLBOOKIN_W1', 'Monday');
@@ -44,4 +45,9 @@ define('_MD_JBOOKING', 'Reservation');
 define('_MD_JBOOKING_ERROR', 'Those who want to make a reservation, please log in and made a reservation or contact the Admin!');
 define('_MD_INDIVIDUAL_BOOKING', 'Individual reservation');
 define('_MD_NO_RECORD', 'No reservation');
-
+define("_MD_APPROVING", "On approving ");
+define("_MD_WAITING", "Waiting");
+define("_MD_PASS", "Pass");
+define("_MD_JILLBOOKIN_ITEM", "Field");
+define("_MD_UPDATE_COMPLETED", "Update completed");
+define("_MD_UPDATE_FAILED", "Update failed");

@@ -7,7 +7,7 @@
 include_once XOOPS_ROOT_PATH . '/modules/tadtools/language/' . $xoopsConfig['language'] . '/modinfo_common.php';
 
 define('_MI_JILLBOOKIN_NAME', '場地預約');
-define('_MI_JILLBOOKIN_AUTHOR', '場地預約');
+define('_MI_JILLBOOKIN_AUTHOR', 'Jill');
 define('_MI_JILLBOOKIN_CREDITS', '');
 define('_MI_JILLBOOKIN_DESC', '此模組的用途是提供場地預約的模組');
 define('_MI_JILLBOOKIN_AUTHOR_WEB', '');
