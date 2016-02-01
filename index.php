@@ -173,7 +173,7 @@ function booking_users($jbt_sn = "", $jb_date = "")
 {
     global $xoopsDB, $xoopsModule;
 
-    $sql = "select a.`jb_waiting`,c.`name`
+    $sql = "select a.`jb_waiting`,a.`jb_status`,c.`name`
         from " . $xoopsDB->prefix("jill_booking_date") . " as a
         left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
         left join " . $xoopsDB->prefix("users") . " as c on b.`jb_uid`=c.`uid`
@@ -188,8 +188,10 @@ function booking_users($jbt_sn = "", $jb_date = "")
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
+            //將是/否選項轉換為圖示
+            $jb_status = ($jb_status == 1) ? '<img src="' . XOOPS_URL . '/modules/jill_booking/images/yes.gif" alt="' . _MD_PASS . '" title="' . _MD_PASS . '">' : '<img src="' . XOOPS_URL . '/modules/jill_booking/images/no.gif" alt="' . _MD_APPROVING . '" title="' . _MD_APPROVING . '">';
             //列出所有預約者資訊
-            $users .= "<li>$name</li>";
+            $users .= "<li>$name$jb_status</li>";
         }
         $users .= "</ol>";
         $usershtml = "<a href='#' class='users' data-toggle='popover' data-content='{$users}' ><i class='fa fa-list'></i></a>";

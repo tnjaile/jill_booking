@@ -52,15 +52,18 @@ function get_jill_booking_time_options($def_jbi_sn = "", $approval = "")
 function get_booking_uid($jbt_sn = "", $jb_date = "")
 {
     global $xoopsDB, $xoopsModule;
-
-    $sql = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
+    //抓
+    $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
+   where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
+    $result           = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    list($jb_waiting) = $xoopsDB->fetchRow($result);
+    $where_jb_waiting = (empty($jb_waiting)) ? "ORDER BY a.jb_waiting ASC LIMIT 1" : " && a.jb_waiting='{$jb_waiting}' ";
+    $sql2             = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
   left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' and a.`jb_status`='1' ORDER BY a.jb_waiting ASC LIMIT 1 ";
-
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    //die($sql);
-    list($jb_sn, $jb_uid, $jb_status) = $xoopsDB->fetchRow($result);
-    $data                             = "";
+   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' $where_jb_waiting  ";
+    $result2 = $xoopsDB->query($sql2) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    //die($sql2);
+    list($jb_sn, $jb_uid, $jb_status) = $xoopsDB->fetchRow($result2);
     $data['jb_sn']                    = $jb_sn;
     $data['jb_uid']                   = $jb_uid;
     $data['jb_status']                = $jb_status;
