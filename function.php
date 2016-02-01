@@ -31,7 +31,7 @@ function get_jill_booking_item($jbi_sn = "", $jbi_enable = "")
 function get_jill_booking_time_options($def_jbi_sn = "", $approval = "")
 {
     global $xoopsDB, $xoopsModule;
-    $where_approval = (empty($approval)) ? "" : " && (`jbi_approval` LIKE '%;{$approval}' || `jbi_approval` LIKE '{$approval};%')";
+    $where_approval = (empty($approval)) ? "" : " && (`jbi_approval` LIKE '%;{$approval}' || `jbi_approval` LIKE '{$approval};%' || `jbi_approval`='{$approval}')";
     $sql            = "select jbi_sn,jbi_title,jbi_approval from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) $where_approval order by jbi_sort";
     //die($sql);
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
@@ -55,7 +55,7 @@ function get_booking_uid($jbt_sn = "", $jb_date = "")
 
     $sql = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
   left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' and a.`jb_waiting`='1' ";
+   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' and a.`jb_status`='1' ORDER BY a.jb_waiting ASC LIMIT 1 ";
 
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     //die($sql);

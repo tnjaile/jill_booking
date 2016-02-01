@@ -9,7 +9,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_JILLBOOKIN_NAME;
-$modversion['version']     = '1.1';
+$modversion['version']     = '1.11';
 $modversion['description'] = _MI_JILLBOOKIN_DESC;
 $modversion['author']      = _MI_JILLBOOKIN_AUTHOR;
 $modversion['credits']     = _MI_JILLBOOKIN_CREDITS;
@@ -19,8 +19,8 @@ $modversion['image']       = "images/logo.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['status_version']      = '1.1';
-$modversion['release_date']        = '2016-01-26';
+$modversion['status_version']      = '1.11';
+$modversion['release_date']        = '2016-02-01';
 $modversion['module_website_url']  = '';
 $modversion['module_website_name'] = _MI_JILLBOOKIN_AUTHOR_WEB;
 $modversion['module_status']       = 'release';
