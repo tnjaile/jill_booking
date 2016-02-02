@@ -52,7 +52,7 @@ function get_jill_booking_time_options($def_jbi_sn = "", $approval = "")
 function get_booking_uid($jbt_sn = "", $jb_date = "")
 {
     global $xoopsDB, $xoopsModule;
-    //抓
+    //先抓核准通過的順位
     $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
    where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
     $result           = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
