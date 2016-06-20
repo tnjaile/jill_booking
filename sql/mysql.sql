@@ -16,11 +16,13 @@ CREATE TABLE `jill_booking_week` (
 ) ENGINE=MyISAM;
 
 CREATE TABLE `jill_booking_date` (
-  `jb_sn` mediumint(9) unsigned NOT NULL COMMENT '預約編號',
+  `jb_sn` mediumint(9) unsigned NOT NULL default 0 COMMENT '預約編號',
   `jb_date` date NOT NULL COMMENT '日期',
   `jbt_sn` mediumint(8) unsigned NOT NULL  COMMENT '時段編號',
   `jb_waiting` tinyint(3) NOT NULL default '0' COMMENT '候補',
   `jb_status` enum('1','0') NOT NULL COMMENT '是否核准',
+  `approver` mediumint(8)  unsigned NOT NULL default 0 COMMENT '審核者',
+  `pass_date` date NOT NULL COMMENT '通過日期',
   PRIMARY KEY (`jb_sn`,`jb_date`,`jbt_sn`)
 ) ENGINE=MyISAM;
 

@@ -349,14 +349,14 @@ function booking_approval($isAdmin = "")
 
         $uid = $xoopsUser->uid();
 
-        $sql                = "select `jbi_approval` from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_approval` LIKE '%;{$uid}' || `jbi_approval` LIKE '{$uid};%' limit 1 ";
+        $sql                = "select `jbi_approval` from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_enable` ='1' ";
         $result             = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-        list($jbi_approval) = $xoopsDB->fetchRow($result);
-        if (!empty($jbi_approval)) {
-            return true;
-            exit;
+        while(list($jbi_approval) = $xoopsDB->fetchRow($result)){
+            $jbi_approval_arr=explode(';',$jbi_approval);
+            if(in_array($uid, $jbi_approval_arr)){
+                return true;
+            }
         }
-
     }
     return false;
 }

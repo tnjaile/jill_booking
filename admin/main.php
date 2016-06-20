@@ -120,10 +120,10 @@ function insert_jill_booking_item()
     $_POST['jbi_end']   = $myts->addSlashes($_POST['jbi_end']);
     $_POST['jbi_title'] = $myts->addSlashes($_POST['jbi_title']);
     $_POST['jbi_desc']  = $myts->addSlashes($_POST['jbi_desc']);
-
+    $jbi_sort=jill_booking_item_max_sort();
     $sql = "insert into `" . $xoopsDB->prefix("jill_booking_item") . "`
   (`jbi_title`,`jbi_desc` , `jbi_sort` ,`jbi_start` , `jbi_end`, `jbi_enable`, `jbi_approval` )
-  values( '{$_POST['jbi_title']}' , '{$_POST['jbi_desc']}', '{$_POST['jbi_sort']}'  , '{$_POST['jbi_start']}' , '{$_POST['jbi_end']}' , '{$_POST['jbi_enable']}','{$_POST['jbi_approval']}' )";
+  values( '{$_POST['jbi_title']}' , '{$_POST['jbi_desc']}', '{$jbi_sort}'  , '{$_POST['jbi_start']}' , '{$_POST['jbi_end']}' , '{$_POST['jbi_enable']}','{$_POST['jbi_approval']}' )";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     //取得最後新增資料的流水編號
@@ -166,7 +166,17 @@ function update_jill_booking_item($jbi_sn = "")
 
     return $jbi_sn;
 }
-
+//更新排序
+function update_jill_booking_item_sort(){
+  global $xoopsDB;
+  $sort = 1;
+  foreach ($_POST['tr'] as $jbi_sn) {
+      $sql="update ".$xoopsDB->prefix("jill_booking_item")." set `jbi_sort`='{$sort}' where `jbi_sn`='{$jbi_sn}'";
+      $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL." (".date("Y-m-d H:i:s").")");
+      $sort++;
+  }
+  return _TAD_SORTED." (".date("Y-m-d H:i:s").")";
+}
 //刪除jill_booking_item某筆資料資料
 function delete_jill_booking_item($jbi_sn = "")
 {
@@ -293,12 +303,6 @@ function list_jill_booking_item()
 
     //刪除確認的JS
 
-    $xoopsTpl->assign('bar', $bar);
-    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
-    $xoopsTpl->assign('all_content', $all_content);
-    $xoopsTpl->assign('now_op', 'list_jill_booking_item');
-
     if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
@@ -306,6 +310,13 @@ function list_jill_booking_item()
     $sweet_alert                   = new sweet_alert();
     $delete_jill_booking_item_func = $sweet_alert->render('delete_jill_booking_item_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_item&jbi_sn=", "jbi_sn");
     $xoopsTpl->assign('delete_jill_booking_item_func', $delete_jill_booking_item_func);
+    $xoopsTpl->assign('jill_booking_item_jquery_ui', get_jquery(true));
+
+    $xoopsTpl->assign('bar', $bar);
+    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
+    $xoopsTpl->assign('isAdmin', $isAdmin);
+    $xoopsTpl->assign('all_content', $all_content);
+    $xoopsTpl->assign('now_op', 'list_jill_booking_item');
 }
 
 /*-----------執行動作判斷區----------*/
@@ -337,6 +348,11 @@ switch ($op) {
         delete_jill_booking_item($jbi_sn);
         header("location: {$_SERVER['PHP_SELF']}");
         break;
+    //更新排序
+    case "update_jill_booking_item_sort":
+    $msg = update_jill_booking_item_sort();
+    die($msg);
+    break;
 
     default:
         if (empty($jbi_sn)) {

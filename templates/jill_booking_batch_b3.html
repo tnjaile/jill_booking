@@ -4,10 +4,10 @@
   <!--顯示表單-->
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
   <{if $now_op=="jill_booking_form"}>
-    <!--競賽組別-->
+    <!--選擇場地-->
       <div class="controls controls-row">
         <div class="col-md-2">
-          <select name="jbi_sn" id="jbi_sn" class="col-md-12" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
+          <select name="jbi_sn" id="jbi_sn" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
            <{$item_opt}>
           </select>
         </div>

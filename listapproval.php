@@ -7,7 +7,7 @@
 
 /*-----------引入檔案區--------------*/
 include "header.php";
-$xoopsOption['template_main'] = set_bootstrap("jill_booking_listapproval.html");
+$xoopsOption['template_main'] = "jill_booking_listapproval_b3.html";
 include_once XOOPS_ROOT_PATH . "/header.php";
 if (empty($Isapproval)) {
     redirect_header(XOOPS_URL, 3, "您沒有審核資格！！");
@@ -27,9 +27,9 @@ function jill_booking_approvallist($jbi_sn = "")
         $checkapproval = explode(";", $itemArr['jbi_approval']);
         if (in_array($uid, $checkapproval)) {
             $sql = "select b.jb_sn,b.jbt_sn,b.jb_date,b.jb_waiting,b.jb_status,c.jbi_sn,c.jbt_title,d.jb_uid,d.jb_booking_time,d.jb_booking_content,d.jb_start_date,d.jb_end_date from  `" . $xoopsDB->prefix("jill_booking_date") . "` as b
-                join `" . $xoopsDB->prefix("jill_booking_time") . "` as c on b.jbt_sn=c.jbt_sn
-                join `" . $xoopsDB->prefix("jill_booking") . "` as d on b.jb_sn=d.jb_sn
-                where c.jbi_sn='{$jbi_sn}' && b.jb_status='0' && b.jb_date>= ' " . date("Y-m-d", xoops_getUserTimestamp(time())) . " ' order by b.jb_date ,b.jbt_sn,d.jb_booking_time";
+            join `" . $xoopsDB->prefix("jill_booking_time") . "` as c on b.jbt_sn=c.jbt_sn
+            join `" . $xoopsDB->prefix("jill_booking") . "` as d on b.jb_sn=d.jb_sn
+            where c.jbi_sn='{$jbi_sn}' && b.pass_date='0000-00-00' && b.jb_date>= ' " . date("Y-m-d", xoops_getUserTimestamp(time())) . " ' order by b.jb_date ,b.jbt_sn,d.jb_booking_time";
 
             //die($sql);
             //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -92,13 +92,22 @@ function jill_booking_approvallist($jbi_sn = "")
 function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = "")
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $isAdmin;
-    $uid           = $xoopsUser->uid();
+    $uid = $xoopsUser->uid();
+    //正確抓取XOOPS時間
+    $now           = date('Y-m-d', xoops_getUserTimestamp(time()));
     $itemArr       = get_jill_booking_item($jbi_sn, 1);
     $checkapproval = explode(";", $itemArr['jbi_approval']);
     if (in_array($uid, $checkapproval)) {
         $sql = "update `" . $xoopsDB->prefix("jill_booking_date") . "` set
                 `jb_status` = '1'
                 where `jb_sn` = '$jb_sn' && `jb_date`='{$jb_date}' && `jbt_sn`='$jbt_sn' ";
+        //die($sql);
+        $xoopsDB->queryF($sql) or die('0');
+
+        $sql = "update `" . $xoopsDB->prefix("jill_booking_date") . "` set
+                `approver` = '{$uid}' ,
+                `pass_date` = '{$now}'
+                where  `jb_date`='{$jb_date}' && `jbt_sn`='$jbt_sn' ";
         //die($sql);
         $xoopsDB->queryF($sql) or die('0');
     }

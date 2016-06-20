@@ -10,7 +10,9 @@ function xoops_module_update_jill_booking(&$module, $old_version)
     if (chk_chk2()) {
         go_update2();
     }
-
+    if (chk_chk3()) {
+        go_update3();
+    }
     return true;
 }
 
@@ -56,67 +58,37 @@ function go_update2()
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL, 3, mysql_error());
     return true;
 }
-/*//建立目錄
-function mk_dir($dir=""){
-//若無目錄名稱秀出警告訊息
-if(empty($dir))return;
-//若目錄不存在的話建立目錄
-if (!is_dir($dir)) {
-umask(000);
-//若建立失敗秀出警告訊息
-mkdir($dir, 0777);
-}
-}
+//檢查有無通過日期欄位
+function chk_chk3()
+{
+    global $xoopsDB;
+    $sql    = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
 
-//拷貝目錄
-function full_copy( $source="", $target=""){
-if ( is_dir( $source ) ){
-@mkdir( $target );
-$d = dir( $source );
-while ( FALSE !== ( $entry = $d->read() ) ){
-if ( $entry == '.' || $entry == '..' ){
-continue;
+    return false;
 }
+//執行更新通過日期欄位
+function go_update3()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " ADD `approver` mediumint(8) unsigned NOT NULL default 0,ADD `pass_date` date NOT NULL ";
+    $xoopsDB->queryF($sql) or web_error($sql);
 
-$Entry = $source . '/' . $entry;
-if ( is_dir( $Entry ) ) {
-full_copy( $Entry, $target . '/' . $entry );
-continue;
-}
-copy( $Entry, $target . '/' . $entry );
-}
-$d->close();
-}else{
-copy( $source, $target );
-}
-}
+    //正確抓取XOOPS時間
+    $now = date('Y-m-d', xoops_getUserTimestamp(time()));
+    //1.今天以前的2.今天起以後的，若jb_staus=1 3.今天起以後的，若jb_staus=0，節次相同，更新日期
+    $sql = "update " . $xoopsDB->prefix("jill_booking_date") . " set `pass_date`='{$now}' where jb_date<'{$now}' || (`jb_status`='1' && jb_date>='{$now}')";
+    $xoopsDB->queryF($sql) or web_error($sql);
 
-function rename_win($oldfile,$newfile) {
-if (!rename($oldfile,$newfile)) {
-if (copy ($oldfile,$newfile)) {
-unlink($oldfile);
-return TRUE;
+    $sql = "select  `jb_date`, `jbt_sn`  from " . $xoopsDB->prefix("jill_booking_date") . " where
+            `jb_status`='1' && jb_date>='{$now}'";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    while (list($jb_date, $jbt_sn) = $xoopsDB->fetchRow($result)) {
+        $sql2 = "update " . $xoopsDB->prefix("jill_booking_date") . " set `pass_date`='{$now}' where  `jb_date`='{$jb_date}' and `jbt_sn`='{$jbt_sn}'";
+        $xoopsDB->queryF($sql2) or web_error($sql2);
+    }
+    return true;
 }
-return FALSE;
-}
-return TRUE;
-}
-
-function delete_directory($dirname) {
-if (is_dir($dirname))
-$dir_handle = opendir($dirname);
-if (!$dir_handle)
-return false;
-while($file = readdir($dir_handle)) {
-if ($file != "." && $file != "..") {
-if (!is_dir($dirname."/".$file))
-unlink($dirname."/".$file);
-else
-delete_directory($dirname.'/'.$file);
-}
-}
-closedir($dir_handle);
-rmdir($dirname);
-return true;
-}
- */

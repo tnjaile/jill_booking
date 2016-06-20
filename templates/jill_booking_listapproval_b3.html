@@ -9,7 +9,7 @@
         if(data=='1'){
           $('#pass').addClass('col-md-2 alert alert-success') ;
           $('#pass').text('<{$smarty.const._MD_UPDATE_COMPLETED}>');
-          $('#tr_'+i).remove();
+          $('.'+jb_date+'_'+jbt_sn).remove();
         }
         else{
           $('#pass').addClass('span2 alert alert-danger') ;
@@ -62,7 +62,7 @@
 
           <tbody id="jill_booking_sort">
             <{foreach from=$all_content key=i item=data}>
-              <tr id="tr_<{$i}>">
+              <tr id="tr_<{$i}>" class="<{$data.jb_date}>_<{$data.jbt_sn}>">
                 <td>
                   <!--預約者-->
                   <{$data.jb_uid}>

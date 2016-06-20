@@ -1,49 +1,94 @@
 <?php
 
 //  ------------------------------------------------------------------------ //
-// 本模組由 admin 製作
+// 本模組由 tnjaile 製作
 // 製作日期：2015-01-23
-// $Id:$
+// 秀出今天預約
 // ------------------------------------------------------------------------- //
 
+include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 //區塊主函式 (jb_b_today_list)
-function jb_b_today_list($options){
- global $xoopsDB;
+function jb_b_today_list($options)
+{
+    global $xoopsDB, $xoTheme;
+    $block['options0'] = $options[0];
+    $sql               = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
+    $result            = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    //die($sql);
+    $block['content'] = "";
+    $i                = 0;
+    while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {
+        $block['content'][$i]['jbi_sn']    = $jbi_sn;
+        $block['content'][$i]['jbi_title'] = $jbi_title;
+        $block['content'][$i]['todaylist'] = get_todaylist($jbi_sn);
+        $i++;
+    }
 
-  //{$options[0]} : 秀出
-  $block['options0']=$options[0];
-  $sql="select * from `".$xoopsDB->prefix("jill_booking")."` order by `jb_start_date` desc";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $content='';
-  $i=0;
-  while($all = $xoopsDB->fetchArray($result)){
-    $content[$i]=$all;
-    $i++;
-  }
-  $block['bootstrap_version']=$_SESSION['bootstrap'];
-  $block['content']=$content;
-  return $block;
+    //避免js重複引入
+    if ($xoTheme) {
+        get_jquery();
+        $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
+        $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
+    }
+    $block['randStr'] = randStr(8);
+    $block['height']  = $i * 60;
+    //die(var_dump($block['content']));
+    return $block;
+
 }
 
-
 //區塊編輯函式 (jb_b_today_list_edit)
-function jb_b_today_list_edit($options){
+function jb_b_today_list_edit($options)
+{
 
+    //"選單呈現類型"預設值
+    $selected_0_0 = ($options[0] == 'accordion') ? 'selected' : '';
+    $selected_0_1 = ($options[0] == 'default') ? 'selected' : '';
+    $selected_0_2 = ($options[0] == 'vertical') ? 'selected' : '';
 
-  $form="
+    $form = "
   <table>
     <tr>
       <th>
-        <!--秀出-->
-        "._MB_JB_B_TODAY_LIST_OPT0."
+        <!--選單呈現類型-->
+        " . _MB_JB_B_TODAY_LIST_OPT0 . "
       </th>
       <td>
-        <input type='text' name='options[0]' value='{$options[0]}'>
+        <select name='options[0]'>
+          <option value='accordion' $selected_0_0>" . _MB_JB_B_TODAY_LIST_OPT0_VAL0 . "</option>
+          <option value='default' $selected_0_1>" . _MB_JB_B_TODAY_LIST_OPT0_VAL1 . "</option>
+          <option value='vertical' $selected_0_2>" . _MB_JB_B_TODAY_LIST_OPT0_VAL2 . "</option>
+        </select>
       </td>
     </tr>
   </table>
   ";
-  return $form;
+    return $form;
 }
 
-?>
+//取得用了該日期時段的uid
+function get_todaylist($jbi_sn = "")
+{
+    global $xoopsDB;
+    $jb_date = date("Y-m-d");
+    $sql2    = "select jbt_sn,jbt_title from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
+    $result2 = $xoopsDB->query($sql2) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $data    = "";
+    $j       = 0;
+    while (list($jbt_sn, $jbt_title) = $xoopsDB->fetchRow($result2)) {
+        $data[$j]['jbt_sn']    = $jbt_sn;
+        $data[$j]['jbt_title'] = $jbt_title;
+        // //抓預約者
+        $sql = "select b.jb_sn,b.jb_uid from " . $xoopsDB->prefix("jill_booking_date") . " as a
+                left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
+                where a.`jb_date`='{$jb_date}' && jb_status=1 && a.jbt_sn='{$jbt_sn}' order by a.jb_waiting limit 0,1";
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        // die($sql);
+        $i                    = 0;
+        list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);
+        $data[$j]['name']     = (empty($jb_uid)) ? "可預約" : XoopsUser::getUnameFromId($jb_uid, 1);
+        $j++;
+    }
+    //die(var_dump($data));
+    return $data;
+}
