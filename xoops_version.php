@@ -9,7 +9,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_JILLBOOKIN_NAME;
-$modversion['version']     = '1.11';
+$modversion['version']     = '1.12';
 $modversion['description'] = _MI_JILLBOOKIN_DESC;
 $modversion['author']      = _MI_JILLBOOKIN_AUTHOR;
 $modversion['credits']     = _MI_JILLBOOKIN_CREDITS;
