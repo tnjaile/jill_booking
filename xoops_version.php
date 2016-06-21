@@ -19,7 +19,7 @@ $modversion['image']       = "images/logo.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['status_version']      = '1.11';
+$modversion['status_version']      = '1.12';
 $modversion['release_date']        = '2016-02-01';
 $modversion['module_website_url']  = '';
 $modversion['module_website_name'] = _MI_JILLBOOKIN_AUTHOR_WEB;
@@ -93,14 +93,14 @@ $i++;
 $modversion['templates'][$i]['file']        = 'jill_booking_listapproval_b3.html';
 $modversion['templates'][$i]['description'] = 'jill_booking_listapproval_b3.html';
 //---區塊設定---//
-$i=0;
-$modversion['blocks'][$i]['file'] = "jb_b_today_list.php";
-$modversion['blocks'][$i]['name'] = _MI_JB_BNAME1;
+$i                                       = 0;
+$modversion['blocks'][$i]['file']        = "jb_b_today_list.php";
+$modversion['blocks'][$i]['name']        = _MI_JB_BNAME1;
 $modversion['blocks'][$i]['description'] = _MI_JB_BDESC1;
-$modversion['blocks'][$i]['show_func'] = "jb_b_today_list";
-$modversion['blocks'][$i]['template'] = "jb_b_today_list.html";
-$modversion['blocks'][$i]['edit_func'] = 'jb_b_today_list_edit';
-$modversion['blocks'][$i]['options'] =array('_MB_JB_B_TODAY_LIST_OPT0_VAL0' => 'accordion', '_MB_JB_B_TODAY_LIST_OPT0_VAL1' => 'default', '_MB_JB_B_TODAY_LIST_OPT0_VAL2' => 'vertical');;
+$modversion['blocks'][$i]['show_func']   = "jb_b_today_list";
+$modversion['blocks'][$i]['template']    = "jb_b_today_list.html";
+$modversion['blocks'][$i]['edit_func']   = 'jb_b_today_list_edit';
+$modversion['blocks'][$i]['options']     = array('_MB_JB_B_TODAY_LIST_OPT0_VAL0' => 'accordion', '_MB_JB_B_TODAY_LIST_OPT0_VAL1' => 'default', '_MB_JB_B_TODAY_LIST_OPT0_VAL2' => 'vertical');
 //偏好設定//
 $i                                       = 0;
 $modversion['config'][$i]['name']        = 'booking_group';
