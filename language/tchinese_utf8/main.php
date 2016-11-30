@@ -9,6 +9,8 @@
 define("_TAD_NEED_TADTOOLS", " 需要 tadtools 模組，可至<a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad教材網</a>下載。");
 
 //jill_booking-list
+define("_MD_JILLBOOKIN_NOAPPROVAL", "您沒有審核資格！！");
+define("_MD_JILLBOOKIN_HADPASS", "已核給");
 define("_MD_JILLBOOKIN_JB_SN", "預約編號");
 define("_MD_JILLBOOKIN_JB_BOOKING_CONTENT", "預約理由");
 define("_MD_JILLBOOKIN_JB_DATE", "起訖日期");
@@ -44,7 +46,7 @@ define("_MD_JSESSION", "節次");
 define("_MD_JBOOKING", "是否預約");
 define("_MD_JBOOKING_ERROR", "欲預約者，請先登入，並聯絡管理員取得預約權限!");
 define("_MD_INDIVIDUAL_BOOKING", "個人預約");
-define("_MD_NO_RECORD", "尚無預約記錄");
+define("_MD_NO_RECORD", "無預約");
 define("_MD_IS_APPROVAL", "(須審核)");
 define("_MD_APPROVING", "待審中");
 define("_MD_WAITING", "順位");

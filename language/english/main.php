@@ -9,13 +9,15 @@
 define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
 
 //jill_booking-list
+define("_MD_JILLBOOKIN_NOAPPROVAL", "Non-qualified audit!!");
+define("_MD_JILLBOOKIN_HADPASS", "Had pass");
 define('_MD_JILLBOOKIN_JB_SN', 'Reservation number');
 define('_MD_JILLBOOKIN_JB_BOOKING_CONTENT', 'Reservation Details');
 define('_MD_JILLBOOKIN_JB_DATE', 'All dates');
 define('_MD_JILLBOOKIN_JB_START_DATE', 'Start Date');
 define('_MD_JILLBOOKIN_JB_END_DATE', 'End Date');
 define('_MD_JILLBOOKIN_JB_WEEK', 'Reservation week');
-define('_MD_JILLBOOKIN_JB_UID', 'Reserved by:');
+define('_MD_JILLBOOKIN_JB_UID', 'Reserved by');
 define('_MD_JILLBOOKIN_CONTENT', 'Reservation Details');
 define('_MD_JILLBOOKIN_NO', 'Available');
 define('_MD_JILLBOOKIN_JB_BOOKING_TIME', 'Reservation');
@@ -45,7 +47,8 @@ define('_MD_JBOOKING', 'Reservation');
 define('_MD_JBOOKING_ERROR', 'Those who want to make a reservation, please log in and made a reservation or contact the Admin!');
 define('_MD_INDIVIDUAL_BOOKING', 'Individual reservation');
 define('_MD_NO_RECORD', 'No reservation');
-define("_MD_APPROVING", "On approving ");
+define("_MD_IS_APPROVAL", "(Need approve)");
+define("_MD_APPROVING", "On approving");
 define("_MD_WAITING", "Waiting");
 define("_MD_PASS", "Pass");
 define("_MD_JILLBOOKIN_ITEM", "Field");

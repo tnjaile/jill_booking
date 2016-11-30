@@ -22,7 +22,12 @@ define('_MI_JILLBOOKIN_BOOKING_GROUP', 'Who can book a venue');
 define('_MI_JILLBOOKIN_BOOKING_GROUP_DESC', 'Select groups that can make venue bookings');
 define('_MI_JILLBOOKIN_MAX_BOOKINGWEEK', 'Limit a maximum number of weeks of reservation');
 define('_MI_JILLBOOKIN_MAX_BOOKINGWEEK_DESC', 'Limited number of weeks can be booked up to the venue。Please fill number! For example, to limit the upper of five weeks, please fill: 5');
-
+//blocks
+define("_MI_JB_BNAME1", "Today's Booking");
+define("_MI_JB_BDESC1", "Today's Booking(jb_b_today_list)");
+define('_MI_JB_BOPT0_DEF', 'Collapse tab');
+define('_MI_JB_BNAME2', "This week's Booking");
+define('_MI_JB_BDESC2', "This week's Booking (jill_booking_week_list)");
 
 //1.1 (mamba)
 

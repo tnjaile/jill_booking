@@ -71,11 +71,12 @@ function get_todaylist($jbi_sn = "")
 {
     global $xoopsDB;
     $jb_date = date("Y-m-d");
-    $sql2    = "select jbt_sn,jbt_title from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
+    $w_today=date("w");
+    $sql2    = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
     $result2 = $xoopsDB->query($sql2) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     $data    = "";
     $j       = 0;
-    while (list($jbt_sn, $jbt_title) = $xoopsDB->fetchRow($result2)) {
+    while (list($jbt_sn, $jbt_title,$jbt_week) = $xoopsDB->fetchRow($result2)) {
         $data[$j]['jbt_sn']    = $jbt_sn;
         $data[$j]['jbt_title'] = $jbt_title;
         // //抓預約者
@@ -86,7 +87,12 @@ function get_todaylist($jbi_sn = "")
         // die($sql);
         $i                    = 0;
         list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);
-        $data[$j]['name']     = (empty($jb_uid)) ? "可預約" : XoopsUser::getUnameFromId($jb_uid, 1);
+        if(strpos($jbt_week, $w_today) !== false){
+            $data[$j]['name']     = (empty($jb_uid)) ? _MD_JILLBOOKIN_NO : XoopsUser::getUnameFromId($jb_uid, 1);
+        }else{
+            $data[$j]['name']=_MD_EXPIRED;
+        }
+        
         $j++;
     }
     //die(var_dump($data));

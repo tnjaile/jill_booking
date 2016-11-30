@@ -48,13 +48,13 @@
                   <{$smarty.const._MD_WAITING}>
               </th>
               <!--<th>
-                開始日期--><!--結束日期
-                <{$smarty.const._MD_JILLBOOKIN_JB_DATE}>
+                已審核者
+                <{$smarty.const._MD_JILLBOOKIN_HADPASS}>
               </th>-->
-              <!--<th>
-                理由
+              <th>
+                <!-- 理由 -->
                 <{$smarty.const._MD_JILLBOOKIN_CONTENT}>
-              </th>-->
+              </th>
               <th><{$smarty.const._TAD_FUNCTION}></th>
 
             </tr>
@@ -69,7 +69,8 @@
                 </td>
                 <td>
                   <!--預約日期-->
-                  <{$data.jb_date}>
+                  <div><{$data.jb_date}></div>
+                  <div style="font-size:0.6em;color: #EA4335;"><{$data.had_pass}><div>
                 </td>
                 <td>
                   <!--星期--><!--節次-->
@@ -91,13 +92,13 @@
                 </td>
 
                 <!--<td>
-                  起訖日期
-                  <{$data.jb_start_date}>~<{$data.jb_end_date}>
+                  通過審核者
+                  <{$data.had_pass}>
                 </td>-->
-                <!--<td>
-                  理由
+                <td>
+                  <!-- 理由 -->
                   <{$data.jb_booking_content}>
-                </td>-->
+                </td>
                 <td>
                   <a href="javascript:delete_jill_booking_func('<{$data.jb_sn}>_<{$data.jbt_sn}>_<{$data.jb_date}>_<{$data.jbi_sn}>');" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
                   <a href="javascript:update_jb_status_func(<{$data.jb_sn}>,'<{$data.jb_date}>',<{$data.jbt_sn}>,<{$data.jbi_sn}>,<{$i}>);" class="btn btn-primary"><{$smarty.const._MD_PASS}></a>
