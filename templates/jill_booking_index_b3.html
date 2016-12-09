@@ -15,7 +15,27 @@
       location.href="<{$action}>?op=delete_booking&jbt_sn=" + jbt_sn+"&jb_date="+jb_date+"&jbi_sn="+jbi_sn;
     }
     $(document).ready(function(){
-      $('.users').popover({placement:'top',html:'true',trigger:'hover'});
+      //$('.users').popover({placement:'top',html:'true',trigger:'hover'});
+      $('a[qtipOpts]').qtip({
+        metadata: {
+            type: 'attr',
+            name: 'qtipOpts'
+        },
+        content: {
+            text: function(event, api) {
+                // Retrieve content from custom attribute of the $('.selector') elements.
+                return $(this).attr('qtip-content');
+            }
+        },
+        style: {
+            classes: 'qtip-blue qtip-rounded qtip-shadow'
+
+        },
+        position: {
+          my:'Leftttop',
+          at:'topRight'
+        } 
+      });
     });
 
   </script>

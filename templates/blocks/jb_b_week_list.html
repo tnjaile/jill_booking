@@ -1,12 +1,28 @@
 <script>
   $(document).ready(function(){
-    $( "#iteamtab<{$block.randStr}>" ).easyResponsiveTabs({
-      tabidentify: 'vert' ,
-      type: '<{$block.options0}>'
+    //$('.users').popover({placement:'top',html:'true',trigger:'hover'});--bootstrap3 method
+    $('a[qtipOpts]').qtip({
+      metadata: {
+          type: 'attr',
+          name: 'qtipOpts'
+      },
+      content: {
+          text: function(event, api) {
+              // Retrieve content from custom attribute of the $('.selector') elements.
+              return $(this).attr('qtip-content');
+          }
+      },
+      style: {
+          classes: 'qtip-blue qtip-rounded qtip-shadow'
+
+      },
+      position: {
+        my:'Leftttop',
+        at:'topRight'
+      } 
     });
-    $('.users').popover({placement:'top',html:'true',trigger:'hover'});
   });
-</script>
+  </script>
 <style type="text/css" media="screen">
   .resp-vtabs .resp-tabs-container{
     min-height: <{$block.height}>px;

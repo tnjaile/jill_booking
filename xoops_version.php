@@ -14,7 +14,7 @@ $modversion['description'] = _MI_JILLBOOKIN_DESC;
 $modversion['author'] = _MI_JILLBOOKIN_AUTHOR;
 $modversion['credits'] = _MI_JILLBOOKIN_CREDITS;
 $modversion['help'] = 'page=help';
-$modversion['license'] = 'GPL see LICENSE';
+$modversion['license'] = 'GNU GPL 2.0';
 $modversion['image'] = "images/logo.png";
 $modversion['dirname'] = basename(dirname(__FILE__));
 

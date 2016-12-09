@@ -24,13 +24,12 @@ function jb_b_today_list($options)
         $i++;
     }
 
-    //避免js重複引入
-    if ($xoTheme) {
-        get_jquery();
-        $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
-        $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
-    }
-    $block['randStr'] = randStr(8);
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/easy_responsive_tabs.php";
+    $randStr         = randStr();
+    $responsive_tabs = new easy_responsive_tabs('#iteamtab' . $randStr, $options[0]);
+    $responsive_tabs->rander();
+
+    $block['randStr'] = $randStr;
     $block['height']  = $i * 60;
     //die(var_dump($block['content']));
     return $block;
@@ -71,12 +70,12 @@ function get_todaylist($jbi_sn = "")
 {
     global $xoopsDB;
     $jb_date = date("Y-m-d");
-    $w_today=date("w");
+    $w_today = date("w");
     $sql2    = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
     $result2 = $xoopsDB->query($sql2) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     $data    = "";
     $j       = 0;
-    while (list($jbt_sn, $jbt_title,$jbt_week) = $xoopsDB->fetchRow($result2)) {
+    while (list($jbt_sn, $jbt_title, $jbt_week) = $xoopsDB->fetchRow($result2)) {
         $data[$j]['jbt_sn']    = $jbt_sn;
         $data[$j]['jbt_title'] = $jbt_title;
         // //抓預約者
@@ -87,12 +86,12 @@ function get_todaylist($jbi_sn = "")
         // die($sql);
         $i                    = 0;
         list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);
-        if(strpos($jbt_week, $w_today) !== false){
-            $data[$j]['name']     = (empty($jb_uid)) ? _MD_JILLBOOKIN_NO : XoopsUser::getUnameFromId($jb_uid, 1);
-        }else{
-            $data[$j]['name']=_MD_EXPIRED;
+        if (strpos($jbt_week, $w_today) !== false) {
+            $data[$j]['name'] = (empty($jb_uid)) ? _MD_JILLBOOKIN_NO : XoopsUser::getUnameFromId($jb_uid, 1);
+        } else {
+            $data[$j]['name'] = _MD_EXPIRED;
         }
-        
+
         $j++;
     }
     //die(var_dump($data));

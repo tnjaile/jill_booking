@@ -61,8 +61,6 @@ function get_jill_booking($jb_sn = "") {
 	return $data;
 }
 
-
-
 //以流水號取得某筆jill_booking_time資料
 function get_jill_booking_time($jbt_sn = "") {
 	global $xoopsDB;
@@ -242,19 +240,21 @@ function delete_jill_booking_week($jb_sn = "", $jb_date = "", $jbt_sn = "") {
 }
 //取消預約
 function delete_booking($jbt_sn = "", $jb_date = "", $jbi_sn = "") {
-	global $xoopsDB, $isAdmin,$can_booking,$Isapproval;
+	global $xoopsDB, $isAdmin, $can_booking, $Isapproval;
 
 	if (empty($jbt_sn) or empty($jb_date)) {
 		return;
 	}
-	if (empty($can_booking) or empty($Isapproval)) {
+
+	if (empty($can_booking) && empty($Isapproval)) {
+		return;
+	}
+	$bookingArr = get_bookingArr($jbt_sn, $jb_date);
+
+	if (empty($bookingArr)) {
 		return;
 	}
 
-	$bookingArr = get_bookingArr($jbt_sn, $jb_date);
-
-	if($can_booking && empty($bookingArr))return;
-	
 	delete_jill_booking_date($bookingArr['jb_sn'], $jb_date, $jbt_sn);
 
 	if (strtotime($bookingArr['jb_start_date']) == strtotime($bookingArr['jb_end_date'])) {

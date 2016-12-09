@@ -98,7 +98,7 @@ $jb_sn   = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
 $jbi_sn  = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 $primary = system_CleanVars($_REQUEST, 'primary', '', 'string');
 switch ($op) {
-    /*---判斷動作請貼在下方---*/
+/*---判斷動作請貼在下方---*/
     case "delete_jill_booking":
         $primaryArr = explode("_", $primary);
         //jbi_sn=$primaryArr[0], jb_date=$primaryArr[1], jbt_sn=$primaryArr[2]

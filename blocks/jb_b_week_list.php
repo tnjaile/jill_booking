@@ -13,28 +13,33 @@ function jb_b_week_list($options)
 {
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
-    $block['weekArr'] = weekArr();
+    $block['weekArr']  = weekArr();
     //die(var_dump($block['weekArr']));
-    $sql               = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
-    $result            = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $sql    = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     //die($sql);
     $block['content'] = "";
     $i                = 0;
     while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {
-        $block['content'][$i]['jbi_sn']    = $jbi_sn;
-        $block['content'][$i]['jbi_title'] = $jbi_title;
-        $block['content'][$i]['timeArr'] = get_bookingtime_jbisn($jbi_sn, 1);
+        $block['content'][$i]['jbi_sn']     = $jbi_sn;
+        $block['content'][$i]['jbi_title']  = $jbi_title;
+        $block['content'][$i]['timeArr']    = get_bookingtime_jbisn($jbi_sn, 1);
         $block['content'][$i]['bookingArr'] = get_booking_table($block['weekArr'], $block['content'][$i]['timeArr']);
         $i++;
     }
 
     //避免js重複引入
     if ($xoTheme) {
-        get_jquery();
-        $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
-        $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
+        $xoTheme->addStylesheet('modules/jill_booking/class/qtip/jquery.qtip.css');
+        $xoTheme->addScript('modules/jill_booking/class/qtip/jquery.qtip.js');
     }
-    $block['randStr'] = randStr(8);
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/easy_responsive_tabs.php";
+    $randStr         = randStr();
+    $responsive_tabs = new easy_responsive_tabs('#iteamtab' . $randStr, $options[0]);
+    $responsive_tabs->rander();
+
+    $block['randStr'] = $randStr;
     $block['height']  = $i * 60;
     //die(var_dump($block['content']));
     return $block;
@@ -70,10 +75,14 @@ function jb_b_week_list_edit($options)
     return $form;
 }
 
-function get_booking_table($weekArr = "", $timeArr = "") {
+function get_booking_table($weekArr = "", $timeArr = "")
+{
     global $xoopsUser;
-    $uid = !empty($xoopsUser) ? $xoopsUser->uid() : "";   
-    if(empty($timeArr))return;
+    $uid = !empty($xoopsUser) ? $xoopsUser->uid() : "";
+    if (empty($timeArr)) {
+        return;
+    }
+
     //die(var_dump($timeArr));
     //場地預約起始日期
     $now = strtotime(date('Y-m-d'));
@@ -97,35 +106,33 @@ function get_booking_table($weekArr = "", $timeArr = "") {
                 $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
             }
             $uid_name = (empty($jbArr['jb_status'])) ? _MD_APPROVING . ":{$uid_name}" : $uid_name;
-            $color = "transparent";
-            $content = "";
-            if($now>$item_date){
+            $color    = "transparent";
+            $content  = "";
+            if ($now > $item_date) {
                 if (empty($jbArr['jb_sn'])) {
                     $content = _MD_NO_RECORD;
-                    $color = "#959595";
+                    $color   = "#959595";
                 } else {
                     $content = "{$uid_name}";
-                    $color = "#959595";
+                    $color   = "#959595";
                 }
-            }else{
+            } else {
                 //本週預約
                 if (strpos($jbt_week, strval($wk)) !== false) {
                     if (empty($jbArr['jb_sn'])) {
                         $content = _MD_JILLBOOKIN_NO;
-                        $color = "#EA4335";
+                        $color   = "#EA4335";
                     } else {
                         $content = "{$uid_name}{$usershtml}";
-                        $color = "#000000";
+                        $color   = "#000000";
                     }
                 }
-            }            
-            
+            }
 
-            $bookingArr[$t][$wk]['color'] = $color;
+            $bookingArr[$t][$wk]['color']   = $color;
             $bookingArr[$t][$wk]['content'] = $content;
         }
     }
 
     return $bookingArr;
 }
-

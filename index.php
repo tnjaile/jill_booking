@@ -95,13 +95,19 @@ function booking_table($jbi_sn = "", $getdate = "") {
 								}
 							} else {
 								if ($uid == $jbArr['jb_uid']) {
-									if($Isapproval || $can_booking){
+									if ($can_booking) {
 										$content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml;
 										$color = "#000000";
-									}									
+									}
 								} else {
-									$content = "{$uid_name}{$usershtml}";
-									$color = "#000000";
+									if ($Isapproval) {
+										$content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml;
+										$color = "#000000";
+									} else {
+										$content = "{$uid_name}{$usershtml}";
+										$color = "#000000";
+									}
+
 								}
 							}
 						}
@@ -124,15 +130,12 @@ function booking_table($jbi_sn = "", $getdate = "") {
 	$xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
 }
 
-
-
 //產生刪除預約鈕
 function delete_booking_icon($t = "", $wk = "", $jbt_sn = "", $jb_date = "", $jbi_sn = "") {
 	global $xoopsUser;
 	if (!isset($xoopsUser)) {
 		return;
 	}
-
 	$jbArr = get_booking_uid($jbt_sn, $jb_date);
 	//將 uid 編號轉換成使用者姓名（或帳號）
 	$uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 1);
@@ -145,7 +148,6 @@ function delete_booking_icon($t = "", $wk = "", $jbt_sn = "", $jb_date = "", $jb
 	$icon = "{$is_approval}<a href=\"javascript:delete_booking({$t} , {$wk} , {$jbt_sn},'{$jb_date}',{$jbi_sn});\" style='color:#D44950;' ><i class='fa fa-times' ></i></a>";
 	return $icon;
 }
-
 
 /*-----------執行動作判斷區----------*/
 $op = empty($_REQUEST['op']) ? "" : $_REQUEST['op'];
