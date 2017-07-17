@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------- //
 
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = 'jill_booking_adm_main.html';
+$xoopsOption['template_main'] = 'jill_booking_adm_main.tpl';
 include_once "header.php";
 include_once "../function.php";
 
@@ -120,8 +120,8 @@ function insert_jill_booking_item()
     $_POST['jbi_end']   = $myts->addSlashes($_POST['jbi_end']);
     $_POST['jbi_title'] = $myts->addSlashes($_POST['jbi_title']);
     $_POST['jbi_desc']  = $myts->addSlashes($_POST['jbi_desc']);
-    $jbi_sort=jill_booking_item_max_sort();
-    $sql = "insert into `" . $xoopsDB->prefix("jill_booking_item") . "`
+    $jbi_sort           = jill_booking_item_max_sort();
+    $sql                = "insert into `" . $xoopsDB->prefix("jill_booking_item") . "`
   (`jbi_title`,`jbi_desc` , `jbi_sort` ,`jbi_start` , `jbi_end`, `jbi_enable`, `jbi_approval` )
   values( '{$_POST['jbi_title']}' , '{$_POST['jbi_desc']}', '{$jbi_sort}'  , '{$_POST['jbi_start']}' , '{$_POST['jbi_end']}' , '{$_POST['jbi_enable']}','{$_POST['jbi_approval']}' )";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
@@ -167,15 +167,16 @@ function update_jill_booking_item($jbi_sn = "")
     return $jbi_sn;
 }
 //更新排序
-function update_jill_booking_item_sort(){
-  global $xoopsDB;
-  $sort = 1;
-  foreach ($_POST['tr'] as $jbi_sn) {
-      $sql="update ".$xoopsDB->prefix("jill_booking_item")." set `jbi_sort`='{$sort}' where `jbi_sn`='{$jbi_sn}'";
-      $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL." (".date("Y-m-d H:i:s").")");
-      $sort++;
-  }
-  return _TAD_SORTED." (".date("Y-m-d H:i:s").")";
+function update_jill_booking_item_sort()
+{
+    global $xoopsDB;
+    $sort = 1;
+    foreach ($_POST['tr'] as $jbi_sn) {
+        $sql = "update " . $xoopsDB->prefix("jill_booking_item") . " set `jbi_sort`='{$sort}' where `jbi_sn`='{$jbi_sn}'";
+        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")");
+        $sort++;
+    }
+    return _TAD_SORTED . " (" . date("Y-m-d H:i:s") . ")";
 }
 //刪除jill_booking_item某筆資料資料
 function delete_jill_booking_item($jbi_sn = "")
@@ -350,9 +351,9 @@ switch ($op) {
         break;
     //更新排序
     case "update_jill_booking_item_sort":
-    $msg = update_jill_booking_item_sort();
-    die($msg);
-    break;
+        $msg = update_jill_booking_item_sort();
+        die($msg);
+        break;
 
     default:
         if (empty($jbi_sn)) {

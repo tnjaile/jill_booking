@@ -3,7 +3,7 @@
 <!--列出所有資料-->
 <{if $now_op=="jill_booking_list"}>
   <div class="row ">
-    <div class="col-md-4">
+    <div class="col-sm-4">
       <select id="jbi_sn" name="jbi_sn" class="form-control " onchange="location.href='<{$action}>?jbi_sn='+this.value">
         <option value="">請選擇</option>
         <{$item_opt}>
@@ -17,31 +17,31 @@
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th class="col-md-2">
+          <th class="col-sm-2">
             <!--場地-->
             <{$smarty.const._MD_JILLBOOKIN_ITEM}>
           </th>
-          <th class="col-md-2">
+          <th class="col-sm-2">
               <!--預約者-->
               <{$smarty.const._MD_JILLBOOKIN_JB_UID}>
           </th>
-          <th class="col-md-2">
+          <th class="col-sm-2">
             <!--預約日期-->
             <{$smarty.const._MD_JILLBOOKIN_JB_BOOKING_TIME}>
           </th>
-          <th class="col-md-1">
+          <th class="col-sm-1">
             <!--順位-->
             <{$smarty.const._MD_WAITING}>
           </th>
-          <th class="col-md-2">
+          <th class="col-sm-2">
             <!--理由-->
             <{$smarty.const._MD_JILLBOOKIN_CONTENT}>
           </th>
-          <th class="col-md-1">
+          <th class="col-sm-1">
             <!--是否核准-->
             <{$smarty.const._MD_JILLBOOKIN_JB_STATUS}>
           </th>
-          <th class="col-md-2"><{$smarty.const._TAD_FUNCTION}></th>
+          <th class="col-sm-2"><{$smarty.const._TAD_FUNCTION}></th>
 
         </tr>
       </thead>

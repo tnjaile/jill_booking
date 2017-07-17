@@ -34,19 +34,19 @@
         position: {
           my:'Leftttop',
           at:'topRight'
-        } 
+        }
       });
     });
 
   </script>
   <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data">
     <div class="row">
-      <div class="col-md-2" >
+      <div class="col-sm-2" >
         <select name="jbi_sn" id="jbi_sn"  size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
          <{$item_opt}>
         </select>
       </div>
-      <div class="col-md-10" >
+      <div class="col-sm-10" >
         <{if $jbi_sn}>
          <{assign var="start" value=$weekArr.0.d|date_format:"%Y-%m-%d"}>
 
@@ -54,13 +54,13 @@
            <thead>
             <tr style="background-color: #F5F5F5;border: none;">
               <th colspan="8">
-                <div class="col-md-4 ">
+                <div class="col-sm-4 ">
                   <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start-1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><i class="fa fa-long-arrow-left "></i><{$smarty.const._MD_LASTWEEK}></a>
                 </div >
-               <div class="col-md-4 text-center" >
+               <div class="col-sm-4 text-center" >
                 <p style="vertical-align: middle;"><strong ><{$itemArr.jbi_title}></strong></p>
                </div>
-               <div class="col-md-4 text-right">
+               <div class="col-sm-4 text-right">
                 <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start+1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><{$smarty.const._MD_NEXTWEEK}><i class="fa fa-long-arrow-right"></i></a>
                </div>
               </th>

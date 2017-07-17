@@ -27,7 +27,7 @@
   <{if $jbi_desc}>
     <!--場地說明-->
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <div class="well">
           <{$jbi_desc}>
         </div>
@@ -37,7 +37,7 @@
 
   <div id="save_msg"></div>
   <div class="row">
-    <div class="col-md-7">
+    <div class="col-sm-7">
       <form action="time.php" method="post" id="myForm" enctype="multipart/form-data" role="form">
         <table class="table table-striped table-hover">
           <thead>
@@ -161,7 +161,7 @@
         </table>
       </form>
     </div>
-    <div class="col-md-5">
+    <div class="col-sm-5">
       <{if !$all_content}>
         <div class="list-group">
           <a href="#" class="list-group-item active">

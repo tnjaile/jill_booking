@@ -28,11 +28,11 @@
       <input type='hidden' name="jbi_sn" value="<{$jbi_sn}>">
       <input type='hidden' name='jbi_approval' id='jbi_approval'  value='<{$jbi_approval}>'>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <h3 class="text-center text-info">
             <{$smarty.const._MA_JILLBOOKIN_ALLUSERS}>
           </h3>
-          <select name='repository' id='repository' size='12' multiple='multiple' tmt:linkedselect='true' class='col-md-12'>
+          <select name='repository' id='repository' size='12' multiple='multiple' tmt:linkedselect='true' class='col-sm-12'>
             <{foreach from=$all_content item=data}>
               <option value="<{$data.uid}>">
                 <{$data.uname}>【<{$data.name}>】
@@ -40,7 +40,7 @@
             <{/foreach}>
           </select>
         </div>
-        <div class="col-md-1" >
+        <div class="col-sm-1" >
           <p class="lead" style="margin-top: 50px">
             <button type="button" class="btn  btn-block" onclick="tmt.spry.linkedselect.util.moveOptions('repository', 'destination');gettmtOptions();"><img src="../images/right.png"></button>
             <button type="button" class="btn  btn-block" onclick="tmt.spry.linkedselect.util.moveOptions('destination', 'repository');gettmtOptions();"><img src="../images/left.png"></button><br>
@@ -49,11 +49,11 @@
           </p>
           <{$token_form}>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <h3 class="text-info text-center">
             <{$smarty.const._MA_JILLBOOKIN_APPROVER}>
           </h3>
-          <select name='destination' id='destination' size='12' multiple='multiple' tmt:linkedselect='true' class='col-md-12'>
+          <select name='destination' id='destination' size='12' multiple='multiple' tmt:linkedselect='true' class='col-sm-12'>
             <{if $all_content2}>
               <{foreach from=$all_content2 item=data}>
                 <option value="<{$data.uid}>">

@@ -9,60 +9,60 @@
     <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
       <!--場地名稱-->
       <div class="row">
-        <label class="col-md-2">
+        <label class="col-sm-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_TITLE}>
         </label>
-        <div class="col-md-10">
-          <input type="text" name="jbi_title" id="jbi_title" class="col-md-12 " value="<{$jbi_title}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_TITLE}>">
+        <div class="col-sm-10">
+          <input type="text" name="jbi_title" id="jbi_title" class="col-sm-12 " value="<{$jbi_title}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_TITLE}>">
         </div>
       </div>
 
       <!--場地說明-->
       <div class="row">
-        <label class="col-md-2">
+        <label class="col-sm-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_DESC}>
         </label>
-        <div class="col-md-10">
+        <div class="col-sm-10">
           <{$Editor_code}>
         </div>
       </div>
 
       <!--啟用日期-->
       <div class="row">
-        <label class="col-md-2">
+        <label class="col-sm-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_START}>
         </label>
-        <div class="col-md-6">
-          <input type="text" name="jbi_start" id="jbi_start" class="col-md-12 " value="<{$jbi_start}>"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_START}>">
+        <div class="col-sm-6">
+          <input type="text" name="jbi_start" id="jbi_start" class="col-sm-12 " value="<{$jbi_start}>"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_START}>">
         </div>
       </div>
 
       <!--停用日期-->
       <div class="row">
-        <label class="col-md-2">
+        <label class="col-sm-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_END}>
         </label>
-        <div class="col-md-6">
-          <input type="text" name="jbi_end" id="jbi_end" class="col-md-12 " value="<{$jbi_end}>"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_END}>">
+        <div class="col-sm-6">
+          <input type="text" name="jbi_end" id="jbi_end" class="col-sm-12 " value="<{$jbi_end}>"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_END}>">
         </div>
       </div>
 
       <!--場地排序-->
       <!-- <div class="row">
-        <label class="col-md-2">
+        <label class="col-sm-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_SORT}>
         </label>
-        <div class="col-md-2">
-          <input type="text" name="jbi_sort" id="jbi_sort" class="col-md-12" value="<{$jbi_sort}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_SORT}>">
+        <div class="col-sm-2">
+          <input type="text" name="jbi_sort" id="jbi_sort" class="col-sm-12" value="<{$jbi_sort}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBI_SORT}>">
         </div>
       </div> -->
 
       <!--是否可借-->
       <div class="row">
-        <label class="col-md-2">
+        <label class="col-sm-2">
           <{$smarty.const._MA_JILLBOOKIN_JBI_ENABLE}>
         </label>
-        <div class="col-md-10">
+        <div class="col-sm-10">
 
         <label class="radio-inline">
           <input type="radio" name="jbi_enable" id="jbi_enable_1" value="1" <{if $jbi_enable == "1"}>checked="checked"<{/if}>><{$smarty.const._YES}>
@@ -100,10 +100,10 @@
   <{if $jbi_desc}>
     <!--場地說明-->
     <div class="row">
-      <label class="col-md-3 text-right">
+      <label class="col-sm-3 text-right">
         <{$smarty.const._MA_JILLBOOKIN_JBI_DESC}>
       </label>
-      <div class="col-md-9">
+      <div class="col-sm-9">
 
         <div class="well">
           <{$jbi_desc}>
@@ -115,40 +115,40 @@
 
   <!--啟用日期-->
   <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-sm-3 text-right">
       <{$smarty.const._MA_JILLBOOKIN_JBI_START}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
       <{$jbi_start}>
     </div>
   </div>
 
   <!--停用日期-->
   <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-sm-3 text-right">
       <{$smarty.const._MA_JILLBOOKIN_JBI_END}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
       <{$jbi_end}>
     </div>
   </div>
 
   <!--是否可借-->
   <div class="row">
-    <label class="col-md-3  text-right">
+    <label class="col-sm-3  text-right">
       <{$smarty.const._MA_JILLBOOKIN_JBI_ENABLE}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
       <{$jbi_enable}>
     </div>
   </div>
 
   <!--審核者-->
   <div class="row">
-    <label class="col-md-3  text-right">
+    <label class="col-sm-3  text-right">
       <{$smarty.const._MA_JILLBOOKIN_JBI_APPROVAL}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
       <{$jbi_approval}>
     </div>
   </div>

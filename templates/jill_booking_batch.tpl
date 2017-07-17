@@ -6,12 +6,12 @@
   <{if $now_op=="jill_booking_form"}>
     <!--選擇場地-->
       <div class="controls controls-row">
-        <div class="col-md-2">
+        <div class="col-sm-2">
           <select name="jbi_sn" id="jbi_sn" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
            <{$item_opt}>
           </select>
         </div>
-        <div class="col-md-10">
+        <div class="col-sm-10">
           <{if $itemArr.jbi_sn}>
             <!--套用formValidator驗證機制-->
             <{$formValidator_code}>
@@ -20,35 +20,35 @@
             <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
               <!--起訖日期-->
               <div class="form-group">
-                <label class="col-md-2 control-label ">
+                <label class="col-sm-2 control-label ">
                   <{$smarty.const._MD_JILLBOOKIN_JB_DATE}>
                 </label>
-                <div class="col-md-10">
-                  <div class="col-md-5">
+                <div class="col-sm-10">
+                  <div class="col-sm-5">
                     <input type="text" name="jb_start_date" id="jb_start_date" class="form-control" value="<{$jb_start_date}>"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d',minDate:'<{$jb_start_date}>'<{if $max_date}>,maxDate:'<{$max_date}>'<{/if}>})" placeholder="<{$smarty.const._MD_JILLBOOKIN_JB_START_DATE}>">
                   </div>
-                  <div class="col-md-2 text-center"><i class="fa fa-arrow-right fa-2x"></i></div>
-                  <div class="col-md-5">
+                  <div class="col-sm-2 text-center"><i class="fa fa-arrow-right fa-2x"></i></div>
+                  <div class="col-sm-5">
                     <input type="text" name="jb_end_date" id="jb_end_date" class="form-control" value="<{$jb_end_date}>"  onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d',minDate:'<{$jb_end_date}>'<{if $max_date}>,maxDate:'<{$max_date}>'<{/if}>})" placeholder="<{$smarty.const._MD_JILLBOOKIN_JB_END_DATE}>">
                   </div>
                 </div>
               </div>
               <!--預約理由-->
               <div class="form-group">
-                <label class="col-md-2 control-label">
+                <label class="col-sm-2 control-label">
                   <{$smarty.const._MD_JILLBOOKIN_JB_BOOKING_CONTENT}>
                 </label>
-                <div class="col-md-10">
+                <div class="col-sm-10">
                   <input type="text"  name="jb_booking_content"  id="jb_booking_content" class="form-control" placeholder="<{$smarty.const._MD_JILLBOOKIN_JB_BOOKING_CONTENT}>"><{$jb_booking_content}>
                 </div>
               </div>
 
               <!--星期/時段-->
               <div class="form-group ">
-                <label class="col-md-2 control-label">
+                <label class="col-sm-2 control-label">
                   <{$smarty.const._MD_TIME_WEEK}>
                 </label>
-                <div class="col-md-10 well " style="background-color: #F3F3F7;">
+                <div class="col-sm-10 well " style="background-color: #F3F3F7;">
                   <table class="table table-striped table-hover  table-condensed">
                     <thead>
                       <!--時段標題-->

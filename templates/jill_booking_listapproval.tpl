@@ -7,7 +7,7 @@
       $.post("listapproval.php", {op: 'update_jb_status', jb_sn: jb_sn, jb_date: jb_date,jbt_sn: jbt_sn, jbi_sn: jbi_sn },
       function(data) {
         if(data=='1'){
-          $('#pass').addClass('col-md-2 alert alert-success') ;
+          $('#pass').addClass('col-sm-2 alert alert-success') ;
           $('#pass').text('<{$smarty.const._MD_UPDATE_COMPLETED}>');
           $('.'+jb_date+'_'+jbt_sn).remove();
         }
@@ -19,12 +19,12 @@
     }
   </script>
   <div class="controls controls-row">
-    <div class="col-md-2">
+    <div class="col-sm-2">
       <select name="jbi_sn" id="jbi_sn" class="form-control" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
        <{$item_opt}>
       </select>
     </div>
-    <div class="col-md-10">
+    <div class="col-sm-10">
       <{if $all_content}>
         <{$delete_jill_booking_func}>
         <div id="pass"></div>

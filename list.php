@@ -7,7 +7,7 @@
 
 /*-----------引入檔案區--------------*/
 include "header.php";
-$xoopsOption['template_main'] = "jill_booking_list_b3.html";
+$xoopsOption['template_main'] = "jill_booking_list.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------功能函數區--------------*/
