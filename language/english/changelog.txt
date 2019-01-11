@@ -1,9 +1,7 @@
-
-Version 1.1 	     NOT RELEASED
-================================
-- Small changes, English translation (mamba)
-- added standard XOOPS help (mamba)
-
+Version  2019-01-11 釋出
+ =================================================
+1.for Bootstrap4。
+2.bug for list.php,it can support PHP5.6。
 
 Version 1.0:  (XOOPS Taiwan)
 ===================================
