@@ -27,11 +27,9 @@
   <{if $jbi_desc}>
     <!--場地說明-->
     <div class="row">
-      <div class="col-sm-12">
         <div class="card card-body bg-light m-1">
           <{$jbi_desc}>
         </div>
-      </div>
     </div>
   <{/if}>
 
