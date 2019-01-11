@@ -6,6 +6,7 @@
 // ------------------------------------------------------------------------- //
 
 //define('_MB_JB_B_TODAY_LIST_OPT0' , '秀出');
+define("_MD_PASS", "Pass");
 define('_MB_JB_B_TODAY_LIST_OPT0', 'Tabs Style');
 define('_MB_JB_B_TODAY_LIST_OPT0_VAL0', 'Accordion tabs');
 define('_MB_JB_B_TODAY_LIST_OPT0_VAL1', 'Horizontal tab');

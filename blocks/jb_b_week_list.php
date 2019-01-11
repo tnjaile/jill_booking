@@ -16,9 +16,9 @@ function jb_b_week_list($options)
     $block['weekArr']  = weekArr();
     //die(var_dump($block['weekArr']));
     $sql    = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     //die($sql);
-    $block['content'] = "";
+    $block['content'] = array();
     $i                = 0;
     while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {
         $block['content'][$i]['jbi_sn']     = $jbi_sn;
@@ -87,7 +87,7 @@ function get_booking_table($weekArr = "", $timeArr = "")
     //場地預約起始日期
     $now = strtotime(date('Y-m-d'));
     //產生預約者資訊表格狀態值
-    $bookingArr = "";
+    $bookingArr = array();
     //比對產生表單的陣列
     foreach ($timeArr as $t => $time) {
         $jbt_week = strval($time['jbt_week']);

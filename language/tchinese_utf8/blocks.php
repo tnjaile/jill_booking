@@ -4,7 +4,7 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
-
+define("_MD_PASS", "通過");
 define('_MB_JB_B_TODAY_LIST_OPT0', '選單呈現類型');
 define('_MB_JB_B_TODAY_LIST_OPT0_VAL0', '伸縮頁籤');
 define('_MB_JB_B_TODAY_LIST_OPT0_VAL1', '水平頁籤');

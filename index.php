@@ -13,7 +13,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------功能函數區--------------*/
 function booking_table($jbi_sn = "", $getdate = "")
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig, $can_booking, $Isapproval;
+    global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig, $can_booking, $Isapproval, $xoTheme;
     $uid = !empty($xoopsUser) ? $xoopsUser->uid() : "";
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn);
@@ -51,7 +51,7 @@ function booking_table($jbi_sn = "", $getdate = "")
             $weekArr = weekArr($getdate);
 
             //產生預約者資訊表格狀態值
-            $bookingArr = "";
+            $bookingArr = array();
 
             //比對產生表單的陣列
             foreach ($timeArr as $t => $time) {
@@ -72,8 +72,8 @@ function booking_table($jbi_sn = "", $getdate = "")
                     }
                     $uid_name = (empty($jbArr['jb_status'])) ? _MD_APPROVING . ":{$uid_name}" : $uid_name;
                     $color    = "transparent";
-                    $content  = $status  = "";
-
+                    $content  = "";
+                    $status   = array();
                     //過去預約
                     if ($start > $item_date) {
                         if (!empty($jbArr['jb_uid'])) {
@@ -121,10 +121,15 @@ function booking_table($jbi_sn = "", $getdate = "")
             $xoopsTpl->assign('bookingArr', $bookingArr);
             $xoopsTpl->assign('itemArr', $itemArr);
             $xoopsTpl->assign('weekArr', $weekArr);
-            //die(var_export($bookingArr));
+            // die(var_export($itemArr));
         }
     }
-
+    //避免js重複引入
+    if ($xoTheme) {
+        $xoopsTpl->assign('jquery', get_jquery(true));
+        $xoTheme->addStylesheet('modules/jill_booking/class/qtip/jquery.qtip.css');
+        $xoTheme->addScript('modules/jill_booking/class/qtip/jquery.qtip.js');
+    }
     $xoopsTpl->assign('jbi_sn', $jbi_sn);
     $xoopsTpl->assign('item_opt', $item_opt);
     $xoopsTpl->assign('now_op', "booking_table");

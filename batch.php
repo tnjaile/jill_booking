@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //  ------------------------------------------------------------------------ //
 // 本模組由 tnjaile 製作
 // 製作日期：2015-01-23
@@ -59,7 +59,7 @@ function jill_booking_form($jbi_sn = "")
         $timeArr = get_bookingtime_jbisn($jbi_sn);
         $xoopsTpl->assign('timeArr', $timeArr);
         //die(var_export($timeArr));
-        $weektime = "";
+        $weektime = array();
         foreach ($timeArr as $t => $time) {
             for ($w = 0; $w < 7; $w++) {
                 $jbt_sn                       = $time['jbt_sn'];
@@ -128,47 +128,50 @@ function list_jill_booking($jb_sn = "", $jbi_sn = "")
     $maxwaiting = get_maxwaiting_byrange($DBV1['jb_start_date'], $DBV1['jb_end_date'], $str_jbt_sn);
 
     $xoopsTpl->assign("maxwaiting", $maxwaiting);
+
     foreach ($DBV2 as $k => $jb_weekArr) {
         //die($jb_weekArr['jb_week']);
         //$jb_weekArr['jbt_sn'];
-        $dateArr = getdateArr($jb_weekArr['jb_week'], $DBV1['jb_start_date'], $DBV1['jb_end_date']);
-        $timeArr = get_jill_booking_time($jb_weekArr['jbt_sn']);
-        //die(var_dump($jb_weekArr));
-        if (is_array($dateArr) && !empty($dateArr)) {
-            foreach ($dateArr as $date) {
-                $dateweek[$i]['jb_date']   = $date;
-                $dateweek[$i]['week']      = date('w', strtotime($date));
-                $dateweek[$i]['jbt_title'] = $timeArr['jbt_title'];
-                $dateweek[$i]['jbt_sn']    = $jb_weekArr['jbt_sn'];
-                if (!empty($maxwaiting)) {
-                    $waitingArr = get_jbwaiting($jb_weekArr['jbt_sn'], $date);
-                    for ($j = 0; $j < $maxwaiting; $j++) {
-                        $ok      = "<span style='color:#D44950'><i class='fa fa-check'></i></span>";
-                        $jb_exit = 0;
-                        if (!empty($waitingArr)) {
-                            foreach ($waitingArr as $key => $w) {
-                                if ($w['jb_waiting'] == $j + 1) {
-                                    $ok = $w['name'];
+        if (isset($jb_weekArr['jb_week']) && isset($jb_weekArr['jbt_sn'])) {
+            $dateArr = getdateArr($jb_weekArr['jb_week'], $DBV1['jb_start_date'], $DBV1['jb_end_date']);
+            $timeArr = get_jill_booking_time($jb_weekArr['jbt_sn']);
+            //die(var_dump($jb_weekArr));
+            if (is_array($dateArr) && !empty($dateArr)) {
+                foreach ($dateArr as $date) {
+                    $dateweek[$i]['jb_date']   = $date;
+                    $dateweek[$i]['week']      = date('w', strtotime($date));
+                    $dateweek[$i]['jbt_title'] = $timeArr['jbt_title'];
+                    $dateweek[$i]['jbt_sn']    = $jb_weekArr['jbt_sn'];
+                    if (!empty($maxwaiting)) {
+                        $waitingArr = get_jbwaiting($jb_weekArr['jbt_sn'], $date);
+                        for ($j = 0; $j < $maxwaiting; $j++) {
+                            $ok      = "<span style='color:#D44950'><i class='fa fa-check'></i></span>";
+                            $jb_exit = 0;
+                            if (!empty($waitingArr)) {
+                                foreach ($waitingArr as $key => $w) {
+                                    if ($w['jb_waiting'] == $j + 1) {
+                                        $ok = $w['name'];
+                                    }
+                                    $jb_exit = 1;
                                 }
-                                $jb_exit = 1;
-                            }
-                            $dateweek[$i]['waitingArr'][$j]['name'] = $ok;
-                            $dateweek[$i]['jb_exit']                = $jb_exit;
-                        } else {
-                            $dateweek[$i]['waitingArr'][0]['name'] = "<span style='color:#D44950'><i class='fa fa-check'></i></span>";
-                            for ($j = 1; $j < $maxwaiting; $j++) {
-                                $dateweek[$i]['waitingArr'][$j]['name'] = "";
-                            }
-                            $dateweek[$i]['jb_exit'] = 0;
+                                $dateweek[$i]['waitingArr'][$j]['name'] = $ok;
+                                $dateweek[$i]['jb_exit']                = $jb_exit;
+                            } else {
+                                $dateweek[$i]['waitingArr'][0]['name'] = "<span style='color:#D44950'><i class='fa fa-check'></i></span>";
+                                for ($j = 1; $j < $maxwaiting; $j++) {
+                                    $dateweek[$i]['waitingArr'][$j]['name'] = "";
+                                }
+                                $dateweek[$i]['jb_exit'] = 0;
 
+                            }
                         }
+                    } else {
+                        $dateweek[$i]['waitingArr'][0]['name'] = "<span style='color:#D44950'><i class='fa fa-check'></i></span>";
+                        $dateweek[$i]['jb_exit']               = 0;
                     }
-                } else {
-                    $dateweek[$i]['waitingArr'][0]['name'] = "<span style='color:#D44950'><i class='fa fa-check'></i></span>";
-                    $dateweek[$i]['jb_exit']               = 0;
-                }
 
-                ++$i;
+                    ++$i;
+                }
             }
         }
 
@@ -195,8 +198,8 @@ function get_jbwaiting($jbt_sn = "", $jb_date = "")
           join `" . $xoopsDB->prefix("jill_booking") . "` as b on a.jb_sn=b.jb_sn
           where a.jbt_sn=$jbt_sn and a.jb_date='{$jb_date}' order by a.jb_waiting ";
     //die($sql);
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    $data   = "";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+    $data   = array();
     $i      = 0;
     while (list($jb_waiting, $jb_uid) = $xoopsDB->fetchRow($result)) {
         $data[$i]['jb_waiting'] = $jb_waiting;
@@ -213,7 +216,7 @@ function get_maxwaiting_byrange($jb_start_date = "", $jb_end_date = "", $str = "
     $where = ($jb_end_date == '0000-00-00') ? "where `jbt_sn` in({$str}) and `jb_date` >= '{$jb_start_date}' " : "where `jbt_sn` in({$str}) and (`jb_date` between '{$jb_start_date}' and '{$jb_end_date}' ) ";
     $sql   = "select max(`jb_waiting`) from `" . $xoopsDB->prefix("jill_booking_date") . "` $where ";
     //die($sql);
-    $result    = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result    = $xoopsDB->query($sql) or web_error($sql);
     list($max) = $xoopsDB->fetchRow($result);
     return $max;
 }
@@ -227,8 +230,8 @@ function get_booking_weekArr($jb_sn = "")
     }
 
     $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_week") . "` where `jb_sn` = '{$jb_sn}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    $data   = "";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+    $data   = array();
     $i      = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {

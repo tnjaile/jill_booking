@@ -13,9 +13,9 @@ function jb_b_today_list($options)
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
     $sql               = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
-    $result            = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result            = $xoopsDB->query($sql) or web_error($sql);
     //die($sql);
-    $block['content'] = "";
+    $block['content'] = array();
     $i                = 0;
     while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {
         $block['content'][$i]['jbi_sn']    = $jbi_sn;
@@ -72,8 +72,8 @@ function get_todaylist($jbi_sn = "")
     $jb_date = date("Y-m-d");
     $w_today = date("w");
     $sql2    = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
-    $result2 = $xoopsDB->query($sql2) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    $data    = "";
+    $result2 = $xoopsDB->query($sql2) or web_error($sql);
+    $data    = array();
     $j       = 0;
     while (list($jbt_sn, $jbt_title, $jbt_week) = $xoopsDB->fetchRow($result2)) {
         $data[$j]['jbt_sn']    = $jbt_sn;
@@ -82,7 +82,7 @@ function get_todaylist($jbi_sn = "")
         $sql = "select b.jb_sn,b.jb_uid from " . $xoopsDB->prefix("jill_booking_date") . " as a
                 left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
                 where a.`jb_date`='{$jb_date}' && jb_status=1 && a.jbt_sn='{$jbt_sn}' order by a.jb_waiting limit 0,1";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         // die($sql);
         $i                    = 0;
         list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);

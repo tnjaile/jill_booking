@@ -16,9 +16,9 @@ if (empty($Isapproval)) {
 //列出所有jill_booking資料
 function jill_booking_approvallist($jbi_sn = "")
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser, $isAdmin;
+    global $xoopsDB, $xoopsTpl, $xoopsUser;
     $uid  = $xoopsUser->uid();
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn, $uid);
     //die(var_export($item_opt));
@@ -33,14 +33,14 @@ function jill_booking_approvallist($jbi_sn = "")
 
             //die($sql);
             //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10, null, null, $_SESSION['bootstrap']);
+            $PageBar = getPageBar($sql, 20, 10, null, null);
             $bar     = $PageBar['bar'];
             $sql     = $PageBar['sql'];
             $total   = $PageBar['total'];
 
-            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $result = $xoopsDB->query($sql) or web_error($sql);
 
-            $all_content = "";
+            $all_content = array();
             $i           = 0;
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： a.jb_sn,a.jb_week,a.jbt_sn,b.jb_date,b.jb_waiting,b.jb_status,c.jbi_sn,c.jbt_title,c.jbt_sort,c.jbt_week,d.jb_uid,d.jb_booking_time,d.jb_booking_content,d.jb_start_date,d.jb_end_date
@@ -69,6 +69,8 @@ function jill_booking_approvallist($jbi_sn = "")
                 $all_content[$i]['had_pass']           = get_had_pass($jbt_sn, $jb_date);
                 $i++;
             }
+            $xoopsTpl->assign('bar', $bar);
+            $xoopsTpl->assign('all_content', $all_content);
         }
     }
     //die(var_dump($all_content));
@@ -81,18 +83,15 @@ function jill_booking_approvallist($jbi_sn = "")
     $delete_jill_booking_func = $sweet_alert->render('delete_jill_booking_func', "{$_SERVER['PHP_SELF']}?op=delete_booking&jb_info=", "jb_info");
     $xoopsTpl->assign('delete_jill_booking_func', $delete_jill_booking_func);
 
-    $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
     $xoopsTpl->assign('item_opt', $item_opt);
-    $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('now_op', 'jill_booking_approvallist');
 
 }
 //審核通過
 function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = "")
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser, $isAdmin;
+    global $xoopsDB, $xoopsTpl, $xoopsUser;
     $uid = $xoopsUser->uid();
     //正確抓取XOOPS時間
     $now           = date('Y-m-d', xoops_getUserTimestamp(time()));
@@ -122,7 +121,7 @@ function get_had_pass($jbt_sn = "", $jb_date = "")
             join `" . $xoopsDB->prefix("jill_booking") . "` as b on b.jb_sn=a.jb_sn
             where a.pass_date!='0000-00-00' && a.jb_date='{$jb_date}'  && a.jbt_sn='{$jbt_sn}' && a.jb_waiting='1' order by a.jb_waiting";
     //die($sql);
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     list($pass_date, $jb_uid) = $xoopsDB->fetchRow($result);
     //列出預約者資訊

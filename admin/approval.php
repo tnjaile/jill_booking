@@ -26,9 +26,9 @@ function jbi_approval_form($jbi_sn = "")
     $xoopsTpl->assign('approval', (int) $DBV['jbi_approval']);
     $op           = "save_jbi_approval";
     $sql          = "select `uid`,`name`,`uname` from `" . $xoopsDB->prefix("users") . "` order by `uname` ";
-    $result       = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    $all_content  = "";
-    $all_content2 = "";
+    $result       = $xoopsDB->query($sql) or web_error($sql);
+    $all_content  = array();
+    $all_content2 = array();
     $i            = 0;
     while (list($uid, $name, $uname) = $xoopsDB->fetchRow($result)) {
         $jbi_approvalArr = explode(";", $DBV['jbi_approval']);
@@ -76,7 +76,7 @@ function save_jbi_approval($jbi_sn = "")
     $sql = "update `" . $xoopsDB->prefix("jill_booking_item") . "` set
    `jbi_approval` = '{$_POST['jbi_approval']}'  where `jbi_sn` = '$jbi_sn'";
     //die($sql);
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     return $jbi_sn;
 }

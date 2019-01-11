@@ -14,7 +14,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //列出所有jill_booking資料
 function jill_booking_list($def_jbi_sn = "")
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser, $isAdmin, $Isapproval;
+    global $xoopsDB, $xoopsTpl, $xoopsUser;
     if (!$xoopsUser) {
         return;
     }
@@ -23,7 +23,7 @@ function jill_booking_list($def_jbi_sn = "")
     $xoopsTpl->assign('item_opt', $item_opt);
     $where_jbisn = empty($def_jbi_sn) ? "" : " and c.jbi_sn='{$def_jbi_sn}' ";
     $uid         = $xoopsUser->uid();
-    $myts        = &MyTextSanitizer::getInstance();
+    $myts        = MyTextSanitizer::getInstance();
     $sql         = "select a.jb_sn,a.jb_date,a.jbt_sn,a.jb_waiting,a.jb_status,b.jb_uid,b.jb_booking_time,b.jb_booking_content,b.jb_start_date,b.jb_end_date,c.jbi_sn,c.jbt_title,c.jbt_sort,d.jbi_title,d.jbi_approval
     from `" . $xoopsDB->prefix("jill_booking_date") . "` as a
     join `" . $xoopsDB->prefix("jill_booking") . "` as b  on a.jb_sn=b.jb_sn
@@ -32,14 +32,14 @@ function jill_booking_list($def_jbi_sn = "")
     where b.`jb_uid`='{$uid}' $where_jbisn order by a.jb_status desc,a.`jb_date` desc,a.`jb_waiting`,a.jbt_sn  ";
     //die($sql);
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10, null, null, $_SESSION['bootstrap']);
+    $PageBar = getPageBar($sql, 20, 10, null, null);
     $bar     = $PageBar['bar'];
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
-    $all_content = "";
+    $all_content = array();
     $i           = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數：jb_sn,jb_date,jbt_sn,,jb_waiting,jb_status,jb_uid,jb_booking_time,jb_booking_content,jb_start_date,jb_end_date,jbi_sn,jbt_title,jbt_sort,jbi_title,jbi_approval
@@ -53,7 +53,8 @@ function jill_booking_list($def_jbi_sn = "")
         $jb_end_date        = $myts->htmlSpecialChars($jb_end_date);
 
         $all_content[$i]['jb_sn']              = $jb_sn;
-        $all_content[$i]['jb_date']            = $jb_date;
+        $weekday                               = get_chinese_weekday($jb_date);
+        $all_content[$i]['jb_date']            = $jb_date . $weekday;
         $all_content[$i]['jbt_sn']             = $jbt_sn;
         $all_content[$i]['primary']            = $jbi_sn . "_" . $jb_date . "_" . $jbt_sn;
         $all_content[$i]['jb_waiting']         = $jb_waiting;
@@ -77,7 +78,6 @@ function jill_booking_list($def_jbi_sn = "")
 
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
     $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('now_op', 'jill_booking_list');
 
@@ -85,10 +85,15 @@ function jill_booking_list($def_jbi_sn = "")
         redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert              = new sweet_alert();
-    $delete_jill_booking_func = $sweet_alert->render('delete_jill_booking_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking&primary=", "primary");
-    $xoopsTpl->assign('delete_jill_booking_func', $delete_jill_booking_func);
+    $sweet_alert = new sweet_alert();
+    $sweet_alert->render('delete_jill_booking_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking&primary=", "primary");
 
+}
+function get_chinese_weekday($datetime)
+{
+    $cw      = array('日', '一', '二', '三', '四', '五', '六');
+    $weekday = date('w', strtotime($datetime));
+    return '星期' . $cw[$weekday];
 }
 
 /*-----------執行動作判斷區----------*/
