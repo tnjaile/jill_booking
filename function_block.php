@@ -8,7 +8,7 @@ if (!function_exists("booking_users")) {
     //取得用了該日期時段的所有者
     function booking_users($jbt_sn = "", $jb_date = "")
     {
-        global $xoopsDB, $xoopsModule;
+        global $xoopsDB;
 
         $sql = "select a.`jb_waiting`,a.`jb_status`,c.`name`
 	        from " . $xoopsDB->prefix("jill_booking_date") . " as a
@@ -31,7 +31,6 @@ if (!function_exists("booking_users")) {
                 $users .= "<li>$name$jb_status</li>";
             }
             $users .= "</ol>";
-            //$usershtml = "<a href='#' class='users' data-toggle='popover' data-content='{$users}' ><i class='fa fa-list'></i></a>";--bootstrap3 method
             $usershtml .= "<a href='#' qtipOpts=\"{}\" qtip-content='$users' ><i class='fa fa-list'></i></a>";
         }
         return $usershtml;
@@ -42,7 +41,7 @@ if (!function_exists("get_booking_uid")) {
     //取得用了該日期時段的uid
     function get_booking_uid($jbt_sn = "", $jb_date = "")
     {
-        global $xoopsDB, $xoopsModule;
+        global $xoopsDB;
         //先抓核准通過的順位
         $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
 	   where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";

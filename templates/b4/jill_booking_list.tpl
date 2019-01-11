@@ -2,8 +2,8 @@
 
 <!--列出所有資料-->
 <{if $now_op=="jill_booking_list"}>
-  <div class="row ">
-    <div class="col-sm-4">
+  <div class="row mb-2">
+    <div class="col-auto">
       <select id="jbi_sn" name="jbi_sn" class="form-control " onchange="location.href='<{$action}>?jbi_sn='+this.value">
         <option value="">請選擇</option>
         <{$item_opt}>
@@ -79,7 +79,7 @@
             </td>
             <td>
               <{if $data.fun}>
-                <a href="javascript:delete_jill_booking_func('<{$data.primary}>');" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+                <a href="javascript:delete_jill_booking_func('<{$data.primary}>');" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
               <{/if}>
             </td>
           </tr>
@@ -89,10 +89,8 @@
 
     <{$bar}>
   <{else}>
-    <div class="row ">
-      <div class="card card-body bg-light m-1">
-        <div class="alert alert-info text-center"><{$smarty.const._MD_NO_RECORD}></div>
-      </div>
+    <div class="row">
+      <div class="alert alert-info text-center"><{$smarty.const._MD_NO_RECORD}></div>
     </div>
   <{/if}>
 <{/if}>

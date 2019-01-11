@@ -23,8 +23,6 @@ function jill_booking_form($jbi_sn = "")
         //場地資訊
         $itemArr = get_jill_booking_item($jbi_sn, 1);
         $xoopsTpl->assign('itemArr', $itemArr);
-        // array ('jbi_sn' => '2','jbi_title' =>'多功能教室','jbi_desc' => '<p>多功能教室多功能教室</p>','jbi_sort' => '1','jbi_start' => '2015-01-28','jbi_end' => '0000-00-00','jbi_enable' => '1','jbi_approval' => '0',)
-        //die(var_export($itemArr));
 
         //預設值設定
         //設定 jb_booking_content 欄位的預設值
@@ -249,10 +247,10 @@ function get_booking_weekArr($jb_sn = "")
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op             = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jb_sn           = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
-$jbt_sn= system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
-$jbi_sn= system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
+$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$jb_sn  = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
+$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
+$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {
 /*---判斷動作請貼在下方---*/

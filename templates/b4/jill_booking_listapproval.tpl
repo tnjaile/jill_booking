@@ -18,7 +18,7 @@
       });
     }
   </script>
-  <div class="controls controls-row">
+  <div class="row">
     <div class="col-sm-2">
       <select name="jbi_sn" id="jbi_sn" class="form-control" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
        <{$item_opt}>
@@ -28,7 +28,7 @@
       <{if $all_content}>
         <{$delete_jill_booking_func}>
         <div id="pass"></div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover  table-sm">
           <thead>
             <tr>
               <th>
@@ -100,7 +100,7 @@
                   <{$data.jb_booking_content}>
                 </td>
                 <td>
-                  <a href="javascript:delete_jill_booking_func('<{$data.jb_sn}>_<{$data.jbt_sn}>_<{$data.jb_date}>_<{$data.jbi_sn}>');" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+                  <a href="javascript:delete_jill_booking_func('<{$data.jb_sn}>_<{$data.jbt_sn}>_<{$data.jb_date}>_<{$data.jbi_sn}>');" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
                   <a href="javascript:update_jb_status_func(<{$data.jb_sn}>,'<{$data.jb_date}>',<{$data.jbt_sn}>,<{$data.jbi_sn}>,<{$i}>);" class="btn btn-primary"><{$smarty.const._MD_PASS}></a>
                 </td>
               </tr>
@@ -110,7 +110,7 @@
 
         <{$bar}>
       <{else}>
-        <div class="card card-body bg-light m-1">
+        <div class="container">
           <div class="alert alert-info text-center"><{$smarty.const._MD_NO_RECORD}></div>
         </div>
       <{/if}>
