@@ -248,10 +248,11 @@ function get_booking_weekArr($jb_sn = "")
 }
 
 /*-----------執行動作判斷區----------*/
-$op     = empty($_REQUEST['op']) ? "" : $_REQUEST['op'];
-$jb_sn  = empty($_REQUEST['jb_sn']) ? "" : intval($_REQUEST['jb_sn']);
-$jbt_sn = empty($_REQUEST['jbt_sn']) ? "" : intval($_REQUEST['jbt_sn']);
-$jbi_sn = empty($_REQUEST['jbi_sn']) ? "" : intval($_REQUEST['jbi_sn']);
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op             = system_CleanVars($_REQUEST, 'op', '', 'string');
+$jb_sn           = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
+$jbt_sn= system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
+$jbi_sn= system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {
 /*---判斷動作請貼在下方---*/

@@ -1,10 +1,9 @@
 <?php
-//  ------------------------------------------------------------------------ //
+//  ----------------------------------------------- //
 // 本模組由 tnjaile 製作
 // 製作日期：2015-01-23
 // $Id:$
-// ------------------------------------------------------------------------- //
-
+//
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'jill_booking_adm_main.tpl';
 include_once "header.php";
@@ -104,11 +103,7 @@ function jill_booking_item_max_sort()
 //新增資料到jill_booking_item中
 function insert_jill_booking_item()
 {
-    global $xoopsDB, $xoopsUser;
-
-    //取得使用者編號
-    $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
-
+    global $xoopsDB;
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
         $error = implode("<br />", $GLOBALS['xoopsSecurity']->getErrors());
@@ -136,10 +131,7 @@ function insert_jill_booking_item()
 //更新jill_booking_item某一筆資料
 function update_jill_booking_item($jbi_sn = "")
 {
-    global $xoopsDB, $xoopsUser;
-
-    //取得使用者編號
-    $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+    global $xoopsDB;
 
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -197,10 +189,7 @@ function show_one_jill_booking_item($jbi_sn = "")
 
     if (empty($jbi_sn)) {
         return;
-    } else {
-        $jbi_sn = intval($jbi_sn);
     }
-
     $myts = MyTextSanitizer::getInstance();
 
     $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_sn` = '{$jbi_sn}' ";
@@ -306,11 +295,9 @@ function list_jill_booking_item()
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert                   = new sweet_alert();
-    $delete_jill_booking_item_func = $sweet_alert->render('delete_jill_booking_item_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_item&jbi_sn=", "jbi_sn");
-    $xoopsTpl->assign('delete_jill_booking_item_func', $delete_jill_booking_item_func);
-    $xoopsTpl->assign('jill_booking_item_jquery_ui', get_jquery(true));
-
+    $sweet_alert = new sweet_alert();
+    $sweet_alert->render('delete_jill_booking_item_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_item&jbi_sn=", "jbi_sn");
+    get_jquery(true);
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('isAdmin', $isAdmin);
@@ -319,10 +306,11 @@ function list_jill_booking_item()
 }
 
 /*-----------執行動作判斷區----------*/
-$op     = empty($_REQUEST['op']) ? "" : $_REQUEST['op'];
-$jb_sn  = empty($_REQUEST['jb_sn']) ? "" : intval($_REQUEST['jb_sn']);
-$jbt_sn = empty($_REQUEST['jbt_sn']) ? "" : intval($_REQUEST['jbt_sn']);
-$jbi_sn = empty($_REQUEST['jbi_sn']) ? "" : intval($_REQUEST['jbi_sn']);
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$jb_sn  = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
+$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
+$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/

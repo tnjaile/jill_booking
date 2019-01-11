@@ -4,7 +4,6 @@
 // 製作日期：2015-01-14
 // $Id:$
 // ------------------------------------------------------------------------- //
-
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'jill_booking_adm_approval.tpl';
 include_once "header.php";
@@ -81,8 +80,9 @@ function save_jbi_approval($jbi_sn = "")
     return $jbi_sn;
 }
 /*-----------執行動作判斷區----------*/
-$op     = empty($_REQUEST['op']) ? "" : $_REQUEST['op'];
-$jbi_sn = empty($_REQUEST['jbi_sn']) ? "" : intval($_REQUEST['jbi_sn']);
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op             = system_CleanVars($_REQUEST, 'op', '', 'string');
+$jbi_sn= system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/
