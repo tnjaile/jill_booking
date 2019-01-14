@@ -17,6 +17,10 @@ define("_MI_JILLBOOKIN_SMNAME2", "批次預約");
 define("_MI_JILLBOOKIN_SMNAME3", "個人預約清單");
 define("_MI_JILLBOOKIN_SMNAME4", "審核清單");
 
+// for 預約助手
+define("_MI_BOOKING_HELPER_ADMENU1", "預約助手");
+define("_MI_BOOKING_HELPER_ADMENU1_DESC", "預約助手");
+
 //偏好設定
 define('_MI_JILLBOOKIN_BOOKING_GROUP', '可預約場地者');
 define('_MI_JILLBOOKIN_BOOKING_GROUP_DESC', '可預約場地之群組');

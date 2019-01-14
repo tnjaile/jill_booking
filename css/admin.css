@@ -211,3 +211,13 @@ div.CPbigTitle{
 /* menu */
 
 .txtchangelog { height:350px; overflow:auto;}
+
+/* for 預約助手 */
+.cant-use {
+    cursor: not-allowed;
+    color: grey;
+}
+.checkbox.cant-use,
+.checkbox.cant-use label {
+    cursor: not-allowed;
+}

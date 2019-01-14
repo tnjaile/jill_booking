@@ -93,6 +93,11 @@ $i++;
 $modversion['templates'][$i]['file']        = 'jill_booking_listapproval.tpl';
 $modversion['templates'][$i]['description'] = 'jill_booking_listapproval.tpl';
 
+// for 預約助手
+$i++;
+$modversion['templates'][$i]['file']        = 'booking_helper_adm_main.tpl';
+$modversion['templates'][$i]['description'] = 'booking_helper_adm_main.tpl';
+
 //---區塊設定---//
 $i                                       = 0;
 $modversion['blocks'][$i]['file']        = "jb_b_today_list.php";
