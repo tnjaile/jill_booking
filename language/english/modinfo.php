@@ -16,7 +16,9 @@ define('_MI_JILLBOOKIN_ADMENU1_DESC', 'Venue Management');
 define('_MI_JILLBOOKIN_SMNAME2', 'Batch reservation');
 define('_MI_JILLBOOKIN_SMNAME3', 'Reservation list');
 define("_MI_JILLBOOKIN_SMNAME4", "Approval list");
-
+// for booking_helper
+define("_MI_BOOKING_HELPER_ADMENU1", "booking helper");
+define("_MI_BOOKING_HELPER_ADMENU1_DESC", "booking helper");
 // Preferences
 define('_MI_JILLBOOKIN_BOOKING_GROUP', 'Who can book a venue');
 define('_MI_JILLBOOKIN_BOOKING_GROUP_DESC', 'Select groups that can make venue bookings');

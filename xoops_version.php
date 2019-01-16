@@ -1,6 +1,6 @@
 <?php
 //  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
+// 本模組由 tnjaile 製作 共同開發者為t301000
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
@@ -9,7 +9,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_JILLBOOKIN_NAME;
-$modversion['version']     = '2.10';
+$modversion['version']     = '2.2';
 $modversion['description'] = _MI_JILLBOOKIN_DESC;
 $modversion['author']      = _MI_JILLBOOKIN_AUTHOR;
 $modversion['credits']     = _MI_JILLBOOKIN_CREDITS;
@@ -19,8 +19,8 @@ $modversion['image']       = "images/logo.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['status_version']      = '2.10';
-$modversion['release_date']        = '2019-01-11';
+$modversion['status_version']      = '2.2';
+$modversion['release_date']        = '2019-01-16';
 $modversion['module_website_url']  = '';
 $modversion['module_website_name'] = _MI_JILLBOOKIN_AUTHOR_WEB;
 $modversion['module_status']       = 'release';

@@ -1,5 +1,8 @@
 Version  2019-01-11 釋出
  =================================================
+1.add Booking Helper
+Version  2019-01-11 釋出
+ =================================================
 1.for Bootstrap4。
 2.bug for list.php,it can support PHP5.6。
 
