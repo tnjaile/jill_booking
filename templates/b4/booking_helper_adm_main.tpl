@@ -130,7 +130,7 @@
                  let items = getTimeByDay(data, dayOfWeek);
                  getTimeBtn.hide();
                  (items && items.length > 0) ? generateTimeList(items) : timeList.text('無開放之時段');
-             });
+             }).catch(err => console.log(err));
         }
 
         // 取得當天開放之時段
@@ -139,7 +139,9 @@
               return null;
           }
           return data.filter(item => {
-              return item.jbt_week.indexOf(day) > -1;
+            // 若某時段一週只有1天開放，則其 jbt_week 為數字，無法使用 indexOf
+            // 因此先與空字串串接，強制轉為字串
+            return (item.jbt_week + '').indexOf(day) > -1;
           });
         }
 
