@@ -1,5 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
 include_once "header.php";
 include_once "../function.php";
@@ -111,7 +112,7 @@ function createOrders($data)
 
     // INSERT INTO `xx_jill_booking` (`jb_sn`, `jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES (1, 1, '2018-11-02 21:53:34', '個人預約', '2018-11-02', '2018-11-02');
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking')} (`jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES ('{$uid}', '{$orderAt}', '{$event}', '{$jb_date}', '{$jb_date_end}')";
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or Utility::web_error($sql);
     $jb_sn = $xoopsDB->getInsertId(); // 取得最新的預約單 id
 
     // INSERT INTO `xx_jill_booking_date` (`jb_sn`, `jb_date`, `jbt_sn`, `jb_waiting`, `jb_status`, `approver`, `pass_date`) VALUES (1, '2018-11-02', 12, 1, '1', 0, '0000-00-00');
@@ -126,12 +127,12 @@ function createOrders($data)
     }
 
     $sql .= implode(',', $date_values);
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or Utility::web_error($sql);
 
     // INSERT INTO `xx_jill_booking_week` (`jb_sn`, `jb_week`, `jbt_sn`) VALUES (1, 5,  12);
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking_week')} (`jb_sn`, `jb_week`, `jbt_sn`) VALUES ";
     $sql .= implode(',', $week_values);
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or Utility::web_error($sql);
 
     return true;
 }

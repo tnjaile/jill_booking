@@ -1,6 +1,5 @@
 
 <{if $now_op=="list_jill_booking_time"}>
-  <{$jquery}>
   <{$formValidator_code}>
   <{$jeditable_set}>
   <{$delete_jill_booking_time_func}>

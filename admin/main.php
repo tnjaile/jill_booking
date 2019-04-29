@@ -5,6 +5,7 @@
 // $Id:$
 //
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_main.tpl';
 include_once "header.php";
 include_once "../function.php";
@@ -46,10 +47,10 @@ function jill_booking_item_form($jbi_sn = "")
 
     //設定 jbi_desc 欄位的預設值
     $jbi_desc = !isset($DBV['jbi_desc']) ? "" : $myts->displayTarea($DBV['jbi_desc'], $html = 1, $smiley = 1, $xcode = 1, $image = 1, $br = 0);
-    if (!file_exists(TADTOOLS_PATH . "/ck.php")) {
+    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ck.php")) {
         redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . "/ck.php";
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
     $Editor = new CKEditor("jill_booking", "jbi_desc", $jbi_desc);
     $Editor->setToolbarSet('myBasic');
     $Editor_code = $Editor->render();
@@ -71,10 +72,10 @@ function jill_booking_item_form($jbi_sn = "")
     //$op="replace_jill_booking_item";
 
     //套用formValidator驗證機制
-    if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php")) {
         redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . "/formValidator.php";
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
     $formValidator      = new formValidator("#myForm", true);
     $formValidator_code = $formValidator->render();
 
@@ -95,7 +96,7 @@ function jill_booking_item_max_sort()
 {
     global $xoopsDB;
     $sql        = "select max(`jbi_sort`) from `" . $xoopsDB->prefix("jill_booking_item") . "`";
-    $result     = $xoopsDB->query($sql) or web_error($sql);
+    $result     = $xoopsDB->query($sql) or Utility::web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -119,7 +120,7 @@ function insert_jill_booking_item()
     $sql                = "insert into `" . $xoopsDB->prefix("jill_booking_item") . "`
     (`jbi_title`,`jbi_desc` , `jbi_sort` ,`jbi_start` , `jbi_end`, `jbi_enable`, `jbi_approval` )
     values( '{$_POST['jbi_title']}' , '{$_POST['jbi_desc']}', '{$jbi_sort}'  , '{$_POST['jbi_start']}' , '{$_POST['jbi_end']}' , '{$_POST['jbi_enable']}','{$_POST['jbi_approval']}' )";
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or Utility::web_error($sql);
 
     //取得最後新增資料的流水編號
     $jbi_sn = $xoopsDB->getInsertId();
@@ -153,7 +154,7 @@ function update_jill_booking_item($jbi_sn = "")
     `jbi_end` = '{$_POST['jbi_end']}' ,
     `jbi_enable` = '{$_POST['jbi_enable']}'
     where `jbi_sn` = '$jbi_sn'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
     return $jbi_sn;
 }
@@ -178,7 +179,7 @@ function delete_jill_booking_item($jbi_sn = "")
     }
 
     $sql = "delete from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_sn` = '{$jbi_sn}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
 }
 
@@ -193,7 +194,7 @@ function show_one_jill_booking_item($jbi_sn = "")
     $myts = MyTextSanitizer::getInstance();
 
     $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_sn` = '{$jbi_sn}' ";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $jbi_sn , $jbi_start , $jbi_end , $jbi_title , $jbi_desc , $jbi_approval , $jbi_sort , $jbi_enable
@@ -241,13 +242,13 @@ function list_jill_booking_item()
 
     $sql = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` order by `jbi_sort`";
 
-    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10, null, null);
+    //Utility::getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+    $PageBar = Utility::getPageBar($sql, 20, 10, null, null);
     $bar     = $PageBar['bar'];
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
     $all_content = array();
     $i           = 0;
@@ -297,7 +298,7 @@ function list_jill_booking_item()
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
     $sweet_alert = new sweet_alert();
     $sweet_alert->render('delete_jill_booking_item_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_item&jbi_sn=", "jbi_sn");
-    get_jquery(true);
+    Utility::get_jquery(true);
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('isAdmin', $isAdmin);

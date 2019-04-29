@@ -4,7 +4,7 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
-
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
 $xoopsOption['template_main'] = "jill_booking_list.tpl";
@@ -31,13 +31,13 @@ function jill_booking_list($def_jbi_sn = "")
     join `" . $xoopsDB->prefix("jill_booking_item") . "` as d  on c.jbi_sn=d.jbi_sn
     where b.`jb_uid`='{$uid}' $where_jbisn order by a.jb_status desc,a.`jb_date` desc,a.`jb_waiting`,a.jbt_sn  ";
     //die($sql);
-    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10, null, null);
+    //Utility::getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+    $PageBar = Utility::getPageBar($sql, 20, 10, null, null);
     $bar     = $PageBar['bar'];
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
     $all_content = array();
     $i           = 0;
@@ -120,7 +120,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign("isAdmin", $isAdmin);
 $xoopsTpl->assign("can_booking", $can_booking);
 $xoopsTpl->assign("Isapproval", $Isapproval);

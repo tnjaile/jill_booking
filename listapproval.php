@@ -2,9 +2,9 @@
 //  ------------------------------------------------------------------------ //
 // 本模組由 tnjaile 製作
 // 製作日期：2015-01-23
-// $Id:$
+// $Id
 // ------------------------------------------------------------------------- //
-
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
 $xoopsOption['template_main'] = "jill_booking_listapproval.tpl";
@@ -32,13 +32,13 @@ function jill_booking_approvallist($jbi_sn = "")
             where c.jbi_sn='{$jbi_sn}' && b.pass_date='0000-00-00' && b.jb_date>= ' " . date("Y-m-d", xoops_getUserTimestamp(time())) . " ' order by b.jb_date ,b.jbt_sn,d.jb_booking_time";
 
             //die($sql);
-            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10, null, null);
+            //Utility::Utility::getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+            $PageBar = Utility::getPageBar($sql, 20, 10, null, null);
             $bar     = $PageBar['bar'];
             $sql     = $PageBar['sql'];
             $total   = $PageBar['total'];
 
-            $result = $xoopsDB->query($sql) or web_error($sql);
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
             $all_content = array();
             $i           = 0;
@@ -121,7 +121,7 @@ function get_had_pass($jbt_sn = "", $jb_date = "")
             join `" . $xoopsDB->prefix("jill_booking") . "` as b on b.jb_sn=a.jb_sn
             where a.pass_date!='0000-00-00' && a.jb_date='{$jb_date}'  && a.jbt_sn='{$jbt_sn}' && a.jb_waiting='1' order by a.jb_waiting";
     //die($sql);
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
     list($pass_date, $jb_uid) = $xoopsDB->fetchRow($result);
     //列出預約者資訊
@@ -160,7 +160,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign("isAdmin", $isAdmin);
 $xoopsTpl->assign("can_booking", $can_booking);
 $xoopsTpl->assign("Isapproval", $Isapproval);

@@ -101,7 +101,7 @@ class Update
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         while (list($jb_date, $jbt_sn) = $xoopsDB->fetchRow($result)) {
             $sql2 = "update " . $xoopsDB->prefix("jill_booking_date") . " set `pass_date`='{$now}' where  `jb_date`='{$jb_date}' and `jbt_sn`='{$jbt_sn}'";
-            $xoopsDB->queryF($sql2) or web_error($sql2);
+            $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
         }
         return true;
     }

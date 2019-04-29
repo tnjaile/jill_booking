@@ -1,19 +1,16 @@
 <?php
-
 //  ------------------------------------------------------------------------ //
 // 本模組由 tnjaile 製作
 // 製作日期：2015-01-23
 // 秀出今天預約
 // ------------------------------------------------------------------------- //
-
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 //區塊主函式 (jb_b_today_list)
 function jb_b_today_list($options)
 {
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
     $sql               = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
-    $result            = $xoopsDB->query($sql) or web_error($sql);
+    $result            = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
     //die($sql);
     $block['content'] = array();
     $i                = 0;
@@ -25,7 +22,7 @@ function jb_b_today_list($options)
     }
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/easy_responsive_tabs.php";
-    $randStr         = randStr();
+    $randStr         = XoopsModules\Tadtools\Utility::randStr();
     $responsive_tabs = new easy_responsive_tabs('#iteamtab' . $randStr, $options[0]);
     $responsive_tabs->rander();
 
@@ -72,7 +69,7 @@ function get_todaylist($jbi_sn = "")
     $jb_date = date("Y-m-d");
     $w_today = date("w");
     $sql2    = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
-    $result2 = $xoopsDB->query($sql2) or web_error($sql);
+    $result2 = $xoopsDB->query($sql2) or XoopsModules\Tadtools\Utility::web_error($sql);
     $data    = array();
     $j       = 0;
     while (list($jbt_sn, $jbt_title, $jbt_week) = $xoopsDB->fetchRow($result2)) {
@@ -82,7 +79,7 @@ function get_todaylist($jbi_sn = "")
         $sql = "select b.jb_sn,b.jb_uid from " . $xoopsDB->prefix("jill_booking_date") . " as a
                 left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
                 where a.`jb_date`='{$jb_date}' && jb_status=1 && a.jbt_sn='{$jbt_sn}' order by a.jb_waiting limit 0,1";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
         // die($sql);
         $i                    = 0;
         list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);

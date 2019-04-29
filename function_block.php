@@ -16,7 +16,7 @@ if (!function_exists("booking_users")) {
 	        left join " . $xoopsDB->prefix("users") . " as c on b.`jb_uid`=c.`uid`
 	        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' order by a.`jb_waiting` ";
         //die($sql);
-        $result    = $xoopsDB->query($sql) or web_error($sql);
+        $result    = $xoopsDB->query($sql) or Utility::web_error($sql);
         $totalnum  = $xoopsDB->getRowsNum($result);
         $usershtml = "";
         if ($totalnum > 1) {
@@ -45,13 +45,13 @@ if (!function_exists("get_booking_uid")) {
         //先抓核准通過的順位
         $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
 	   where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
-        $result           = $xoopsDB->query($sql) or web_error($sql);
+        $result           = $xoopsDB->query($sql) or Utility::web_error($sql);
         list($jb_waiting) = $xoopsDB->fetchRow($result);
         $where_jb_waiting = (empty($jb_waiting)) ? "ORDER BY a.jb_waiting ASC LIMIT 1" : " && a.jb_waiting='{$jb_waiting}' ";
         $sql2             = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
 	  left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
 	   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' $where_jb_waiting  ";
-        $result2 = $xoopsDB->query($sql2) or web_error($sql);
+        $result2 = $xoopsDB->query($sql2) or Utility::web_error($sql);
         //die($sql2);
         list($jb_sn, $jb_uid, $jb_status) = $xoopsDB->fetchRow($result2);
         $data['jb_sn']                    = $jb_sn;
@@ -67,7 +67,7 @@ if (!function_exists("get_bookingtime_jbisn")) {
     {
         global $xoopsDB;
         $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
         $data   = array();
         $i      = 0;
         while ($all = $xoopsDB->fetchArray($result)) {

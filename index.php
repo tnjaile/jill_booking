@@ -4,7 +4,7 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
-
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
 $xoopsOption['template_main'] = "jill_booking_index.tpl";
@@ -126,7 +126,7 @@ function booking_table($jbi_sn = "", $getdate = "")
     }
     //避免js重複引入
     if ($xoTheme) {
-        $xoopsTpl->assign('jquery', get_jquery(true));
+        $xoopsTpl->assign('jquery', Utility::get_jquery(true));
         $xoTheme->addStylesheet('modules/jill_booking/class/qtip/jquery.qtip.css');
         $xoTheme->addScript('modules/jill_booking/class/qtip/jquery.qtip.js');
     }
@@ -158,9 +158,9 @@ function delete_booking_icon($t = "", $wk = "", $jbt_sn = "", $jb_date = "", $jb
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op             = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jbt_sn= system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
-$jbi_sn= system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
+$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
+$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {
 /*---判斷動作請貼在下方---*/
@@ -205,7 +205,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign("isAdmin", $isAdmin);
 $xoopsTpl->assign("can_booking", $can_booking);
 $xoopsTpl->assign("Isapproval", $Isapproval);

@@ -5,8 +5,6 @@
 // 製作日期：2015-01-23
 // 秀出今天預約
 // ------------------------------------------------------------------------- //
-
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 include_once XOOPS_ROOT_PATH . "/modules/jill_booking/function_block.php";
 //區塊主函式 (jb_b_week_list)
 function jb_b_week_list($options)
@@ -16,7 +14,7 @@ function jb_b_week_list($options)
     $block['weekArr']  = weekArr();
     //die(var_dump($block['weekArr']));
     $sql    = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     //die($sql);
     $block['content'] = array();
     $i                = 0;
@@ -35,7 +33,7 @@ function jb_b_week_list($options)
     }
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/easy_responsive_tabs.php";
-    $randStr         = randStr();
+    $randStr         = XoopsModules\Tadtools\Utility::randStr();
     $responsive_tabs = new easy_responsive_tabs('#iteamtab' . $randStr, $options[0]);
     $responsive_tabs->rander();
 

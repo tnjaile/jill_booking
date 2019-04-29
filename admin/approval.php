@@ -5,6 +5,7 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_approval.tpl';
 include_once "header.php";
 include_once "../function.php";
@@ -25,7 +26,7 @@ function jbi_approval_form($jbi_sn = "")
     $xoopsTpl->assign('approval', (int) $DBV['jbi_approval']);
     $op           = "save_jbi_approval";
     $sql          = "select `uid`,`name`,`uname` from `" . $xoopsDB->prefix("users") . "` order by `uname` ";
-    $result       = $xoopsDB->query($sql) or web_error($sql);
+    $result       = $xoopsDB->query($sql) or Utility::web_error($sql);
     $all_content  = array();
     $all_content2 = array();
     $i            = 0;
@@ -75,14 +76,14 @@ function save_jbi_approval($jbi_sn = "")
     $sql = "update `" . $xoopsDB->prefix("jill_booking_item") . "` set
    `jbi_approval` = '{$_POST['jbi_approval']}'  where `jbi_sn` = '$jbi_sn'";
     //die($sql);
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
     return $jbi_sn;
 }
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op             = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jbi_sn= system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
+$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/
