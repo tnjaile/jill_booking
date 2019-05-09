@@ -97,7 +97,7 @@ function insert_jill_booking($single = "")
     global $xoopsDB, $xoopsUser;
     //取得使用者編號
     $uid  = $xoopsUser->uid();
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     if ($single == 1) {
         $jb_booking_content = _MD_INDIVIDUAL_BOOKING;
     } else {
@@ -148,7 +148,7 @@ function insert_jill_booking_date($jb_sn = "", $single = "", $jbi_sn = "")
         return;
     }
     $itemArr = get_jill_booking_item($jbi_sn, 1);
-    $myts    = MyTextSanitizer::getInstance();
+    $myts    = \MyTextSanitizer::getInstance();
     //$_POST['jb_date']=$myts->addSlashes($_POST['jb_date']);
     //die(var_export($_POST['jb_date']));
     $jb_status = (empty($itemArr['jbi_approval'])) ? 1 : 0;

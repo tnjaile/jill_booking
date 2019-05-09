@@ -4,6 +4,7 @@
 // 製作日期：2015-01-23
 // $Id
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
@@ -18,7 +19,7 @@ function jill_booking_approvallist($jbi_sn = "")
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
     $uid  = $xoopsUser->uid();
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn, $uid);
     //die(var_export($item_opt));
@@ -75,13 +76,8 @@ function jill_booking_approvallist($jbi_sn = "")
     }
     //die(var_dump($all_content));
     //刪除確認的JS
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert              = new sweet_alert();
-    $delete_jill_booking_func = $sweet_alert->render('delete_jill_booking_func', "{$_SERVER['PHP_SELF']}?op=delete_booking&jb_info=", "jb_info");
-    $xoopsTpl->assign('delete_jill_booking_func', $delete_jill_booking_func);
+    $sweet_alert = new SweetAlert();
+    $sweet_alert->render('delete_jill_booking_func', "{$_SERVER['PHP_SELF']}?op=delete_booking&jb_info=", "jb_info");
 
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('item_opt', $item_opt);

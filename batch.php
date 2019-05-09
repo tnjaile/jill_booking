@@ -4,7 +4,9 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 include "header.php";
 $xoopsOption['template_main'] = "jill_booking_batch.tpl";
@@ -67,16 +69,12 @@ function jill_booking_form($jbi_sn = "")
         }
         //die(var_export($weektime));
         //套用formValidator驗證機制
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php")) {
-            redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
-        }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
-        $formValidator      = new formValidator("#myForm", true);
+        $formValidator      = new FormValidator("#myForm", true);
         $formValidator_code = $formValidator->render();
 
         //加入Token安全機制
         include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
-        $token      = new XoopsFormHiddenToken();
+        $token      = new \XoopsFormHiddenToken();
         $token_form = $token->render();
         $xoopsTpl->assign("token_form", $token_form);
         $xoopsTpl->assign('formValidator_code', $formValidator_code);

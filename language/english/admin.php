@@ -5,8 +5,7 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 
-include_once dirname(dirname(__DIR__)) . "/tadtools/language/{$xoopsConfig['language']}/admin_common.php";
-define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
+xoops_loadLanguage('admin_common', 'tadtools');
 
 //main
 define('_MA_JILLBOOKIN_ADD', 'New Venue');
@@ -48,3 +47,5 @@ define('_MA_JILLBOOKIN_PM', 'PM');
 define("_MA_JILLBOOKIN_APPROVAL", "Set the manager of 「%s」");
 define("_MA_JILLBOOKIN_ALLUSERS", "All user");
 define("_MA_JILLBOOKIN_APPROVER", "Approver");
+define("_MA_UPDATE_COMPLETED", "Update completed");
+define("_MA_UPDATE_FAILED", "Update failed");

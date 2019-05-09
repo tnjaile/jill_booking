@@ -4,6 +4,7 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
@@ -23,7 +24,7 @@ function jill_booking_list($def_jbi_sn = "")
     $xoopsTpl->assign('item_opt', $item_opt);
     $where_jbisn = empty($def_jbi_sn) ? "" : " and c.jbi_sn='{$def_jbi_sn}' ";
     $uid         = $xoopsUser->uid();
-    $myts        = MyTextSanitizer::getInstance();
+    $myts        = \MyTextSanitizer::getInstance();
     $sql         = "select a.jb_sn,a.jb_date,a.jbt_sn,a.jb_waiting,a.jb_status,b.jb_uid,b.jb_booking_time,b.jb_booking_content,b.jb_start_date,b.jb_end_date,c.jbi_sn,c.jbt_title,c.jbt_sort,d.jbi_title,d.jbi_approval
     from `" . $xoopsDB->prefix("jill_booking_date") . "` as a
     join `" . $xoopsDB->prefix("jill_booking") . "` as b  on a.jb_sn=b.jb_sn
@@ -81,11 +82,7 @@ function jill_booking_list($def_jbi_sn = "")
     $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('now_op', 'jill_booking_list');
 
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert = new sweet_alert();
+    $sweet_alert = new SweetAlert();
     $sweet_alert->render('delete_jill_booking_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking&primary=", "primary");
 
 }

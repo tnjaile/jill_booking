@@ -1,5 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
 include_once "header.php";
@@ -68,7 +69,6 @@ function show_content()
     // 加入日期選擇器
     // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbdsn=874
     // http://my97.net/demo/index.htm
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/cal.php";
     $cal = new My97DatePicker();
     $cal->render();
 

@@ -4,9 +4,7 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
-
-include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
-define('_TAD_NEED_TADTOOLS', ' 需要 modules/tadtools，可至<a href="http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50" target="_blank">Tad教材網</a>下載。');
+xoops_loadLanguage('admin_common', 'tadtools');
 
 //main
 define("_MA_JILLBOOKIN_ADD", "新增場地");
@@ -48,3 +46,5 @@ define("_MA_JILLBOOKIN_PM", "下午");
 define("_MA_JILLBOOKIN_APPROVAL", "設定負責維護「%s」的管理員");
 define("_MA_JILLBOOKIN_ALLUSERS", "所有使用者");
 define("_MA_JILLBOOKIN_APPROVER", "審核人員");
+define("_MA_UPDATE_COMPLETED", "更新成功");
+define("_MA_UPDATE_FAILED", "更新失敗");

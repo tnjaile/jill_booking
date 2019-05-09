@@ -47,7 +47,7 @@ function jbi_approval_form($jbi_sn = "")
     }
     //加入Token安全機制
     include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
-    $token      = new XoopsFormHiddenToken();
+    $token      = new \XoopsFormHiddenToken();
     $token_form = $token->render();
     $xoopsTpl->assign("token_form", $token_form);
     $xoopsTpl->assign('action', $_SERVER["PHP_SELF"]);

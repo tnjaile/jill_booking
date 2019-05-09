@@ -5,6 +5,9 @@
 // $Id:$
 //
 /*-----------引入檔案區--------------*/
+use XoopsModules\Tadtools\CkEditor;
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_main.tpl';
 include_once "header.php";
@@ -25,7 +28,7 @@ function jill_booking_item_form($jbi_sn = "")
     }
 
     //預設值設定
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     //設定 jbi_sn 欄位的預設值
     $jbi_sn = !isset($DBV['jbi_sn']) ? $jbi_sn : $DBV['jbi_sn'];
@@ -47,11 +50,8 @@ function jill_booking_item_form($jbi_sn = "")
 
     //設定 jbi_desc 欄位的預設值
     $jbi_desc = !isset($DBV['jbi_desc']) ? "" : $myts->displayTarea($DBV['jbi_desc'], $html = 1, $smiley = 1, $xcode = 1, $image = 1, $br = 0);
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ck.php")) {
-        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
-    $Editor = new CKEditor("jill_booking", "jbi_desc", $jbi_desc);
+
+    $Editor = new CkEditor("jill_booking", "jbi_desc", $jbi_desc);
     $Editor->setToolbarSet('myBasic');
     $Editor_code = $Editor->render();
     $xoopsTpl->assign('Editor_code', $Editor_code);
@@ -72,16 +72,12 @@ function jill_booking_item_form($jbi_sn = "")
     //$op="replace_jill_booking_item";
 
     //套用formValidator驗證機制
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php")) {
-        redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
-    $formValidator      = new formValidator("#myForm", true);
+    $formValidator      = new FormValidator("#myForm", true);
     $formValidator_code = $formValidator->render();
 
     //加入Token安全機制
     include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
-    $token      = new XoopsFormHiddenToken();
+    $token      = new \XoopsFormHiddenToken();
     $token_form = $token->render();
     $xoopsTpl->assign("token_form", $token_form);
     $xoopsTpl->assign('action', $_SERVER["PHP_SELF"]);
@@ -111,7 +107,7 @@ function insert_jill_booking_item()
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $myts               = MyTextSanitizer::getInstance();
+    $myts               = \MyTextSanitizer::getInstance();
     $_POST['jbi_start'] = $myts->addSlashes($_POST['jbi_start']);
     $_POST['jbi_end']   = $myts->addSlashes($_POST['jbi_end']);
     $_POST['jbi_title'] = $myts->addSlashes($_POST['jbi_title']);
@@ -140,7 +136,7 @@ function update_jill_booking_item($jbi_sn = "")
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $myts               = MyTextSanitizer::getInstance();
+    $myts               = \MyTextSanitizer::getInstance();
     $_POST['jbi_start'] = $myts->addSlashes($_POST['jbi_start']);
     $_POST['jbi_end']   = $myts->addSlashes($_POST['jbi_end']);
     $_POST['jbi_title'] = $myts->addSlashes($_POST['jbi_title']);
@@ -191,7 +187,7 @@ function show_one_jill_booking_item($jbi_sn = "")
     if (empty($jbi_sn)) {
         return;
     }
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_sn` = '{$jbi_sn}' ";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
@@ -222,11 +218,7 @@ function show_one_jill_booking_item($jbi_sn = "")
     $xoopsTpl->assign('jbi_sort', $jbi_sort);
     $xoopsTpl->assign('jbi_enable', $jbi_enable);
 
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert = new sweet_alert();
+    $sweet_alert = new SweetAlert();
     $sweet_alert->render('delete_jill_booking_item_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_item&jbi_sn=", "jbi_sn");
 
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
@@ -238,7 +230,7 @@ function list_jill_booking_item()
 {
     global $xoopsDB, $xoopsTpl, $isAdmin;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $sql = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` order by `jbi_sort`";
 
@@ -291,12 +283,7 @@ function list_jill_booking_item()
     }
 
     //刪除確認的JS
-
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert = new sweet_alert();
+    $sweet_alert = new SweetAlert();
     $sweet_alert->render('delete_jill_booking_item_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_item&jbi_sn=", "jbi_sn");
     Utility::get_jquery(true);
     $xoopsTpl->assign('bar', $bar);

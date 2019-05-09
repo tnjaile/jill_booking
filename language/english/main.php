@@ -4,10 +4,7 @@
 // 製作日期：2015-01-23
 // $Id:$
 // ------------------------------------------------------------------------- //
-
-//Need to add in modules Languages
-define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
-
+xoops_loadLanguage('main', 'tadtools');
 //jill_booking-list
 define("_MD_JILLBOOKIN_NOAPPROVAL", "Non-qualified audit!!");
 define("_MD_JILLBOOKIN_HADPASS", "Had pass");

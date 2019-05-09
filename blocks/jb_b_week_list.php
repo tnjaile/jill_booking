@@ -5,6 +5,9 @@
 // 製作日期：2015-01-23
 // 秀出今天預約
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\EasyResponsiveTabs;
+use XoopsModules\Tadtools\Utility;
+
 include_once XOOPS_ROOT_PATH . "/modules/jill_booking/function_block.php";
 //區塊主函式 (jb_b_week_list)
 function jb_b_week_list($options)
@@ -32,9 +35,8 @@ function jb_b_week_list($options)
         $xoTheme->addScript('modules/jill_booking/class/qtip/jquery.qtip.js');
     }
 
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/easy_responsive_tabs.php";
-    $randStr         = XoopsModules\Tadtools\Utility::randStr();
-    $responsive_tabs = new easy_responsive_tabs('#iteamtab' . $randStr, $options[0]);
+    $randStr         = Utility::randStr();
+    $responsive_tabs = new EasyResponsiveTabs('#iteamtab' . $randStr, $options[0]);
     $responsive_tabs->rander();
 
     $block['randStr'] = $randStr;

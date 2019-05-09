@@ -4,6 +4,7 @@
 // 製作日期：2015-01-23
 // 秀出今天預約
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\EasyResponsiveTabs;
 //區塊主函式 (jb_b_today_list)
 function jb_b_today_list($options)
 {
@@ -21,9 +22,8 @@ function jb_b_today_list($options)
         $i++;
     }
 
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/easy_responsive_tabs.php";
     $randStr         = XoopsModules\Tadtools\Utility::randStr();
-    $responsive_tabs = new easy_responsive_tabs('#iteamtab' . $randStr, $options[0]);
+    $responsive_tabs = new EasyResponsiveTabs('#iteamtab' . $randStr, $options[0]);
     $responsive_tabs->rander();
 
     $block['randStr'] = $randStr;

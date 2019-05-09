@@ -4,6 +4,9 @@
 // 製作日期：2015-01-14
 // $Id:$
 // ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\Jeditable;
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'jill_booking_adm_time.tpl';
@@ -27,7 +30,7 @@ function insert_jill_booking_time()
 {
     global $xoopsDB;
 
-    $myts               = MyTextSanitizer::getInstance();
+    $myts               = \MyTextSanitizer::getInstance();
     $_POST['jbt_title'] = $myts->addSlashes($_POST['jbt_title']);
     $week               = implode(",", $_POST['jbt_week']);
 
@@ -64,10 +67,9 @@ function list_jill_booking_time($jbi_sn = "")
 
     $item = get_jill_booking_item($jbi_sn);
 
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/jeditable.php";
-    $jeditable = new jeditable();
+    $jeditable = new Jeditable();
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $sql  = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "`
           where `jbi_sn`='$jbi_sn' order by `jbt_sort`";
     $result      = $xoopsDB->query($sql) or Utility::web_error($sql);
@@ -117,19 +119,11 @@ function list_jill_booking_time($jbi_sn = "")
     $xoopsTpl->assign('now_op', 'list_jill_booking_time');
     $xoopsTpl->assign('jbi_sn', $jbi_sn);
 
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert = new sweet_alert();
+    $sweet_alert = new SweetAlert();
     $sweet_alert->render('delete_jill_booking_time_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_time&jbi_sn=$jbi_sn&jbt_sn=", "jbt_sn");
 
     //套用formValidator驗證機制
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php")) {
-        redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
-    $formValidator      = new formValidator("#myForm", true);
+    $formValidator      = new FormValidator("#myForm", true);
     $formValidator_code = $formValidator->render();
     $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
@@ -242,7 +236,7 @@ function change_enable($jbt_sn = "", $week = "")
 function save_jbt_title($jbt_sn)
 {
     global $xoopsDB, $xoopsTpl;
-    $myts      = MyTextSanitizer::getInstance();
+    $myts      = \MyTextSanitizer::getInstance();
     $jbt_title = $myts->addSlashes($_POST['value']);
     $sql       = "update `" . $xoopsDB->prefix("jill_booking_time") . "` set `jbt_title` = '{$jbt_title}'
   where `jbt_sn` = '$jbt_sn'";
