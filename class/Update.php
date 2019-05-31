@@ -28,7 +28,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class Update
 {
     //檢查jbt_sn欄位 自動遞增是否存在
-    public function chk_chk1()
+    public static function chk_chk1()
     {
         global $xoopsDB;
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Extra='auto_increment' ";
@@ -42,7 +42,7 @@ class Update
     }
 
     //修正jbt_sn欄位，取消自動遞增
-    public function go_update1()
+    public static function go_update1()
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " CHANGE `jbt_sn` `jbt_sn` mediumint(8) unsigned NOT NULL COMMENT '時段編號' AFTER `jb_date` ";
@@ -50,12 +50,11 @@ class Update
         return true;
     }
     //檢查jbi_approval 欄位 enum('1','0')是否存在
-    public function chk_chk2()
+    public static function chk_chk2()
     {
         global $xoopsDB;
         $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-
         if (empty($result->num_rows)) {
             return false;
         }
@@ -63,7 +62,7 @@ class Update
     }
 
     //修正jbi_approval欄位，改為varchar(255)
-    public function go_update2()
+    public static function go_update2()
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_item") . " CHANGE `jbi_approval` `jbi_approval` varchar(255) COLLATE 'utf8_general_ci' NOT NULL COMMENT '審核人員' AFTER `jbi_enable` ";
@@ -71,7 +70,30 @@ class Update
         return true;
     }
     //檢查有無通過日期欄位
-    public function chk_chk3()
+    public static function chk_chk3()
+    {
+        global $xoopsDB;
+        $sql    = "select `approver`  from " . $xoopsDB->prefix("jill_booking_date");
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+
+        if (empty($result->num_rows)) {
+            return true;
+        }
+
+        return false;
+    }
+    //執行更新通過日期欄位
+    public static function go_update3()
+    {
+        global $xoopsDB;
+        $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " ADD `approver` mediumint(8) unsigned NOT NULL default 0";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+
+        return true;
+    }
+
+    //檢查有無通過日期欄位
+    public static function chk_chk4()
     {
         global $xoopsDB;
         $sql    = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
@@ -84,10 +106,10 @@ class Update
         return false;
     }
     //執行更新通過日期欄位
-    public function go_update3()
+    public static function go_update4()
     {
         global $xoopsDB;
-        $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " ADD `approver` mediumint(8) unsigned NOT NULL default 0,ADD `pass_date` date NOT NULL ";
+        $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " ADD `pass_date` date NOT NULL ";
         $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
         //正確抓取XOOPS時間
