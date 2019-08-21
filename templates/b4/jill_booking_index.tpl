@@ -45,13 +45,12 @@
 
   <form action="<{$action}>" method="post" id="myForm">
     <div class="row">
-      <div class="col-sm-2" >
-        <select name="jbi_sn" id="jbi_sn" multiple class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
-         <{$item_opt}>
-        </select>
-      </div>
-      <div class="col-sm-10" >
-        <{if $jbi_sn}>
+      <select name="jbi_sn" id="jbi_sn" multiple class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
+            <{$item_opt}>
+      </select>
+    </div>
+    <div class="row">
+      <{if $jbi_sn}>
          <{assign var="start" value=$weekArr.0.d|date_format:"%Y-%m-%d"}>
 
          <table class="table table-striped table-hover table-bordered">
@@ -108,8 +107,7 @@
              <{/foreach}>
            </tbody>
          </table>
-        <{/if}>
-      </div>
+      <{/if}>
     </div>
 
   </form>
