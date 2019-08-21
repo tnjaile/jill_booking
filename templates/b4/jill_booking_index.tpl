@@ -45,10 +45,12 @@
 
   <form action="<{$action}>" method="post" id="myForm">
     <div class="row">
-      <select name="jbi_sn" id="jbi_sn" multiple class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
+      <select name="jbi_sn" id="jbi_sn" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
+          <option value="">請選擇場地</option>
             <{$item_opt}>
       </select>
     </div>
+    <hr>
     <div class="row">
       <{if $jbi_sn}>
          <{assign var="start" value=$weekArr.0.d|date_format:"%Y-%m-%d"}>
@@ -56,10 +58,9 @@
          <table class="table table-striped table-hover table-bordered">
            <thead>
             <tr  style="background-color: #F5F5F5;border: none;">
-              <div class="row mb-2">
-                <div class="col-sm-4 ">
-                  <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start-1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><i class="fa fa-long-arrow-left "></i><{$smarty.const._MD_LASTWEEK}></a>
-                </div >
+              <div class="col-sm-4 ">
+                <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start-1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><i class="fa fa-long-arrow-left "></i><{$smarty.const._MD_LASTWEEK}></a>
+              </div >
                <div class="col-sm-4 text-center" >
                 <{$itemArr.jbi_title}>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-commenting-o" aria-hidden="true"></i></button>
@@ -74,7 +75,6 @@
                <div class="col-sm-4 text-right">
                 <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start+1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><{$smarty.const._MD_NEXTWEEK}><i class="fa fa-long-arrow-right"></i></a>
                </div>
-              </div>
             </tr>
             <tr style="background-color: #4682B4;color:white" rowspan="3">
              <th style="text-align:center;vertical-align: middle;"></th>
