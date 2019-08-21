@@ -58,26 +58,30 @@
          <table class="table table-striped table-hover table-bordered">
            <thead>
             <tr  style="background-color: #F5F5F5;border: none;">
-              <div class="col-sm-4 ">
-                <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start-1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><i class="fa fa-long-arrow-left "></i><{$smarty.const._MD_LASTWEEK}></a>
-              </div >
-               <div class="col-sm-4 text-center" >
-                <{$itemArr.jbi_title}>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-commenting-o" aria-hidden="true"></i></button>
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                  <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                      <{$itemArr.jbi_desc}>
+              <th colspan="8">
+                <div class="row">
+                  <div class="col-sm-4 ">
+                    <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start-1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><i class="fa fa-long-arrow-left "></i><{$smarty.const._MD_LASTWEEK}></a>
+                  </div >
+                  <div class="col-sm-4 text-center" >
+                    <{$itemArr.jbi_title}>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-commenting-o" aria-hidden="true"></i></button>
+                    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                      <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                          <{$itemArr.jbi_desc}>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <div class="col-sm-4 text-right">
+                    <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start+1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><{$smarty.const._MD_NEXTWEEK}><i class="fa fa-long-arrow-right"></i></a>
+                  </div>
                 </div>
-               </div>
-               <div class="col-sm-4 text-right">
-                <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start+1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><{$smarty.const._MD_NEXTWEEK}><i class="fa fa-long-arrow-right"></i></a>
-               </div>
+              </th>
             </tr>
             <tr style="background-color: #4682B4;color:white" rowspan="3">
-             <th style="text-align:center;vertical-align: middle;"></th>
+              <th style="text-align:center;vertical-align: middle;"></th>
                <{foreach from=$weekArr item=week}>
                   <th style="text-align:center;">
                     <div ><{$week.d|date_format:'%Y'}></div>
