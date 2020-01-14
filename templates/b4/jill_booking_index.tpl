@@ -46,7 +46,7 @@
   <form action="<{$action}>" method="post" id="myForm">
     <div class="row">
       <div class="col-sm-2" >
-        <select name="jbi_sn" id="jbi_sn" multiple class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
+        <select name="jbi_sn" id="jbi_sn" multiple size="<{$item_size}>" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
          <{$item_opt}>
         </select>
       </div>
