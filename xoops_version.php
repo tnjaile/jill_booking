@@ -9,7 +9,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_JILLBOOKIN_NAME;
-$modversion['version']     = '2.3';
+$modversion['version']     = '2.3.1';
 $modversion['description'] = _MI_JILLBOOKIN_DESC;
 $modversion['author']      = _MI_JILLBOOKIN_AUTHOR;
 $modversion['credits']     = _MI_JILLBOOKIN_CREDITS;
@@ -19,15 +19,15 @@ $modversion['image']       = "images/logo.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['status_version']      = '2.3';
-$modversion['release_date']        = '2019-05-09';
+$modversion['status_version']      = '2.3.1';
+$modversion['release_date']        = '2020-01-15';
 $modversion['module_website_url']  = '';
 $modversion['module_website_name'] = _MI_JILLBOOKIN_AUTHOR_WEB;
 $modversion['module_status']       = 'release';
 $modversion['author_website_url']  = '';
 $modversion['author_website_name'] = _MI_JILLBOOKIN_AUTHOR_WEB;
-$modversion['min_php']             = 5.4;
-$modversion['min_xoops']           = '2.5';
+$modversion['min_php']             = 5.6;
+$modversion['min_xoops']           = '2.5.8';
 
 //---paypal資訊---//
 $modversion['paypal']                  = array();
