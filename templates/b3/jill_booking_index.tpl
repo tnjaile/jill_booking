@@ -44,7 +44,7 @@
   </script>
 
   <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data">
-    <select name="jbi_sn" id="jbi_sn"  multiple class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
+    <select name="jbi_sn" id="jbi_sn" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
       <{$item_opt}>
     </select>
     <hr>
