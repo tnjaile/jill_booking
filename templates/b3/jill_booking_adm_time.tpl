@@ -22,7 +22,7 @@
       });
     }
   </script>
-  <h1><{$item.jbi_title}><{$smarty.const._MA_JILLBOOKIN_SETTIME}></h1>
+  <h2><{$item.jbi_title}><{$smarty.const._MA_JILLBOOKIN_SETTIME}></h2>
 
   <{if $jbi_desc}>
     <!--場地說明-->

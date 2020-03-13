@@ -20,7 +20,7 @@
       document.getElementById('jbi_approval').value=txt;
     }
   </script>
-  <h1 class="text-center"><{$jbi_title}></h1>
+  <h2 class="text-center"><{$jbi_title}></h2>
   <div class="container ">
     <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data"  role="form">
       <!--場地編號-->
