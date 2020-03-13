@@ -2,12 +2,12 @@
  * qTip2 - Pretty powerful tooltips - v3.0.3
  * http://qtip2.com
  *
- * Copyright (c) 2016 
+ * Copyright (c) 2017 
  * Released under the MIT licenses
  * http://jquery.org/license
  *
- * Date: Thu May 12 2016 05:31 EDT-0400
- * Plugins: tips
+ * Date: Thu Jan 5 2017 01:12 EST-0500
+ * Plugins: tips viewport imagemap svg modal ie6
  * Styles: core basic css3
  */
 .qtip{
@@ -587,3 +587,31 @@
 		display: inline-block;
 		visibility: visible;
 	}
+
+
+#qtip-overlay{
+	position: fixed;
+	left: 0; top: 0;
+	width: 100%; height: 100%;
+}
+
+	/* Applied to modals with show.modal.blur set to true */
+	#qtip-overlay.blurs{ cursor: pointer; }
+
+	/* Change opacity of overlay here */
+	#qtip-overlay div{
+		position: absolute;
+		left: 0; top: 0;
+		width: 100%; height: 100%;
+
+		background-color: black;
+
+		opacity: 0.7;
+		filter:alpha(opacity=70);
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	}
+
+
+.qtipmodal-ie6fix{
+	position: absolute !important;
+}

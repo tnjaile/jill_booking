@@ -16,7 +16,7 @@ function booking_table($jbi_sn = "", $getdate = "")
     global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig, $can_booking, $Isapproval, $xoTheme;
     $uid = !empty($xoopsUser) ? $xoopsUser->uid() : "";
     //場地設定
-    $item_opt  = get_jill_booking_time_options($jbi_sn);
+    $item_opt = get_jill_booking_time_options($jbi_sn);
     // $item_size = substr_count($item_opt, '<option value=');
     if (!empty($jbi_sn)) {
         //可啟用場地資訊
@@ -128,8 +128,8 @@ function booking_table($jbi_sn = "", $getdate = "")
     //避免js重複引入
     if ($xoTheme) {
         $xoopsTpl->assign('jquery', Utility::get_jquery(true));
-        $xoTheme->addStylesheet('modules/jill_booking/class/qtip/jquery.qtip.css');
-        $xoTheme->addScript('modules/jill_booking/class/qtip/jquery.qtip.js');
+        $xoTheme->addStylesheet('modules/tadtools/jquery.qtip/jquery.qtip.css');
+        $xoTheme->addScript('modules/tadtools/jquery.qtip/jquery.qtip.js');
     }
     $xoopsTpl->assign('jbi_sn', $jbi_sn);
     $xoopsTpl->assign('item_opt', $item_opt);

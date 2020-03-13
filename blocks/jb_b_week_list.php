@@ -31,8 +31,8 @@ function jb_b_week_list($options)
 
     //避免js重複引入
     if ($xoTheme) {
-        $xoTheme->addStylesheet('modules/jill_booking/class/qtip/jquery.qtip.css');
-        $xoTheme->addScript('modules/jill_booking/class/qtip/jquery.qtip.js');
+        $xoTheme->addStylesheet('modules/tadtools/jquery.qtip/jquery.qtip.css');
+        $xoTheme->addScript('modules/tadtools/jquery.qtip/jquery.qtip.js');
     }
 
     $randStr         = Utility::randStr();
