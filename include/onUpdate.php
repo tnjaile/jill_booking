@@ -5,7 +5,7 @@ if (!class_exists('XoopsModules\Jill_booking\Update')) {
 }
 function xoops_module_update_jill_booking(&$module, $old_version)
 {
-    // die(print_r(get_declared_classes()));
+    Update::del_interface();
     if (Update::chk_chk1()) {
         Update::go_update1();
     }

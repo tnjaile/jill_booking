@@ -27,6 +27,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 class Update
 {
+    public function del_interface()
+    {
+        if (file_exists(XOOPS_ROOT_PATH . '/modules/jill_booking/interface_menu.php')) {
+            unlink(XOOPS_ROOT_PATH . '/modules/jill_booking/interface_menu.php');
+        }
+    }
+
     //檢查jbt_sn欄位 自動遞增是否存在
     public static function chk_chk1()
     {
