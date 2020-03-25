@@ -51,7 +51,6 @@
     <hr>
     <{if $jbi_sn}>
         <{assign var="start" value=$weekArr.0.d|date_format:"%Y-%m-%d"}>
-
         <table class="table table-striped table-hover table-bordered">
           <thead>
           <tr  style="background-color: #F5F5F5;border: none;">
