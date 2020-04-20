@@ -1,9 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-23
-// $Id:$
-// ------------------------------------------------------------------------- //
 xoops_loadLanguage('main', 'tadtools');
 //jill_booking-list
 define("_MD_JILLBOOKIN_NOAPPROVAL", "Non-qualified audit!!");

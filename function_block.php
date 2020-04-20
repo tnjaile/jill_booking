@@ -1,9 +1,5 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-23
-// $Id:$
-// ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\Utility;
 if (!function_exists("booking_users")) {
     //取得用了該日期時段的所有者
     function booking_users($jbt_sn = "", $jb_date = "")
@@ -16,8 +12,8 @@ if (!function_exists("booking_users")) {
 	        left join " . $xoopsDB->prefix("users") . " as c on b.`jb_uid`=c.`uid`
 	        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' order by a.`jb_waiting` ";
         //die($sql);
-        $result    = $xoopsDB->query($sql) or Utility::web_error($sql);
-        $totalnum  = $xoopsDB->getRowsNum($result);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $totalnum = $xoopsDB->getRowsNum($result);
         $usershtml = "";
         if ($totalnum > 1) {
             $users = _MD_JILLBOOKIN_JB_UID . "<ol>";
@@ -45,18 +41,18 @@ if (!function_exists("get_booking_uid")) {
         //先抓核准通過的順位
         $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
 	   where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
-        $result           = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
         list($jb_waiting) = $xoopsDB->fetchRow($result);
         $where_jb_waiting = (empty($jb_waiting)) ? "ORDER BY a.jb_waiting ASC LIMIT 1" : " && a.jb_waiting='{$jb_waiting}' ";
-        $sql2             = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
+        $sql2 = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
 	  left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
 	   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' $where_jb_waiting  ";
         $result2 = $xoopsDB->query($sql2) or Utility::web_error($sql);
         //die($sql2);
         list($jb_sn, $jb_uid, $jb_status) = $xoopsDB->fetchRow($result2);
-        $data['jb_sn']                    = $jb_sn;
-        $data['jb_uid']                   = $jb_uid;
-        $data['jb_status']                = $jb_status;
+        $data['jb_sn'] = $jb_sn;
+        $data['jb_uid'] = $jb_uid;
+        $data['jb_status'] = $jb_status;
         return $data;
     }
 }
@@ -66,20 +62,20 @@ if (!function_exists("get_bookingtime_jbisn")) {
     function get_bookingtime_jbisn($jbi_sn = "")
     {
         global $xoopsDB;
-        $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
+        $sql = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-        $data   = array();
-        $i      = 0;
+        $data = array();
+        $i = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
             //jbt_sn,jbi_sn,jbt_title,jbt_sort,jbt_week
-            $data[$i]['jbt_sn']    = $jbt_sn;
-            $data[$i]['jbi_sn']    = $jbi_sn;
+            $data[$i]['jbt_sn'] = $jbt_sn;
+            $data[$i]['jbi_sn'] = $jbi_sn;
             $data[$i]['jbt_title'] = $jbt_title;
-            $data[$i]['jbt_sort']  = $jbt_sort;
-            $data[$i]['jbt_week']  = $jbt_week;
+            $data[$i]['jbt_sort'] = $jbt_sort;
+            $data[$i]['jbt_week'] = $jbt_week;
             ++$i;
         }
         //die(var_export($data));
@@ -101,10 +97,10 @@ if (!function_exists("weekArr")) {
         $weekday = date("w", strtotime($getdate));
         //一週開始日期
         $week_start = date("Y-m-d", strtotime("$getdate -" . $weekday . " days"));
-        $week       = array();
+        $week = array();
         for ($i = 0; $i <= 6; $i++) {
             $week[$i]['d'] = date("Y-m-d", strtotime("$week_start +" . $i . " days"));
-            $cweek         = array(_MD_JILLBOOKIN_W0, _MD_JILLBOOKIN_W1, _MD_JILLBOOKIN_W2, _MD_JILLBOOKIN_W3, _MD_JILLBOOKIN_W4, _MD_JILLBOOKIN_W5, _MD_JILLBOOKIN_W6);
+            $cweek = array(_MD_JILLBOOKIN_W0, _MD_JILLBOOKIN_W1, _MD_JILLBOOKIN_W2, _MD_JILLBOOKIN_W3, _MD_JILLBOOKIN_W4, _MD_JILLBOOKIN_W5, _MD_JILLBOOKIN_W6);
             if (in_array(date("w", strtotime($week[$i]['d'])), array_keys($cweek))) {
                 $week[$i]['w'] = $cweek[$i];
             }

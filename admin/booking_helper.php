@@ -17,7 +17,7 @@ switch ($op) {
         $data = getTimesByItem(trim($_GET['sn']), trim($_GET['date']));
         // 當日已預約時段  array
         // jbt_sn, jb_uid, jb_booking_content, name
-        $used    = getUsedTimes($data, trim($_GET['date']));
+        $used = getUsedTimes($data, trim($_GET['date']));
         $used_sn = array_column($used, 'jbt_sn');
 
         // 轉換全部時段之資料陣列
@@ -34,9 +34,9 @@ switch ($op) {
             $key = array_search($orig['jbt_sn'], $used_sn);
             if ($key !== false) {
                 // 已被預約，則設為不可預約且附加預約者姓名與事由
-                $orig['can_order']  = false;
+                $orig['can_order'] = false;
                 $orig['order_user'] = $used[$key]['name'];
-                $orig['event']      = $used[$key]['jb_booking_content'];
+                $orig['event'] = $used[$key]['jb_booking_content'];
             } else {
                 // 未被預約，則是否可預約設為是否開放之值
                 $orig['can_order'] = $orig['opened'];
@@ -104,19 +104,16 @@ function createOrders($data)
     $jbt_sn_array = $data['values']; // 時段 array
     // 進行預約之時間，取執行當下時間
     $orderAt = date_format(date_create(), 'Y-m-d H:i:s');
-    $week    = date('w', strtotime($jb_date)); // 1-6, 0 星期日
-    $uid     = $xoopsUser->uid();
+    $week = date('w', strtotime($jb_date)); // 1-6, 0 星期日
+    $uid = $xoopsUser->uid();
 
     $event = trim($data['event']); // 理由
     $event = $event === '' ? '個人預約' : $event;
 
-    // INSERT INTO `xx_jill_booking` (`jb_sn`, `jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES (1, 1, '2018-11-02 21:53:34', '個人預約', '2018-11-02', '2018-11-02');
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking')} (`jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES ('{$uid}', '{$orderAt}', '{$event}', '{$jb_date}', '{$jb_date_end}')";
     $xoopsDB->query($sql) or Utility::web_error($sql);
     $jb_sn = $xoopsDB->getInsertId(); // 取得最新的預約單 id
 
-    // INSERT INTO `xx_jill_booking_date` (`jb_sn`, `jb_date`, `jbt_sn`, `jb_waiting`, `jb_status`, `approver`, `pass_date`) VALUES (1, '2018-11-02', 12, 1, '1', 0, '0000-00-00');
-    // $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking_date')} (`jb_sn`, `jb_date`, `jbt_sn`, `jb_waiting`, `jb_status`, `approver`, `pass_date`) VALUES ('{$jb_sn}', '{$jb_date}', :jbt_sn, 1, '1', 0, '0000-00-00')";
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking_date')} (`jb_sn`, `jb_date`, `jbt_sn`, `jb_waiting`, `jb_status`, `approver`, `pass_date`) VALUES ";
 
     $date_values = [];
@@ -129,7 +126,6 @@ function createOrders($data)
     $sql .= implode(',', $date_values);
     $xoopsDB->query($sql) or Utility::web_error($sql);
 
-    // INSERT INTO `xx_jill_booking_week` (`jb_sn`, `jb_week`, `jbt_sn`) VALUES (1, 5,  12);
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking_week')} (`jb_sn`, `jb_week`, `jbt_sn`) VALUES ";
     $sql .= implode(',', $week_values);
     $xoopsDB->query($sql) or Utility::web_error($sql);
@@ -173,11 +169,11 @@ function getTimesByItem($jbi_sn, $date)
     $result = $xoopsDB->query($sql);
 
     $data = [];
-    $w    = date('w', strtotime($date)); // 0-6，日一二....六
+    $w = date('w', strtotime($date)); // 0-6，日一二....六
     while ($item = $xoopsDB->fetchArray($result)) {
         // 附加該時段是否開放之資訊
         $item['opened'] = in_array($w, explode(',', $item['jbt_week']));
-        $data[]         = $item;
+        $data[] = $item;
     }
     ;
 
@@ -212,7 +208,7 @@ function getUsedTimes($times, $date)
     while ($item = $xoopsDB->fetchArray($result)) {
         // 附加預約者姓名
         $item['name'] = XoopsUser::getUnameFromId($item['jb_uid'], 1);
-        $data[]       = $item;
+        $data[] = $item;
     }
     ;
 

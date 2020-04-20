@@ -1,9 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-23
-// $Id:$
-// ------------------------------------------------------------------------- //
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
@@ -21,12 +16,12 @@ function booking_table($jbi_sn = "", $getdate = "")
     if (!empty($jbi_sn)) {
         //可啟用場地資訊
         $itemArr = get_jill_booking_item($jbi_sn, 1);
-        $jbi_sn  = empty($itemArr['jbi_sn']) ? "" : $itemArr['jbi_sn'];
+        $jbi_sn = empty($itemArr['jbi_sn']) ? "" : $itemArr['jbi_sn'];
 
         if (!empty($itemArr)) {
             //場地預約起始日期
             $start = strtotime($itemArr['jbi_start']);
-            $now   = strtotime(date('Y-m-d'));
+            $now = strtotime(date('Y-m-d'));
             $start = ($start <= $now) ? $now : $start;
 
             //設定可預約之週數及日期
@@ -72,50 +67,50 @@ function booking_table($jbi_sn = "", $getdate = "")
                         $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
                     }
                     $uid_name = (empty($jbArr['jb_status'])) ? _MD_APPROVING . ":{$uid_name}" : $uid_name;
-                    $color    = "transparent";
-                    $content  = "";
-                    $status   = array();
+                    $color = "transparent";
+                    $content = "";
+                    $status = array();
                     //過去預約
                     if ($start > $item_date) {
                         if (!empty($jbArr['jb_uid'])) {
                             $content = $uid_name;
-                            $color   = "#959595";
+                            $color = "#959595";
                         }
                     } elseif (($start <= $item_date and $end >= $item_date) or $end == 0) {
                         //可預約期間
                         if (strpos($jbt_week, strval($wk)) !== false) {
                             if (empty($jbArr['jb_sn'])) {
                                 if ($can_booking) {
-                                    $content            = "";
-                                    $status['func']     = "single_insert_booking";
-                                    $status['time']     = $time['jbt_sn'];
+                                    $content = "";
+                                    $status['func'] = "single_insert_booking";
+                                    $status['time'] = $time['jbt_sn'];
                                     $status['weekinfo'] = $weekinfo['d'];
-                                    $status['jbi_sn']   = $jbi_sn;
+                                    $status['jbi_sn'] = $jbi_sn;
                                 } else {
                                     $content = _MD_JILLBOOKIN_NO;
-                                    $color   = "#EA4335";
+                                    $color = "#EA4335";
                                 }
                             } else {
                                 if ($uid == $jbArr['jb_uid']) {
                                     if ($can_booking) {
                                         $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml;
-                                        $color   = "#000000";
+                                        $color = "#000000";
                                     }
                                 } else {
                                     if ($Isapproval) {
                                         $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml;
-                                        $color   = "#000000";
+                                        $color = "#000000";
                                     } else {
                                         $content = "{$uid_name}{$usershtml}";
-                                        $color   = "#000000";
+                                        $color = "#000000";
                                     }
 
                                 }
                             }
                         }
                     }
-                    $bookingArr[$t][$wk]['color']   = $color;
-                    $bookingArr[$t][$wk]['status']  = $status;
+                    $bookingArr[$t][$wk]['color'] = $color;
+                    $bookingArr[$t][$wk]['status'] = $status;
                     $bookingArr[$t][$wk]['content'] = $content;
                 }
             }
@@ -147,20 +142,20 @@ function delete_booking_icon($t = "", $wk = "", $jbt_sn = "", $jb_date = "", $jb
     }
     $jbArr = get_booking_uid($jbt_sn, $jb_date);
     //將 uid 編號轉換成使用者姓名（或帳號）
-    $uid_name    = XoopsUser::getUnameFromId($jbArr['jb_uid'], 1);
+    $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 1);
     $is_approval = (empty($jbArr['jb_status'])) ? _MD_APPROVING : "{$uid_name}";
 
     if (empty($uid_name)) {
         $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
     }
 
-    $icon = "{$is_approval}<a href=\"javascript:delete_booking({$t} , {$wk} , {$jbt_sn},'{$jb_date}',{$jbi_sn});\" style='color:#D44950;' ><i class='fa fa-times' ></i></a>";
+    $icon = "{$is_approval}<a href=\"javascript:delete_booking({$t} , {$wk} , {$jbt_sn},'{$jb_date}',{$jbi_sn});\" style='color:#D44950;' ><i class='fa fa-times' ></i></a><a href=''>事由</a>";
     return $icon;
 }
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
 $jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
@@ -168,7 +163,7 @@ switch ($op) {
 /*---判斷動作請貼在下方---*/
 
     case "single_insert_booking":
-        $jb_sn            = insert_jill_booking(1);
+        $jb_sn = insert_jill_booking(1);
         $jb_week[$jbt_sn] = date("w", strtotime($_POST['jb_date']));
         insert_jill_booking_week($jb_sn, $jbt_sn, 1, $jb_week);
         insert_jill_booking_date($jb_sn, 1, $jbi_sn);

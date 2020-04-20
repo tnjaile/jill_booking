@@ -1,9 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-14
-// $Id:$
-// ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_approval.tpl';
@@ -24,22 +19,22 @@ function jbi_approval_form($jbi_sn = "")
     }
     //設定 jbi_approval 欄位的預設值
     $xoopsTpl->assign('approval', (int) $DBV['jbi_approval']);
-    $op           = "save_jbi_approval";
-    $sql          = "select `uid`,`name`,`uname` from `" . $xoopsDB->prefix("users") . "` order by `uname` ";
-    $result       = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $all_content  = array();
+    $op = "save_jbi_approval";
+    $sql = "select `uid`,`name`,`uname` from `" . $xoopsDB->prefix("users") . "` order by `uname` ";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $all_content = array();
     $all_content2 = array();
-    $i            = 0;
+    $i = 0;
     while (list($uid, $name, $uname) = $xoopsDB->fetchRow($result)) {
         $jbi_approvalArr = explode(";", $DBV['jbi_approval']);
         if (in_array($uid, $jbi_approvalArr)) {
-            $all_content2[$i]['uid']   = $uid;
-            $all_content2[$i]['name']  = $name;
+            $all_content2[$i]['uid'] = $uid;
+            $all_content2[$i]['name'] = $name;
             $all_content2[$i]['uname'] = $uname;
 
         } else {
-            $all_content[$i]['uid']   = $uid;
-            $all_content[$i]['name']  = $name;
+            $all_content[$i]['uid'] = $uid;
+            $all_content[$i]['name'] = $name;
             $all_content[$i]['uname'] = $uname;
         }
 
@@ -47,7 +42,7 @@ function jbi_approval_form($jbi_sn = "")
     }
     //加入Token安全機制
     include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
-    $token      = new \XoopsFormHiddenToken();
+    $token = new \XoopsFormHiddenToken();
     $token_form = $token->render();
     $xoopsTpl->assign("token_form", $token_form);
     $xoopsTpl->assign('action', $_SERVER["PHP_SELF"]);
@@ -82,7 +77,7 @@ function save_jbi_approval($jbi_sn = "")
 }
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
 
 switch ($op) {

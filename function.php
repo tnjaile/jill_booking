@@ -1,9 +1,5 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-23
-// $Id:$
-// ------------------------------------------------------------------------- //
+use XoopsModules\Tadtools\Utility;
 xoops_loadLanguage('main', 'tadtools');
 include_once "function_block.php";
 
@@ -17,10 +13,10 @@ function get_jill_booking_item($jbi_sn = "", $jbi_enable = "")
     }
 
     $where = ($jbi_enable == "1") ? " where `jbi_sn` = '{$jbi_sn}' and `jbi_enable`='{$jbi_enable}' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) " : " where `jbi_sn` = '{$jbi_sn}'";
-    $sql   = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` $where ";
+    $sql = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` $where ";
     //die($sql);
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $data   = $xoopsDB->fetchArray($result);
+    $data = $xoopsDB->fetchArray($result);
     return $data;
 }
 //取得場地選項(列出有時段設定者)
@@ -28,17 +24,17 @@ function get_jill_booking_time_options($def_jbi_sn = "", $approval = "")
 {
     global $xoopsDB;
     $where_approval = (empty($approval)) ? "" : " && (`jbi_approval` LIKE '%;{$approval}' || `jbi_approval` LIKE '{$approval};%' || `jbi_approval`='{$approval}')";
-    $sql            = "select jbi_sn,jbi_title,jbi_approval from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) $where_approval order by jbi_sort";
+    $sql = "select jbi_sn,jbi_title,jbi_approval from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) $where_approval order by jbi_sort";
     //die($sql);
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $opt    = "";
+    $opt = "";
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $jbt_sn , $jbi_sn , $jbi_title
         foreach ($all as $k => $v) {
             $$k = $v;
         }
         $is_approval = (empty($jbi_approval)) ? "" : _MD_IS_APPROVAL;
-        $selected    = ($jbi_sn == $def_jbi_sn) ? "selected" : "";
+        $selected = ($jbi_sn == $def_jbi_sn) ? "selected" : "";
         $opt .= "<option value='$jbi_sn' $selected>$jbi_title{$is_approval}</option>";
     }
 
@@ -53,9 +49,9 @@ function get_jill_booking($jb_sn = "")
         return;
     }
 
-    $sql    = "select * from `" . $xoopsDB->prefix("jill_booking") . "` where `jb_sn` = '{$jb_sn}'";
+    $sql = "select * from `" . $xoopsDB->prefix("jill_booking") . "` where `jb_sn` = '{$jb_sn}'";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $data   = $xoopsDB->fetchArray($result);
+    $data = $xoopsDB->fetchArray($result);
     return $data;
 }
 
@@ -67,9 +63,9 @@ function get_jill_booking_time($jbt_sn = "")
         return;
     }
 
-    $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where `jbt_sn` = '{$jbt_sn}'";
+    $sql = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where `jbt_sn` = '{$jbt_sn}'";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $data   = $xoopsDB->fetchArray($result);
+    $data = $xoopsDB->fetchArray($result);
     return $data;
 }
 //取得用了該日期時段的uid
@@ -80,14 +76,14 @@ function get_bookingArr($jbt_sn = "", $jb_date = "")
         return;
     }
 
-    $uid   = $xoopsUser->uid();
+    $uid = $xoopsUser->uid();
     $where = ($Isapproval or $isAdmin) ? "where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' " : "where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}'  and b.`jb_uid`='{$uid}'";
 
     $sql = "select a.`jb_waiting`,b.jb_sn,b.jb_uid,b.jb_booking_time,b.jb_booking_content,b.jb_start_date,b.jb_end_date from " . $xoopsDB->prefix("jill_booking_date") . " as a
   join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn` $where order by a.`jb_waiting`  ";
     //die($sql);
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $data   = $xoopsDB->fetchArray($result);
+    $data = $xoopsDB->fetchArray($result);
     //die(var_export($data));
     return $data;
 }
@@ -96,7 +92,7 @@ function insert_jill_booking($single = "")
 {
     global $xoopsDB, $xoopsUser;
     //取得使用者編號
-    $uid  = $xoopsUser->uid();
+    $uid = $xoopsUser->uid();
     $myts = \MyTextSanitizer::getInstance();
     if ($single == 1) {
         $jb_booking_content = _MD_INDIVIDUAL_BOOKING;
@@ -108,8 +104,8 @@ function insert_jill_booking($single = "")
     if ($single == 1) {
         $jb_end_date = $myts->addSlashes($_POST['jb_date']);
     } else {
-        $endtime     = $myts->addSlashes($_POST['jb_end_date']);
-        $max_date    = $myts->addSlashes($_POST['max_date']);
+        $endtime = $myts->addSlashes($_POST['jb_end_date']);
+        $max_date = $myts->addSlashes($_POST['max_date']);
         $jb_end_date = (strtotime($max_date) < strtotime($endtime)) ? $max_date : $endtime;
     }
     $jb_week = ($single == 1) ? date("w", strtotime($_POST['jb_date'])) : $jb_weekArr;
@@ -148,16 +144,14 @@ function insert_jill_booking_date($jb_sn = "", $single = "", $jbi_sn = "")
         return;
     }
     $itemArr = get_jill_booking_item($jbi_sn, 1);
-    $myts    = \MyTextSanitizer::getInstance();
-    //$_POST['jb_date']=$myts->addSlashes($_POST['jb_date']);
-    //die(var_export($_POST['jb_date']));
+    $myts = \MyTextSanitizer::getInstance();
     $jb_status = (empty($itemArr['jbi_approval'])) ? 1 : 0;
     //新增到jill_booking_date
     if ($single == 1) {
         $jb_waiting = jb_waiting_max_sort($_POST['jb_date'], $_POST['jbt_sn']);
-        $sql        = "insert into `" . $xoopsDB->prefix("jill_booking_date") . "`
-      (`jb_sn` , `jb_date` , `jbt_sn` , `jb_waiting`,`jb_status`)
-      values('{$jb_sn}' , '{$_POST['jb_date']}' , '{$_POST['jbt_sn']}' , '{$jb_waiting}','{$jb_status}')";
+        $sql = "insert into `" . $xoopsDB->prefix("jill_booking_date") . "`
+      (`jb_sn` , `jb_date` , `jbt_sn` , `jb_waiting`,`jb_status`, `approver`, `pass_date`)
+      values('{$jb_sn}' , '{$_POST['jb_date']}' , '{$_POST['jbt_sn']}' , '{$jb_waiting}','{$jb_status}', 0 ,'000-00-00')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql);
         //return $xoopsUser->name();
     } else {
@@ -166,8 +160,8 @@ function insert_jill_booking_date($jb_sn = "", $single = "", $jbi_sn = "")
                 $jb_waiting = jb_waiting_max_sort($jb_date, $jbt_sn);
 
                 $sql = "insert into `" . $xoopsDB->prefix("jill_booking_date") . "`
-          (`jb_sn` , `jb_date` , `jbt_sn` , `jb_waiting`,`jb_status`)
-          values('{$jb_sn}' , '{$jb_date}' , '{$jbt_sn}' , '{$jb_waiting}','{$jb_status}')";
+                (`jb_sn` , `jb_date` , `jbt_sn` , `jb_waiting`,`jb_status`, `approver`, `pass_date`)
+                values('{$jb_sn}' , '{$jb_date}' , '{$jbt_sn}' , '{$jb_waiting}','{$jb_status}', 0 ,'000-00-00')";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql);
             }
         }
@@ -178,8 +172,8 @@ function insert_jill_booking_date($jb_sn = "", $single = "", $jbi_sn = "")
 function jb_waiting_max_sort($jb_date = "", $jbt_sn = "")
 {
     global $xoopsDB;
-    $sql        = "select max(`jb_waiting`) from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_date`='{$jb_date}' and `jbt_sn`=$jbt_sn ";
-    $result     = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = "select max(`jb_waiting`) from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_date`='{$jb_date}' and `jbt_sn`=$jbt_sn ";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -205,15 +199,15 @@ function delete_jill_booking_date($jb_sn = "", $jb_date = "", $jbt_sn = "")
         return;
     }
 
-    $sql                = "select `jb_waiting` from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_sn`='{$jb_sn}' and `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}' ";
-    $result             = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = "select `jb_waiting` from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_sn`='{$jb_sn}' and `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}' ";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     list($seed_waiting) = $xoopsDB->fetchRow($result);
 
     $sql = "delete from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_sn`='{$jb_sn}' and `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}'";
     //die($sql);
     $xoopsDB->queryF($sql) or Utility::web_error($sql);
     //更新jb_waiting
-    $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}' ";
+    $sql = "select * from `" . $xoopsDB->prefix("jill_booking_date") . "` where `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}' ";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
@@ -221,7 +215,7 @@ function delete_jill_booking_date($jb_sn = "", $jb_date = "", $jbt_sn = "")
         }
         if ($jb_waiting > $seed_waiting) {
             $jb_waiting = $jb_waiting - 1;
-            $sql        = "update " . $xoopsDB->prefix("jill_booking_date") . " set `jb_waiting`='{$jb_waiting}' where `jb_sn`='{$jb_sn}' and `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}' ";
+            $sql = "update " . $xoopsDB->prefix("jill_booking_date") . " set `jb_waiting`='{$jb_waiting}' where `jb_sn`='{$jb_sn}' and `jb_date`='{$jb_date}' and `jbt_sn` = '{$jbt_sn}' ";
             $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")" . $sql);
         }
 
@@ -282,7 +276,7 @@ function booking_perm($mode = "booking_group")
             return true;
             exit;
         }
-        $needle_groups   = $xoopsUser->groups();
+        $needle_groups = $xoopsUser->groups();
         $haystack_groups = $xoopsModuleConfig[$mode];
         //die(var_export($needle_groups)."==".var_export($haystack_groups));
         foreach ($needle_groups as $key => $group) {
@@ -307,7 +301,7 @@ function booking_approval($isAdmin = "")
 
         $uid = $xoopsUser->uid();
 
-        $sql    = "select `jbi_approval` from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_enable` ='1' ";
+        $sql = "select `jbi_approval` from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_enable` ='1' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
         while (list($jbi_approval) = $xoopsDB->fetchRow($result)) {
             $jbi_approval_arr = explode(';', $jbi_approval);
@@ -333,10 +327,10 @@ function is_date($date)
 function getdateArr($seed_weekday = "", $start_date = "", $end_date = "")
 {
     list($y, $m, $d) = explode("-", $start_date);
-    $now             = 0;
-    $end             = strtotime($end_date);
-    $i               = 0;
-    $date_arr        = array();
+    $now = 0;
+    $end = strtotime($end_date);
+    $i = 0;
+    $date_arr = array();
     while ($now < $end) {
         $now = mktime(0, 0, 0, $m, $d + $i, $y);
         if (strpos($seed_weekday, strval(date('w', $now))) !== false) {

@@ -1,33 +1,30 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-23
-// 秀出今天預約
-// ------------------------------------------------------------------------- //
 use XoopsModules\Tadtools\EasyResponsiveTabs;
+use XoopsModules\Tadtools\Utility;
+
 //區塊主函式 (jb_b_today_list)
 function jb_b_today_list($options)
 {
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
-    $sql               = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
-    $result            = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
+    $sql = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
+    $result = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
     //die($sql);
     $block['content'] = array();
-    $i                = 0;
+    $i = 0;
     while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {
-        $block['content'][$i]['jbi_sn']    = $jbi_sn;
+        $block['content'][$i]['jbi_sn'] = $jbi_sn;
         $block['content'][$i]['jbi_title'] = $jbi_title;
         $block['content'][$i]['todaylist'] = get_todaylist($jbi_sn);
         $i++;
     }
 
-    $randStr         = XoopsModules\Tadtools\Utility::randStr();
+    $randStr = XoopsModules\Tadtools\Utility::randStr();
     $responsive_tabs = new EasyResponsiveTabs('#iteamtab' . $randStr, $options[0]);
     $responsive_tabs->rander();
 
     $block['randStr'] = $randStr;
-    $block['height']  = $i * 60;
+    $block['height'] = $i * 60;
     //die(var_dump($block['content']));
     return $block;
 
@@ -68,12 +65,12 @@ function get_todaylist($jbi_sn = "")
     global $xoopsDB;
     $jb_date = date("Y-m-d");
     $w_today = date("w");
-    $sql2    = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
+    $sql2 = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
     $result2 = $xoopsDB->query($sql2) or XoopsModules\Tadtools\Utility::web_error($sql);
-    $data    = array();
-    $j       = 0;
+    $data = array();
+    $j = 0;
     while (list($jbt_sn, $jbt_title, $jbt_week) = $xoopsDB->fetchRow($result2)) {
-        $data[$j]['jbt_sn']    = $jbt_sn;
+        $data[$j]['jbt_sn'] = $jbt_sn;
         $data[$j]['jbt_title'] = $jbt_title;
         // //抓預約者
         $sql = "select b.jb_sn,b.jb_uid from " . $xoopsDB->prefix("jill_booking_date") . " as a
@@ -81,7 +78,7 @@ function get_todaylist($jbi_sn = "")
                 where a.`jb_date`='{$jb_date}' && jb_status=1 && a.jbt_sn='{$jbt_sn}' order by a.jb_waiting limit 0,1";
         $result = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
         // die($sql);
-        $i                    = 0;
+        $i = 0;
         list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);
         if (strpos($jbt_week, $w_today) !== false) {
             $data[$j]['name'] = (empty($jb_uid)) ? _MD_JILLBOOKIN_NO : XoopsUser::getUnameFromId($jb_uid, 1);
