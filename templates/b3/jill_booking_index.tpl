@@ -105,6 +105,15 @@
           <{/foreach}>
         </tbody>
       </table>
+    <{else}>
+      <div class="jumbotron">
+        <div class="alert alert-info">
+          <ul>
+            <li>請在上方下拉選單內選擇場地</li>
+            <li>若要預約請先登入</li>
+          </ul>
+        </div>
+      </div>
     <{/if}>
   </form>
 <{/if}>
