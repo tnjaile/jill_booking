@@ -108,7 +108,7 @@ function createOrders($data)
     $uid = $xoopsUser->uid();
 
     $event = trim($data['event']); // 理由
-    $event = $event === '' ? '個人預約' : $event;
+    $event = $event === '' ? _MD_INDIVIDUAL_BOOKING : $event;
 
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking')} (`jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES ('{$uid}', '{$orderAt}', '{$event}', '{$jb_date}', '{$jb_date_end}')";
     $xoopsDB->query($sql) or Utility::web_error($sql);

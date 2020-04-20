@@ -95,16 +95,15 @@ function booking_table($jbi_sn = "", $getdate = "")
                             } else {
                                 if ($uid == $jbArr['jb_uid']) {
 
-                                    $jeditable->setTextCol("#jb_booking_content{$jbArr['jb_sn']}", 'index.php', '100px', '1.2em', "{'jb_sn':'{$jbArr['jb_sn']}', 'op' : 'save_jb_booking_content'}", "Edit");
-                                    $jeditable->render();
+                                    $jeditable->setTextCol("#jb_booking_content{$jbArr['jb_sn']}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jbArr['jb_sn']}', 'op' : 'save_jb_booking_content'}", "Edit");
 
                                     if ($can_booking) {
-                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div id='jb_booking_content{$jbArr['jb_sn']}' class='edit'>{$jbArr['jb_booking_content']}</div>";
+                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div id='jb_booking_content{$jbArr['jb_sn']}' class='edit show_reason'>{$jbArr['jb_booking_content']}</div>";
                                         $color = "#000000";
                                     }
                                 } else {
                                     if ($Isapproval) {
-                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div class='edit'>{$jbArr['jb_booking_content']}</div>";
+                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div class='show_reason'>{$jbArr['jb_booking_content']}</div>";
                                         $color = "#000000";
                                     } else {
                                         $content = "{$uid_name}{$usershtml}";
@@ -120,6 +119,7 @@ function booking_table($jbi_sn = "", $getdate = "")
                     $bookingArr[$t][$wk]['content'] = $content;
                 }
             }
+            $jeditable->render();
             $xoopsTpl->assign('bookingArr', $bookingArr);
             $xoopsTpl->assign('itemArr', $itemArr);
             $xoopsTpl->assign('weekArr', $weekArr);
@@ -189,7 +189,10 @@ switch ($op) {
         $jb_week[$jbt_sn] = date("w", strtotime($_POST['jb_date']));
         insert_jill_booking_week($jb_sn, $jbt_sn, 1, $jb_week);
         insert_jill_booking_date($jb_sn, 1, $jbi_sn);
-        $icon = delete_booking_icon($jbt_sn - 1, $jb_week[$jbt_sn], $jbt_sn, $_POST['jb_date'], $jbi_sn);
+        $jeditable = new Jeditable();
+        $jeditable->setTextCol("#jb_booking_content{$jb_sn}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jb_sn}', 'op' : 'save_jb_booking_content'}", "Edit");
+        $jeditablecode = $jeditable->render('force');
+        $icon = $jeditablecode . delete_booking_icon($jbt_sn - 1, $jb_week[$jbt_sn], $jbt_sn, $_POST['jb_date'], $jbi_sn) . "<div id='jb_booking_content{$jb_sn}' class='edit show_reason'>" . _MD_INDIVIDUAL_BOOKING . "</div>";
         die($icon);
         break;
 
