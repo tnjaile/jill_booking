@@ -150,8 +150,8 @@ function insert_jill_booking_date($jb_sn = "", $single = "", $jbi_sn = "")
     if ($single == 1) {
         $jb_waiting = jb_waiting_max_sort($_POST['jb_date'], $_POST['jbt_sn']);
         $sql = "insert into `" . $xoopsDB->prefix("jill_booking_date") . "`
-      (`jb_sn` , `jb_date` , `jbt_sn` , `jb_waiting`,`jb_status`, `approver`, `pass_date`)
-      values('{$jb_sn}' , '{$_POST['jb_date']}' , '{$_POST['jbt_sn']}' , '{$jb_waiting}','{$jb_status}', 0 ,'000-00-00')";
+        (`jb_sn` , `jb_date` , `jbt_sn` , `jb_waiting`,`jb_status`, `approver`, `pass_date`)
+        values('{$jb_sn}' , '{$_POST['jb_date']}' , '{$_POST['jbt_sn']}' , '{$jb_waiting}','{$jb_status}', 0 ,'000-00-00')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql);
         //return $xoopsUser->name();
     } else {

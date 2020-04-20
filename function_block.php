@@ -6,12 +6,11 @@ if (!function_exists("booking_users")) {
     {
         global $xoopsDB;
 
-        $sql = "select a.`jb_waiting`,a.`jb_status`,c.`name`
-	        from " . $xoopsDB->prefix("jill_booking_date") . " as a
-	        left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-	        left join " . $xoopsDB->prefix("users") . " as c on b.`jb_uid`=c.`uid`
-	        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' order by a.`jb_waiting` ";
-        //die($sql);
+        $sql = "select a.`jb_waiting`,a.`jb_status`, b.`jb_booking_content`, c.`name`
+        from " . $xoopsDB->prefix("jill_booking_date") . " as a
+        left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
+        left join " . $xoopsDB->prefix("users") . " as c on b.`jb_uid`=c.`uid`
+        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' order by a.`jb_waiting` ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
         $totalnum = $xoopsDB->getRowsNum($result);
         $usershtml = "";
@@ -24,10 +23,10 @@ if (!function_exists("booking_users")) {
                 //將是/否選項轉換為圖示
                 $jb_status = ($jb_status == 1) ? '<img src="' . XOOPS_URL . '/modules/jill_booking/images/yes.gif" alt="' . _MD_PASS . '" title="' . _MD_PASS . '">' : '<img src="' . XOOPS_URL . '/modules/jill_booking/images/no.gif" alt="' . _MD_APPROVING . '" title="' . _MD_APPROVING . '">';
                 //列出所有預約者資訊
-                $users .= "<li>$name$jb_status</li>";
+                $users .= "<li>{$name}{$jb_status}{$jb_booking_content}</li>";
             }
             $users .= "</ol>";
-            $usershtml .= "<a href='#' qtipOpts=\"{}\" qtip-content='$users' ><i class='fa fa-list'></i></a>";
+            $usershtml .= " <a href='#' qtipOpts=\"{}\" qtip-content='$users' ><i class='fa fa-list'></i></a>";
         }
         return $usershtml;
     }
@@ -40,19 +39,15 @@ if (!function_exists("get_booking_uid")) {
         global $xoopsDB;
         //先抓核准通過的順位
         $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
-	   where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
+	    where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
         list($jb_waiting) = $xoopsDB->fetchRow($result);
         $where_jb_waiting = (empty($jb_waiting)) ? "ORDER BY a.jb_waiting ASC LIMIT 1" : " && a.jb_waiting='{$jb_waiting}' ";
-        $sql2 = "select b.jb_sn,b.jb_uid,a.jb_status from " . $xoopsDB->prefix("jill_booking_date") . " as a
-	  left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-	   where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' $where_jb_waiting  ";
+        $sql2 = "select b.jb_sn,b.jb_uid,a.jb_status,b.jb_booking_content from " . $xoopsDB->prefix("jill_booking_date") . " as a
+        left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
+        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' $where_jb_waiting  ";
         $result2 = $xoopsDB->query($sql2) or Utility::web_error($sql);
-        //die($sql2);
-        list($jb_sn, $jb_uid, $jb_status) = $xoopsDB->fetchRow($result2);
-        $data['jb_sn'] = $jb_sn;
-        $data['jb_uid'] = $jb_uid;
-        $data['jb_status'] = $jb_status;
+        $data = $xoopsDB->fetchArray($result2);
         return $data;
     }
 }

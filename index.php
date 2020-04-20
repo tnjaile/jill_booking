@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Jeditable;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
@@ -49,6 +50,7 @@ function booking_table($jbi_sn = "", $getdate = "")
             //產生預約者資訊表格狀態值
             $bookingArr = array();
 
+            $jeditable = new Jeditable();
             //比對產生表單的陣列
             foreach ($timeArr as $t => $time) {
                 $jbt_week = strval($time['jbt_week']);
@@ -92,13 +94,17 @@ function booking_table($jbi_sn = "", $getdate = "")
                                 }
                             } else {
                                 if ($uid == $jbArr['jb_uid']) {
+
+                                    $jeditable->setTextCol("#jb_booking_content{$jbArr['jb_sn']}", 'index.php', '100px', '1.2em', "{'jb_sn':'{$jbArr['jb_sn']}', 'op' : 'save_jb_booking_content'}", "Edit");
+                                    $jeditable->render();
+
                                     if ($can_booking) {
-                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml;
+                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div id='jb_booking_content{$jbArr['jb_sn']}' class='edit'>{$jbArr['jb_booking_content']}</div>";
                                         $color = "#000000";
                                     }
                                 } else {
                                     if ($Isapproval) {
-                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml;
+                                        $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div class='edit'>{$jbArr['jb_booking_content']}</div>";
                                         $color = "#000000";
                                     } else {
                                         $content = "{$uid_name}{$usershtml}";
@@ -149,18 +155,34 @@ function delete_booking_icon($t = "", $wk = "", $jbt_sn = "", $jb_date = "", $jb
         $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
     }
 
-    $icon = "{$is_approval}<a href=\"javascript:delete_booking({$t} , {$wk} , {$jbt_sn},'{$jb_date}',{$jbi_sn});\" style='color:#D44950;' ><i class='fa fa-times' ></i></a><a href=''>事由</a>";
+    $icon = "{$is_approval}<a href=\"javascript:delete_booking({$t} , {$wk} , {$jbt_sn},'{$jb_date}',{$jbi_sn});\" style='color:#D44950;' ><i class='fa fa-times' ></i></a>";
     return $icon;
+}
+
+function save_jb_booking_content($jb_sn)
+{
+    global $xoopsDB;
+    $myts = \MyTextSanitizer::getInstance();
+    $value = $myts->addSlashes($_POST['value']);
+    $sql = "update " . $xoopsDB->prefix("jill_booking") . " set `jb_booking_content`='{$value}' where
+    jb_sn='{$jb_sn}'";
+    $xoopsDB->queryF($sql);
+    die($value);
 }
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
-$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
+$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', 0, 'int');
+$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', 0, 'int');
+$jb_sn = system_CleanVars($_REQUEST, 'jb_sn', 0, 'int');
 
 switch ($op) {
 /*---判斷動作請貼在下方---*/
+
+    case 'save_jb_booking_content':
+        save_jb_booking_content($jb_sn);
+        break;
 
     case "single_insert_booking":
         $jb_sn = insert_jill_booking(1);
@@ -206,4 +228,6 @@ $xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign("isAdmin", $isAdmin);
 $xoopsTpl->assign("can_booking", $can_booking);
 $xoopsTpl->assign("Isapproval", $Isapproval);
+
+$xoTheme->addStylesheet('modules/jill_booking/css/module.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';
