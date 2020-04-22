@@ -40,7 +40,7 @@ class Update
         global $xoopsDB;
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Extra='auto_increment' ";
 
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $result = $xoopsDB->query($sql);
         if (empty($xoopsDB->getRowsNum($result))) {
             return false;
         }
@@ -60,8 +60,8 @@ class Update
     public static function chk_chk2()
     {
         global $xoopsDB;
-        $sql = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
+        $result = $xoopsDB->query($sql);
         if (empty($xoopsDB->getRowsNum($result))) {
             return false;
         }
@@ -80,7 +80,7 @@ class Update
     public static function chk_chk3()
     {
         global $xoopsDB;
-        $sql = "select `approver`  from " . $xoopsDB->prefix("jill_booking_date");
+        $sql    = "select `approver`  from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
 
         if (empty($xoopsDB->getRowsNum($result))) {
@@ -103,7 +103,7 @@ class Update
     public static function chk_chk4()
     {
         global $xoopsDB;
-        $sql = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
+        $sql    = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
 
         if (empty($xoopsDB->getRowsNum($result))) {
