@@ -45,7 +45,7 @@
 
   <form action="<{$action}>" method="post" id="myForm">
     <select name="jbi_sn" id="jbi_sn" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
-        <option value="">請選擇場地</option>
+        <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEM}></option>
           <{$item_opt}>
     </select>
     <hr>
