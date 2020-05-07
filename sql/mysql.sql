@@ -32,7 +32,7 @@ CREATE TABLE `jill_booking_item` (
   `jbi_desc` text NOT NULL COMMENT '場地說明',
   `jbi_sort` smallint(6) unsigned default 0 COMMENT '場地排序',
   `jbi_start` date NOT NULL  COMMENT '啟用日期',
-  `jbi_end` date NULL  COMMENT '停用日期',
+  `jbi_end` date NOT NULL  COMMENT '停用日期',
   `jbi_enable` enum('1','0') NOT NULL COMMENT '是否可借',
   `jbi_approval` varchar(255) NOT NULL COMMENT '審核人員',
   PRIMARY KEY (`jbi_sn`)
