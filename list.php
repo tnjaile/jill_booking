@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
@@ -89,11 +90,11 @@ function get_chinese_weekday($datetime)
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jb_sn = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
-$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
-$primary = system_CleanVars($_REQUEST, 'primary', '', 'string');
+$op = Request::getString('op');
+$primary = Request::getString('primary');
+$jb_sn = Request::getInt('jb_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+
 switch ($op) {
 /*---判斷動作請貼在下方---*/
     case "delete_jill_booking":

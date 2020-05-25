@@ -1,14 +1,12 @@
 <?php
-/*-----------引入檔案區--------------*/
+use Xmf\Request;
 use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
 include_once "header.php";
 include_once "../function.php";
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-// $sn = system_CleanVars($_REQUEST, 'sn', 0, 'int');
+$op = Request::getString('op');
 
 switch ($op) {
     case 'get_times_of_item':

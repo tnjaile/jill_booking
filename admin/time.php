@@ -1,5 +1,5 @@
 <?php
-
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Jeditable;
 use XoopsModules\Tadtools\SweetAlert;
@@ -240,13 +240,11 @@ function save_jbt_title($jbt_sn)
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jb_sn = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
-$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
-$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
-$to_jbi_sn = system_CleanVars($_REQUEST, 'to_jbi_sn', '', 'int');
-$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
+$op = Request::getString('op');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+$to_jbi_sn = Request::getInt('to_jbi_sn');
 
 switch ($op) {
 /*---判斷動作請貼在下方---*/

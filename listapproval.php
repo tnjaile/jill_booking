@@ -1,9 +1,5 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-23
-// $Id
-// ------------------------------------------------------------------------- //
+use Xmf\Request;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
@@ -18,13 +14,13 @@ if (empty($Isapproval)) {
 function jill_booking_approvallist($jbi_sn = "")
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser;
-    $uid  = $xoopsUser->uid();
+    $uid = $xoopsUser->uid();
     $myts = \MyTextSanitizer::getInstance();
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn, $uid);
     //die(var_export($item_opt));
     if (!empty($jbi_sn)) {
-        $itemArr       = get_jill_booking_item($jbi_sn, 1);
+        $itemArr = get_jill_booking_item($jbi_sn, 1);
         $checkapproval = explode(";", $itemArr['jbi_approval']);
         if (in_array($uid, $checkapproval)) {
             $sql = "select b.jb_sn,b.jbt_sn,b.jb_date,b.jb_waiting,b.jb_status,c.jbi_sn,c.jbt_title,d.jb_uid,d.jb_booking_time,d.jb_booking_content,d.jb_start_date,d.jb_end_date from  `" . $xoopsDB->prefix("jill_booking_date") . "` as b
@@ -35,14 +31,14 @@ function jill_booking_approvallist($jbi_sn = "")
             //die($sql);
             //Utility::Utility::getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
             $PageBar = Utility::getPageBar($sql, 20, 10, null, null);
-            $bar     = $PageBar['bar'];
-            $sql     = $PageBar['sql'];
-            $total   = $PageBar['total'];
+            $bar = $PageBar['bar'];
+            $sql = $PageBar['sql'];
+            $total = $PageBar['total'];
 
             $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
             $all_content = array();
-            $i           = 0;
+            $i = 0;
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： a.jb_sn,a.jb_week,a.jbt_sn,b.jb_date,b.jb_waiting,b.jb_status,c.jbi_sn,c.jbt_title,c.jbt_sort,c.jbt_week,d.jb_uid,d.jb_booking_time,d.jb_booking_content,d.jb_start_date,d.jb_end_date
                 foreach ($all as $k => $v) {
@@ -51,23 +47,23 @@ function jill_booking_approvallist($jbi_sn = "")
 
                 //過濾讀出的變數值
                 $jb_booking_content = $myts->displayTarea($jb_booking_content, 1, 1, 0, 1, 0);
-                $jb_start_date      = $myts->htmlSpecialChars($jb_start_date);
-                $jb_end_date        = $myts->htmlSpecialChars($jb_end_date);
+                $jb_start_date = $myts->htmlSpecialChars($jb_start_date);
+                $jb_end_date = $myts->htmlSpecialChars($jb_end_date);
 
-                $all_content[$i]['jb_sn']              = $jb_sn;
-                $all_content[$i]['jbt_sn']             = $jbt_sn;
-                $all_content[$i]['jb_date']            = $jb_date;
-                $all_content[$i]['jb_week']            = date('w', strtotime($jb_date));
-                $all_content[$i]['jb_waiting']         = $jb_waiting;
-                $all_content[$i]['jb_status']          = $jb_status;
-                $all_content[$i]['jbi_sn']             = $jbi_sn;
-                $all_content[$i]['jbt_title']          = $jbt_title;
-                $all_content[$i]['jb_uid']             = XoopsUser::getUnameFromId($jb_uid, 1);
-                $all_content[$i]['jb_booking_time']    = $jb_booking_time;
+                $all_content[$i]['jb_sn'] = $jb_sn;
+                $all_content[$i]['jbt_sn'] = $jbt_sn;
+                $all_content[$i]['jb_date'] = $jb_date;
+                $all_content[$i]['jb_week'] = date('w', strtotime($jb_date));
+                $all_content[$i]['jb_waiting'] = $jb_waiting;
+                $all_content[$i]['jb_status'] = $jb_status;
+                $all_content[$i]['jbi_sn'] = $jbi_sn;
+                $all_content[$i]['jbt_title'] = $jbt_title;
+                $all_content[$i]['jb_uid'] = XoopsUser::getUnameFromId($jb_uid, 1);
+                $all_content[$i]['jb_booking_time'] = $jb_booking_time;
                 $all_content[$i]['jb_booking_content'] = $jb_booking_content;
-                $all_content[$i]['jb_start_date']      = $jb_start_date;
-                $all_content[$i]['jb_end_date']        = $jb_end_date;
-                $all_content[$i]['had_pass']           = get_had_pass($jbt_sn, $jb_date);
+                $all_content[$i]['jb_start_date'] = $jb_start_date;
+                $all_content[$i]['jb_end_date'] = $jb_end_date;
+                $all_content[$i]['had_pass'] = get_had_pass($jbt_sn, $jb_date);
                 $i++;
             }
             $xoopsTpl->assign('bar', $bar);
@@ -90,8 +86,8 @@ function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = ""
     global $xoopsDB, $xoopsTpl, $xoopsUser;
     $uid = $xoopsUser->uid();
     //正確抓取XOOPS時間
-    $now           = date('Y-m-d', xoops_getUserTimestamp(time()));
-    $itemArr       = get_jill_booking_item($jbi_sn, 1);
+    $now = date('Y-m-d', xoops_getUserTimestamp(time()));
+    $itemArr = get_jill_booking_item($jbi_sn, 1);
     $checkapproval = explode(";", $itemArr['jbi_approval']);
     if (in_array($uid, $checkapproval)) {
         //jb_sn, jb_date,jbt_sn, jbi_sn
@@ -128,12 +124,12 @@ function get_had_pass($jbt_sn = "", $jb_date = "")
     return $users;
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jb_sn   = system_CleanVars($_REQUEST, 'jb_sn', '', 'int');
-$jbi_sn  = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
-$jbt_sn  = system_CleanVars($_REQUEST, 'jbt_sn', '', 'int');
-$jb_info = system_CleanVars($_REQUEST, 'jb_info', '', 'string');
+$op = Request::getString('op');
+$jb_info = Request::getString('jb_info');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+
 switch ($op) {
 /*---判斷動作請貼在下方---*/
     case "update_jb_status":
@@ -144,7 +140,7 @@ switch ($op) {
 
     case "delete_booking":
         $infoArr = explode("_", $jb_info);
-        $jbi_sn  = delete_booking($infoArr[1], $infoArr[2], $infoArr[3]);
+        $jbi_sn = delete_booking($infoArr[1], $infoArr[2], $infoArr[3]);
         header("location: {$_SERVER['PHP_SELF']}?jbi_sn={$jbi_sn}");
         break;
 

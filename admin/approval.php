@@ -1,6 +1,7 @@
 <?php
-/*-----------引入檔案區--------------*/
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
+
 $xoopsOption['template_main'] = 'jill_booking_adm_approval.tpl';
 include_once "header.php";
 include_once "../function.php";
@@ -76,9 +77,8 @@ function save_jbi_approval($jbi_sn = "")
     return $jbi_sn;
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', '', 'int');
+$op = Request::getString('op');
+$jbi_sn = Request::getInt('jbi_sn');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/

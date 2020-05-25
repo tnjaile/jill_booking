@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Jeditable;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
@@ -171,11 +172,10 @@ function save_jb_booking_content($jb_sn)
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$jbt_sn = system_CleanVars($_REQUEST, 'jbt_sn', 0, 'int');
-$jbi_sn = system_CleanVars($_REQUEST, 'jbi_sn', 0, 'int');
-$jb_sn = system_CleanVars($_REQUEST, 'jb_sn', 0, 'int');
+$op = Request::getString('op');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
 
 switch ($op) {
 /*---判斷動作請貼在下方---*/
