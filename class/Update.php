@@ -41,7 +41,7 @@ class Update
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Extra='auto_increment' ";
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-        if (empty($xoopsDB->getRowsNum($result))) {
+        if (empty($result)) {
             return false;
         }
         return true;
@@ -56,13 +56,14 @@ class Update
         $xoopsDB->queryF($sql) or Utility::web_error($sql);
         return true;
     }
+
     //檢查jbi_approval 欄位 enum('1','0')是否存在
     public static function chk_chk2()
     {
         global $xoopsDB;
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-        if (empty($xoopsDB->getRowsNum($result))) {
+        if (empty($result)) {
             return false;
         }
         return true;
@@ -76,14 +77,14 @@ class Update
         $xoopsDB->queryF($sql) or Utility::web_error($sql);
         return true;
     }
+
     //檢查有無通過日期欄位
     public static function chk_chk3()
     {
         global $xoopsDB;
-        $sql = "select `approver`  from " . $xoopsDB->prefix("jill_booking_date");
+        $sql = "select `approver` from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
-
-        if (empty($xoopsDB->getRowsNum($result))) {
+        if (empty($result)) {
             return true;
         }
 
@@ -105,13 +106,13 @@ class Update
         global $xoopsDB;
         $sql = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
-
-        if (empty($xoopsDB->getRowsNum($result))) {
+        if (empty($result)) {
             return true;
         }
 
         return false;
     }
+
     //執行更新通過日期欄位
     public static function go_update4()
     {

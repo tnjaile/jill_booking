@@ -13,10 +13,11 @@ function booking_table($jbi_sn = "", $getdate = "")
     $uid = !empty($xoopsUser) ? $xoopsUser->uid() : "";
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn);
-    // $item_size = substr_count($item_opt, '<option value=');
+
     if (!empty($jbi_sn)) {
         //可啟用場地資訊
         $itemArr = get_jill_booking_item($jbi_sn, 1);
+
         $jbi_sn = empty($itemArr['jbi_sn']) ? "" : $itemArr['jbi_sn'];
 
         if (!empty($itemArr)) {
@@ -134,7 +135,6 @@ function booking_table($jbi_sn = "", $getdate = "")
     }
     $xoopsTpl->assign('jbi_sn', $jbi_sn);
     $xoopsTpl->assign('item_opt', $item_opt);
-    $xoopsTpl->assign('item_size', $item_size);
     $xoopsTpl->assign('now_op', "booking_table");
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
 }
