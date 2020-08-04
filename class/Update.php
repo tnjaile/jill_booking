@@ -65,7 +65,7 @@ class Update
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Extra='auto_increment' ";
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-        if (empty($result)) {
+        if (empty($result->num_rows)) {
             return false;
         }
         return true;
@@ -87,7 +87,7 @@ class Update
         global $xoopsDB;
         $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-        if (empty($result)) {
+        if (empty($result->num_rows)) {
             return false;
         }
         return true;
@@ -108,7 +108,7 @@ class Update
         global $xoopsDB;
         $sql    = "select `approver` from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
-        if (empty($result)) {
+        if (empty($result->num_rows)) {
             return true;
         }
 
@@ -130,7 +130,7 @@ class Update
         global $xoopsDB;
         $sql    = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
-        if (empty($result)) {
+        if (empty($result->num_rows)) {
             return true;
         }
 
