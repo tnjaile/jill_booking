@@ -19,5 +19,8 @@ function xoops_module_update_jill_booking(&$module, $old_version)
     if (Update::chk_chk4()) {
         Update::go_update4();
     }
+    if (Update::chk_chk5()) {
+        Update::go_update5();
+    }
     return true;
 }

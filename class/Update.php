@@ -34,6 +34,30 @@ class Update
         }
     }
 
+    //檢查jbi_end欄位是否Not Null
+    public static function chk_chk5()
+    {
+        global $xoopsDB;
+        // show columns from xx_jill_booking_item where `Null`='no' && `Field`='jbi_end'
+        $sql = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where `Null`='no' && `Field`='jbi_end'";
+
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+
+        if (empty($result->num_rows)) {
+            return true;
+        }
+        return false;
+
+    }
+    //修正jbi_end欄位由Null改Not Null
+    public static function go_update5()
+    {
+        global $xoopsDB;
+        $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_item") . " CHANGE `jbi_end` `jbi_end` date NOT NULL  COMMENT '停用日期' AFTER `jbi_start` ";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        return true;
+    }
+
     //檢查jbt_sn欄位 自動遞增是否存在
     public static function chk_chk1()
     {
@@ -61,7 +85,7 @@ class Update
     public static function chk_chk2()
     {
         global $xoopsDB;
-        $sql = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
+        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
         if (empty($result)) {
             return false;
@@ -82,7 +106,7 @@ class Update
     public static function chk_chk3()
     {
         global $xoopsDB;
-        $sql = "select `approver` from " . $xoopsDB->prefix("jill_booking_date");
+        $sql    = "select `approver` from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
         if (empty($result)) {
             return true;
@@ -104,7 +128,7 @@ class Update
     public static function chk_chk4()
     {
         global $xoopsDB;
-        $sql = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
+        $sql    = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
         $result = $xoopsDB->query($sql);
         if (empty($result)) {
             return true;
