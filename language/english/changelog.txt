@@ -15,7 +15,7 @@ Unzip the module and upload the jill booking directory to the modules
 2. Go to the backstage for module installation.
 
 [History Update]
-JILL BOOKING Version 2.3.4 Release 2020-04-20
+JILL BOOKING Version 2.3.4 Release 2020-08-04
  =================================================
 1.change the jbi_end type to NOT　NULL
 JILL BOOKING Version 2.3.3 Release 2020-04-20
