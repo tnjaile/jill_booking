@@ -106,7 +106,7 @@ class Update
     public static function chk_chk3()
     {
         global $xoopsDB;
-        $sql    = "select `approver` from " . $xoopsDB->prefix("jill_booking_date");
+        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Field='approver' ";
         $result = $xoopsDB->query($sql);
         if (empty($result->num_rows)) {
             return true;
@@ -128,7 +128,7 @@ class Update
     public static function chk_chk4()
     {
         global $xoopsDB;
-        $sql    = "select `pass_date`  from " . $xoopsDB->prefix("jill_booking_date");
+        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Field='pass_date' ";
         $result = $xoopsDB->query($sql);
         if (empty($result->num_rows)) {
             return true;

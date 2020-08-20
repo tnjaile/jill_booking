@@ -16,7 +16,7 @@ function jb_b_week_list($options)
     $block['options0'] = $options[0];
     $block['weekArr']  = weekArr();
     //die(var_dump($block['weekArr']));
-    $sql    = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end` IS NULL)) order by `jbi_sort`";
+    $sql    = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) order by `jbi_sort`";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     //die($sql);
     $block['content'] = array();

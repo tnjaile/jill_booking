@@ -14,7 +14,7 @@ $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
 $modversion['status_version']      = '2.34';
-$modversion['release_date']        = '2020-08-04';
+$modversion['release_date']        = '2020-08-19';
 $modversion['module_website_url']  = '';
 $modversion['module_website_name'] = _MI_JILLBOOKIN_AUTHOR_WEB;
 $modversion['module_status']       = 'release';
