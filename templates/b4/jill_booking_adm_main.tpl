@@ -161,7 +161,7 @@
       <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form&jbi_sn=<{$jbi_sn}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
       <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form" class="btn btn-primary"><{$smarty.const._MA_JILLBOOKIN_ADD}></a>
       <a href="<{$xoops_url}>/modules/jill_booking/admin/time.php?op=list_jill_booking_time&jbi_sn=<{$jbi_sn}>" class="btn btn-success"><{$smarty.const._MA_JILLBOOKIN_SETTIME}></a>
-      <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?op=list_jill_booking_approval&jbi_sn=<{$jbi_sn}>" class="btn btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
+      <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?jbi_sn=<{$jbi_sn}>" class="btn btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
     <{/if}>
     <a href="<{$action}>" class="btn btn-info"><{$smarty.const._MA_JILLBOOKIN_BACK}></a>
   </div>
@@ -238,7 +238,7 @@
                 <a href="javascript:delete_jill_booking_item_func(<{$data.jbi_sn}>);" class="btn btn-sm btn-danger"><{$smarty.const._TAD_DEL}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form&jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-warning"><{$smarty.const._TAD_EDIT}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/time.php?op=list_jill_booking_time&jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-success"><{$smarty.const._MA_JILLBOOKIN_SETTIME}></a>
-                <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?op=list_jill_booking_approval&jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
+                <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
                 <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
               </td>
             <{/if}>
