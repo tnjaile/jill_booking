@@ -182,7 +182,7 @@ switch ($op) {
 /*---判斷動作請貼在下方---*/
     case "update_jb_status":
         if (is_date($_REQUEST['jb_date']) == 1) {
-            $data = update_jb_status($jb_sn, $_REQUEST['jb_date'], $jbt_sn, $jbi_sn);
+            update_jb_status($jb_sn, $_REQUEST['jb_date'], $jbt_sn, $jbi_sn);
         }
         break;
 
