@@ -12,28 +12,28 @@
       <li><{$data.jbi_title}></li>
     <{/foreach}>
   </ul>
-    <div class="resp-tabs-container vert">
-      <{foreach from=$block.content item=data}>
-        <div class="table-responsive">
-          <table class="table table-sm table-striped table-hover table-bordered">
-            <thead>
-              <tr style="background-color: #5AB1D0;">
-                <th><{$smarty.const._MB_JSESSION}></th>
-                <th><{$smarty.const._MB_JILLBOOKIN_JB_UID}></th>
-              </tr>
-            </thead>
-            <tbody>
-              <{if $data.todaylist}>
-                <{foreach from=$data.todaylist item=tlist}>
-                  <tr>
-                    <td><{$tlist.jbt_title}></td>
-                    <td><{$tlist.name}></td>
-                  </tr>
-                <{/foreach}>
-              <{/if}>
-            </tbody>
-          </table>
-        </div>
-      <{/foreach}>
-    </div>
+  <div class="resp-tabs-container vert">
+    <{foreach from=$block.content item=data}>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover table-bordered">
+          <thead>
+            <tr style="background-color: #5AB1D0;">
+              <th><{$smarty.const._MB_JSESSION}></th>
+              <th><{$smarty.const._MB_JILLBOOKIN_JB_UID}></th>
+            </tr>
+          </thead>
+          <tbody>
+            <{if $data.todaylist}>
+              <{foreach from=$data.todaylist item=tlist}>
+                <tr>
+                  <td><{$tlist.jbt_title}></td>
+                  <td><{$tlist.name}></td>
+                </tr>
+              <{/foreach}>
+            <{/if}>
+          </tbody>
+        </table>
+      </div>
+    <{/foreach}>
+  </div>
 </div>
