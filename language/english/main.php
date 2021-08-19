@@ -1,6 +1,9 @@
 <?php
 xoops_loadLanguage('main', 'tadtools');
 //jill_booking-list
+define("_MD_JILLBOOKIN_PLEASE_LOGIN", "To make an reservation, please log in first");
+define("_MD_JILLBOOKIN_CHOOSEITEMINFO", "Please select the field from the drop-down menu above");
+define("_MD_JILLBOOKIN_CHOOSE", "Please choose");
 define("_MD_JILLBOOKIN_NOAPPROVAL", "Non-qualified audit!!");
 define("_MD_JILLBOOKIN_HADPASS", "Had pass");
 define('_MD_JILLBOOKIN_JB_SN', 'Reservation number');

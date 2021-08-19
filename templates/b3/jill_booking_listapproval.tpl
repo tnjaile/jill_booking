@@ -1,5 +1,5 @@
 <{$toolbar}>
-<h3 class='sr-only'>審核清單</h3>
+<h3 class='sr-only'><{$smarty.const._MD_JILLBOOKIN_SMNAME4}></h3>
 <!--顯示表單-->
 <{if $now_op=="jill_booking_approvallist"}>
   <script type='text/javascript'>

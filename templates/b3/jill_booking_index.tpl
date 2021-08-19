@@ -1,6 +1,7 @@
 <{$toolbar}>
 <{$jquery}>
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+<h3 class='sr-only'><{$smarty.const._MD_JILLBOOKIN_SMNAME1}></h3>
 <{if $now_op=="booking_table"}>
   <script type='text/javascript'>
     function single_insert_booking(t,wk,jbt_sn,jb_date,jbi_sn){
@@ -42,7 +43,6 @@
       });
     });
   </script>
-  <h3 class='sr-only'>場地預約</h3>
   <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data">
     <select name="jbi_sn" id="jbi_sn" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value" title='jbi_sn'>
       <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEM}></option>
@@ -109,8 +109,8 @@
       <div class="jumbotron">
         <div class="alert alert-info">
           <ul>
-            <li>請在上方下拉選單內選擇場地</li>
-            <li>若要預約請先登入</li>
+            <li><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEMINFO}></li>
+            <li><{$smarty.const._MD_JILLBOOKIN_PLEASE_LOGIN}></li>
           </ul>
         </div>
       </div>

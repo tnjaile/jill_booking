@@ -15,7 +15,10 @@ Unzip the module and upload the jill booking directory to the modules
 2. Go to the backstage for module installation.
 
 [History Update]
-jill booking 2.3.5 版  2020-09-09 釋出
+JILL BOOKING Version 2.4 Release 2021-08-19
+ =================================================
+ 1.conformance level AA
+jill booking 2.3.5 2020-09-09 釋出
  =================================================
 1.Approved by mail to the user and reviewer mailbox
 JILL BOOKING Version 2.3.4 Release 2020-08-04

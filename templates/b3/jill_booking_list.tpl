@@ -1,11 +1,11 @@
 <{$toolbar}>
-<h3 class='sr-only'>個人預約</h3>
+<h3 class='sr-only'><{$smarty.const._MD_JILLBOOKIN_SMNAME3}></h3>
 <!--列出所有資料-->
 <{if $now_op=="jill_booking_list"}>
   <div class="row ">
     <div class="col-sm-4">
       <select id="jbi_sn" name="jbi_sn" class="form-control " onchange="location.href='<{$action}>?jbi_sn='+this.value" title='jbi_sn'>
-        <option value="">請選擇</option>
+        <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSE}></option>
         <{$item_opt}>
       </select>
     </div>
