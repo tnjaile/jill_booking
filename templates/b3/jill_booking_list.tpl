@@ -4,7 +4,7 @@
 <{if $now_op=="jill_booking_list"}>
   <div class="row ">
     <div class="col-sm-4">
-      <select id="jbi_sn" name="jbi_sn" class="form-control " onchange="location.href='<{$action}>?jbi_sn='+this.value">
+      <select id="jbi_sn" name="jbi_sn" class="form-control " onchange="location.href='<{$action}>?jbi_sn='+this.value" title='jbi_sn'>
         <option value="">請選擇</option>
         <{$item_opt}>
       </select>

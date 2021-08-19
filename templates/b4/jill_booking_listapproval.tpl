@@ -20,7 +20,7 @@
   </script>
   <div class="row">
     <div class="col-sm-2">
-      <select name="jbi_sn" id="jbi_sn" class="form-control" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value">
+      <select name="jbi_sn" id="jbi_sn" class="form-control" size='10'  onChange="location.href='<{$action}>?jbi_sn='+this.value" title='jbi_sn'>
        <{$item_opt}>
       </select>
     </div>

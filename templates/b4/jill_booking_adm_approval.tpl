@@ -31,7 +31,7 @@
           <h3 class="text-center text-info">
             <{$smarty.const._MA_JILLBOOKIN_ALLUSERS}>
           </h3>
-          <select name='repository' id='repository' size='12' multiple='multiple' tmt:linkedselect='true' class='col-sm-12'>
+          <select name='repository' id='repository' size='12' multiple='multiple' tmt:linkedselect='true' class='col-sm-12' title='repository'>
             <{foreach from=$all_content item=data}>
               <option value="<{$data.uid}>">
                 <{$data.uname}>【<{$data.name}>】
@@ -52,7 +52,7 @@
           <h3 class="text-info text-center">
             <{$smarty.const._MA_JILLBOOKIN_APPROVER}>
           </h3>
-          <select name='destination' id='destination' size='12' multiple='multiple' tmt:linkedselect='true' class='col-sm-12'>
+          <select name='destination' id='destination' size='12' multiple='multiple' tmt:linkedselect='true' class='col-sm-12' title='destination'>
             <{if $all_content2}>
               <{foreach from=$all_content2 item=data}>
                 <option value="<{$data.uid}>">

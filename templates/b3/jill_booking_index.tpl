@@ -42,9 +42,9 @@
       });
     });
   </script>
-
+  <h3 class='sr-only'>場地預約</h3>
   <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data">
-    <select name="jbi_sn" id="jbi_sn" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value">
+    <select name="jbi_sn" id="jbi_sn" class="form-control" onChange="location.href='<{$action}>?jbi_sn='+this.value" title='jbi_sn'>
       <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEM}></option>
       <{$item_opt}>
     </select>
@@ -59,7 +59,6 @@
               <a href="<{$action}>?op=booking_table&jbi_sn=<{$jbi_sn}>&getdate=<{"$start-1week"|date_format:"%Y-%m-%d"}> " class="btn btn-link"><i class="fa fa-long-arrow-left "></i><{$smarty.const._MD_LASTWEEK}></a>
             </div >
             <div class="col-sm-4 text-center" >
-<!--                 <p style="vertical-align: middle;"><a href="#" title="<{$itemArr.jbi_desc}>" id="desc"><strong ><{$itemArr.jbi_title}></strong></a></p> -->
             <{$itemArr.jbi_title}>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-commenting-o" aria-hidden="true"></i></button>
             <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
