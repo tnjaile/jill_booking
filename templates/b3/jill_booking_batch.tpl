@@ -3,6 +3,7 @@
 <{if $can_booking}>
   <!--顯示表單-->
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+  <h3 class='sr-only'>批次預約</h3>
   <{if $now_op=="jill_booking_form"}>
     <!--選擇場地-->
       <div class="controls controls-row">
