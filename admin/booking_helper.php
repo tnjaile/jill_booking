@@ -215,7 +215,8 @@ function getJSONResponse($data)
 {
     header('Content-Type:application/json;charset=utf-8');
 
-    return json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $jsonResponse = json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    return $jsonResponse;
 }
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('isAdmin', true);

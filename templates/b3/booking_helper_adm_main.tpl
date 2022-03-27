@@ -8,11 +8,24 @@
         <{/foreach}>
       </select>
 
-      <div class="form-group" style="position: relative; margin-top: 10px;">
-        <p><{$smarty.const._MA_JILLBOOKIN_SELECT_APPOINTMENT_DATE}></p>
-        <input id="booking-date" type="text" placeholder="<{$smarty.const._MA_JILLBOOKIN_SELECT_DATE}>" class="form-control">
-        <img id="date-img" onclick="WdatePicker({el:'booking-date', minDate:'%y-%M-%d'})" src="../images/datePicker.gif" style="position: absolute; bottom: 6px; right: 10px; cursor: pointer;">
-      </div>
+<{*      <div class="form-group" style="position: relative; margin-top: 10px;">*}>
+<{*        <p><{$smarty.const._MA_JILLBOOKIN_SELECT_APPOINTMENT_DATE}></p>*}>
+<{*        <input id="booking-date" type="text" placeholder="<{$smarty.const._MA_JILLBOOKIN_SELECT_DATE}>" class="form-control">*}>
+<{*        <img id="date-img" onclick="WdatePicker({el:'booking-date', minDate:'%y-%M-%d'})" src="../images/datePicker.gif" style="position: absolute; bottom: 6px; right: 10px; cursor: pointer;">*}>
+<{*      </div>*}>
+
+        <div class="form-group" style="position: relative; margin-top: 10px;">
+            <label class="col-sm-2 col-form-label text-sm-right">
+                <{$smarty.const._MA_JILLBOOKIN_SELECT_APPOINTMENT_DATE}>
+            </label>
+            <div class="col-sm-6">
+                <input type="text" name="booking-date" id="booking-date" class="form-control " value="<{$jbi_start}>" onClick="WdatePicker({el:'booking-date', minDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MA_JILLBOOKIN_SELECT_DATE}>">
+            </div>
+        </div>
+
+
+
+
 
       <div class="form-group" style="margin-top: 10px;">
         <p><{$smarty.const._MA_JILLBOOKIN_BOOKING_REASON_OPTIONAL}></p>
