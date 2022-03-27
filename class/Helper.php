@@ -41,7 +41,7 @@ class Helper extends \Xmf\Module\Helper
     /**
      * @param bool $debug
      *
-     * @return \XoopsModules\物件名稱\Helper
+     * @return \XoopsModules\Jill_booking\Helper
      */
     public static function getInstance($debug = false)
     {
