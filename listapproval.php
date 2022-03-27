@@ -38,7 +38,7 @@ function jill_booking_approvallist($jbi_sn = "")
 
             $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
-            $all_content = array();
+            $all_content = [];
             $i           = 0;
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： a.jb_sn,a.jb_week,a.jbt_sn,b.jb_date,b.jb_waiting,b.jb_status,c.jbi_sn,c.jbt_title,c.jbt_sort,c.jbt_week,d.jb_uid,d.jb_booking_time,d.jb_booking_content,d.jb_start_date,d.jb_end_date

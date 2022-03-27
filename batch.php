@@ -55,7 +55,7 @@ function jill_booking_form($jbi_sn = "")
         $timeArr = get_bookingtime_jbisn($jbi_sn);
         $xoopsTpl->assign('timeArr', $timeArr);
         //die(var_export($timeArr));
-        $weektime = array();
+        $weektime = [];
         foreach ($timeArr as $t => $time) {
             for ($w = 0; $w < 7; $w++) {
                 $jbt_sn = $time['jbt_sn'];
@@ -191,7 +191,7 @@ function get_jbwaiting($jbt_sn = "", $jb_date = "")
           where a.jbt_sn=$jbt_sn and a.jb_date='{$jb_date}' order by a.jb_waiting ";
     //die($sql);
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $data = array();
+    $data = [];
     $i = 0;
     while (list($jb_waiting, $jb_uid) = $xoopsDB->fetchRow($result)) {
         $data[$i]['jb_waiting'] = $jb_waiting;
@@ -223,7 +223,7 @@ function get_booking_weekArr($jb_sn = "")
 
     $sql = "select * from `" . $xoopsDB->prefix("jill_booking_week") . "` where `jb_sn` = '{$jb_sn}'";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $data = array();
+    $data = [];
     $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {

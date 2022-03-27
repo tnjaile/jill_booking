@@ -331,7 +331,7 @@ function getdateArr($seed_weekday = "", $start_date = "", $end_date = "")
     $now             = 0;
     $end             = strtotime($end_date);
     $i               = 0;
-    $date_arr        = array();
+    $date_arr        = [];
     while ($now < $end) {
         $now = mktime(0, 0, 0, $m, $d + $i, $y);
         if (strpos($seed_weekday, strval(date('w', $now))) !== false) {

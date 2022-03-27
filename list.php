@@ -36,7 +36,7 @@ function jill_booking_list($def_jbi_sn = "")
 
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
-    $all_content = array();
+    $all_content = [];
     $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數：jb_sn,jb_date,jbt_sn,,jb_waiting,jb_status,jb_uid,jb_booking_time,jb_booking_content,jb_start_date,jb_end_date,jbi_sn,jbt_title,jbt_sort,jbi_title,jbi_approval
@@ -84,7 +84,7 @@ function jill_booking_list($def_jbi_sn = "")
 }
 function get_chinese_weekday($datetime)
 {
-    $cw = array('日', '一', '二', '三', '四', '五', '六');
+    $cw = ['日', '一', '二', '三', '四', '五', '六'];
     $weekday = date('w', strtotime($datetime));
     return '星期' . $cw[$weekday];
 }

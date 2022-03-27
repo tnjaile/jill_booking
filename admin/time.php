@@ -76,7 +76,7 @@ function list_jill_booking_time($jbi_sn = "")
   $sql = "select * from `".$xoopsDB->prefix("jill_booking_time")."`
           where `jbi_sn`='$jbi_sn' order by `jbt_sort`";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $all_content = array();
+    $all_content = [];
   $i=0;
   while($all=$xoopsDB->fetchArray($result)){
     //以下會產生這些變數： $jbt_sn , $jbi_sn , $jbt_title , $jbt_sort
@@ -134,7 +134,7 @@ function list_jill_booking_time($jbi_sn = "")
 
   //找出現有場地
   $i=0;
-    $place_time = array();
+    $place_time = [];
   $sql = "select a.* , count(b.jbt_sn) as counter from `".$xoopsDB->prefix("jill_booking_item")."` as a join `".$xoopsDB->prefix("jill_booking_time")."` as b on a.jbi_sn=b.jbi_sn where a.jbi_enable='1' group by b.jbi_sn";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
   while($data=$xoopsDB->fetchArray($result)){

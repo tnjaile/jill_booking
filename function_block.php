@@ -59,7 +59,7 @@ if (!function_exists("get_bookingtime_jbisn")) {
         global $xoopsDB;
         $sql    = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-        $data   = array();
+        $data   = [];
         $i      = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
@@ -92,10 +92,10 @@ if (!function_exists("weekArr")) {
         $weekday = date("w", strtotime($getdate));
         //一週開始日期
         $week_start = date("Y-m-d", strtotime("$getdate -" . $weekday . " days"));
-        $week       = array();
+        $week       = [];
         for ($i = 0; $i <= 6; $i++) {
             $week[$i]['d'] = date("Y-m-d", strtotime("$week_start +" . $i . " days"));
-            $cweek         = array(_MD_JILLBOOKIN_W0, _MD_JILLBOOKIN_W1, _MD_JILLBOOKIN_W2, _MD_JILLBOOKIN_W3, _MD_JILLBOOKIN_W4, _MD_JILLBOOKIN_W5, _MD_JILLBOOKIN_W6);
+            $cweek         = [_MD_JILLBOOKIN_W0, _MD_JILLBOOKIN_W1, _MD_JILLBOOKIN_W2, _MD_JILLBOOKIN_W3, _MD_JILLBOOKIN_W4, _MD_JILLBOOKIN_W5, _MD_JILLBOOKIN_W6];
             if (in_array(date("w", strtotime($week[$i]['d'])), array_keys($cweek))) {
                 $week[$i]['w'] = $cweek[$i];
             }

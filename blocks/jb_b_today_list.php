@@ -10,7 +10,7 @@ function jb_b_today_list($options)
     $sql = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) order by `jbi_sort`";
     $result = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
     //die($sql);
-    $block['content'] = array();
+    $block['content'] = [];
     $i = 0;
     while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {
         $block['content'][$i]['jbi_sn'] = $jbi_sn;
@@ -67,7 +67,7 @@ function get_todaylist($jbi_sn = "")
     $w_today = date("w");
     $sql2 = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
     $result2 = $xoopsDB->query($sql2) or XoopsModules\Tadtools\Utility::web_error($sql);
-    $data = array();
+    $data = [];
     $j = 0;
     while (list($jbt_sn, $jbt_title, $jbt_week) = $xoopsDB->fetchRow($result2)) {
         $data[$j]['jbt_sn'] = $jbt_sn;

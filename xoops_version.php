@@ -1,5 +1,5 @@
 <?php
-$modversion = array();
+$modversion = [];
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_JILLBOOKIN_NAME;
@@ -24,7 +24,7 @@ $modversion['min_php']             = 5.6;
 $modversion['min_xoops']           = '2.5.8';
 
 //---paypal資訊---//
-$modversion['paypal']                  = array();
+$modversion['paypal']                  = [];
 $modversion['paypal']['business']      = 'tnjaile@gmail.com';
 $modversion['paypal']['item_name']     = 'Donation :' . _MI_JILLBOOKIN_AUTHOR;
 $modversion['paypal']['amount']        = 0;
@@ -100,7 +100,7 @@ $modversion['blocks'][$i]['description'] = _MI_JB_BDESC1;
 $modversion['blocks'][$i]['show_func']   = "jb_b_today_list";
 $modversion['blocks'][$i]['template']    = "jb_b_today_list.tpl";
 $modversion['blocks'][$i]['edit_func']   = 'jb_b_today_list_edit';
-$modversion['blocks'][$i]['options']     = array('_MB_JB_B_TODAY_LIST_OPT0_VAL0' => 'accordion', '_MB_JB_B_TODAY_LIST_OPT0_VAL1' => 'default', '_MB_JB_B_TODAY_LIST_OPT0_VAL2' => 'vertical');
+$modversion['blocks'][$i]['options']     = ['_MB_JB_B_TODAY_LIST_OPT0_VAL0' => 'accordion', '_MB_JB_B_TODAY_LIST_OPT0_VAL1' => 'default', '_MB_JB_B_TODAY_LIST_OPT0_VAL2' => 'vertical'];
 $i++;
 $modversion['blocks'][$i]['file']        = 'jb_b_week_list.php';
 $modversion['blocks'][$i]['name']        = _MI_JB_BNAME2;
@@ -108,7 +108,7 @@ $modversion['blocks'][$i]['description'] = _MI_JB_BDESC2;
 $modversion['blocks'][$i]['show_func']   = 'jb_b_week_list';
 $modversion['blocks'][$i]['template']    = 'jb_b_week_list.tpl';
 $modversion['blocks'][$i]['edit_func']   = 'jb_b_week_list_edit';
-$modversion['blocks'][$i]['options']     = array('_MB_JB_B_TODAY_LIST_OPT0_VAL0' => 'accordion', '_MB_JB_B_TODAY_LIST_OPT0_VAL1' => 'default', '_MB_JB_B_TODAY_LIST_OPT0_VAL2' => 'vertical');
+$modversion['blocks'][$i]['options']     = ['_MB_JB_B_TODAY_LIST_OPT0_VAL0' => 'accordion', '_MB_JB_B_TODAY_LIST_OPT0_VAL1' => 'default', '_MB_JB_B_TODAY_LIST_OPT0_VAL2' => 'vertical'];
 //偏好設定//
 $i                                       = 0;
 $modversion['config'][$i]['name']        = 'booking_group';

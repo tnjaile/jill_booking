@@ -50,7 +50,7 @@ function booking_table($jbi_sn = "", $getdate = "")
             $weekArr = weekArr($getdate);
 
             //產生預約者資訊表格狀態值
-            $bookingArr = array();
+            $bookingArr = [];
 
             $jeditable = new Jeditable();
             //比對產生表單的陣列
@@ -73,7 +73,7 @@ function booking_table($jbi_sn = "", $getdate = "")
                     $uid_name = (empty($jbArr['jb_status'])) ? _MD_APPROVING . ":{$uid_name}" : $uid_name;
                     $color = "transparent";
                     $content = "";
-                    $status = array();
+                    $status = [];
                     //過去預約
                     if ($start > $item_date) {
                         if (!empty($jbArr['jb_uid'])) {

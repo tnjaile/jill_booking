@@ -19,7 +19,7 @@ function jill_booking_item_form($jbi_sn = "")
     if (!empty($jbi_sn)) {
         $DBV = get_jill_booking_item($jbi_sn);
     } else {
-        $DBV = array();
+        $DBV = [];
     }
 
     //預設值設定
@@ -238,7 +238,7 @@ function list_jill_booking_item()
 
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
 
-    $all_content = array();
+    $all_content = [];
     $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $jbi_sn , $jbi_start , $jbi_end , $jbi_title , $jbi_desc , $jbi_approval , $jbi_sort , $jbi_enable
