@@ -42,3 +42,17 @@ define("_MA_JILLBOOKIN_ALLUSERS", "所有使用者");
 define("_MA_JILLBOOKIN_APPROVER", "審核人員");
 define("_MA_UPDATE_COMPLETED", "更新成功");
 define("_MA_UPDATE_FAILED", "更新失敗");
+
+define('_MA_JILLBOOKIN_SELECT_APPOINTMENT_VENUE', '選擇預約場地:');
+define('_MA_JILLBOOKIN_SELECT_APPOINTMENT_DATE', '選擇預約日期:');
+define('_MA_JILLBOOKIN_SELECT_DATE', '選擇日期');
+define('_MA_JILLBOOKIN_BOOKING_REASON_OPTIONAL', '預約理由（選填）:');
+define('_MA_JILLBOOKIN_INDIVIDUAL_BOOKING', '個人預約');
+define('_MA_JILLBOOKIN_GET_TIME', '取得時段');
+define('_MA_JILLBOOKIN_WEEKDAY_ARRAY', "'日', '一', '二', '三', '四', '五', '六'");
+define('_MA_JILLBOOKIN_APPOINTMENT_COMPLETE', '預約完成！！');
+define('_MA_JILLBOOKIN_APPOINTMENT_DATE', '預約日期：');
+define('_MA_JILLBOOKIN_LOADING_DATA', '資料載入中....');
+define('_MA_JILLBOOKIN_NO_OPENING_HOURS', '無開放之時段');
+define('_MA_JILLBOOKIN_RESERVE', '預約');
+

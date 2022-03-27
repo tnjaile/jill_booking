@@ -44,3 +44,17 @@ define("_MA_JILLBOOKIN_ALLUSERS", "All user");
 define("_MA_JILLBOOKIN_APPROVER", "Approver");
 define("_MA_UPDATE_COMPLETED", "Update completed");
 define("_MA_UPDATE_FAILED", "Update failed");
+
+
+define('_MA_JILLBOOKIN_SELECT_APPOINTMENT_VENUE', 'Choose an appointment venue');
+define('_MA_JILLBOOKIN_SELECT_APPOINTMENT_DATE', 'Choose an appointment date');
+define('_MA_JILLBOOKIN_SELECT_DATE', 'Select date');
+define('_MA_JILLBOOKIN_BOOKING_REASON_OPTIONAL', 'Reason for booking (optional)');
+define('_MA_JILLBOOKIN_INDIVIDUAL_BOOKING', 'Individual reservation');
+define('_MA_JILLBOOKIN_GET_TIME', 'Get time');
+define('_MA_JILLBOOKIN_WEEKDAY_ARRAY', "'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'");
+define('_MA_JILLBOOKIN_APPOINTMENT_COMPLETE', 'Appointment complete! !');
+define('_MA_JILLBOOKIN_APPOINTMENT_DATE', 'Appointment date');
+define('_MA_JILLBOOKIN_LOADING_DATA', 'Loading data....');
+define('_MA_JILLBOOKIN_NO_OPENING_HOURS', 'No opening hours');
+define('_MA_JILLBOOKIN_RESERVE', 'Reserve');
