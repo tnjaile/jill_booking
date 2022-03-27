@@ -16,11 +16,13 @@ CREATE TABLE `jill_booking_week` (
 ) ENGINE=MyISAM;
 
 CREATE TABLE `jill_booking_date` (
-  `jb_sn` mediumint(9) unsigned NOT NULL COMMENT '預約編號',
+  `jb_sn` mediumint(9) unsigned NOT NULL default 0 COMMENT '預約編號',
   `jb_date` date NOT NULL COMMENT '日期',
   `jbt_sn` mediumint(8) unsigned NOT NULL  COMMENT '時段編號',
   `jb_waiting` tinyint(3) NOT NULL default '0' COMMENT '候補',
   `jb_status` enum('1','0') NOT NULL COMMENT '是否核准',
+  `approver` mediumint(8)  unsigned NOT NULL default 0 COMMENT '審核者',
+  `pass_date` date COMMENT '通過日期',
   PRIMARY KEY (`jb_sn`,`jb_date`,`jbt_sn`)
 ) ENGINE=MyISAM;
 
@@ -28,7 +30,7 @@ CREATE TABLE `jill_booking_item` (
   `jbi_sn` smallint(6) unsigned NOT NULL auto_increment COMMENT '場地編號',
   `jbi_title` varchar(255) NOT NULL default '' COMMENT '場地名稱',
   `jbi_desc` text NOT NULL COMMENT '場地說明',
-  `jbi_sort` smallint(6) unsigned NOT NULL default '0' COMMENT '場地排序',
+  `jbi_sort` smallint(6) unsigned default 0 COMMENT '場地排序',
   `jbi_start` date NOT NULL  COMMENT '啟用日期',
   `jbi_end` date NOT NULL  COMMENT '停用日期',
   `jbi_enable` enum('1','0') NOT NULL COMMENT '是否可借',
@@ -44,4 +46,3 @@ CREATE TABLE `jill_booking_time` (
   `jbt_week` set('0','1','2','3','4','5','6') NOT NULL COMMENT '開放星期' ,
   PRIMARY KEY (`jbt_sn`)
 ) ENGINE=MyISAM;
-

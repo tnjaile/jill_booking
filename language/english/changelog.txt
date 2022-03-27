@@ -1,0 +1,97 @@
+ [Module from the Edge]
+
+The purpose of this module is to provide a module for venue reservations, providing individual reservations and batch additions.
+
+Module Features]
+
+1. Backstage can add new venues and set bookable time slots.
+2. The front desk is very intuitive and can make a reservation by clicking on "Reservation".
+3. The front desk provides batch appointment and automatically makes the judgment of the punch hall.
+4. The front desk provides personalized appointment management.
+
+
+How to install】
+Unzip the module and upload the jill booking directory to the modules
+2. Go to the backstage for module installation.
+
+[History Update]
+JILL BOOKING Version 2.4 Release 2021-08-19
+ =================================================
+ 1.conformance level AA
+jill booking 2.3.5 2020-09-09 釋出
+ =================================================
+1.Approved by mail to the user and reviewer mailbox
+JILL BOOKING Version 2.3.4 Release 2020-08-04
+ =================================================
+1.change the jbi_end type to NOT　NULL
+JILL BOOKING Version 2.3.3 Release 2020-04-20
+ =================================================
+1. Adding the edit event function
+2.Remove Big Chinese language and other useless files
+JILL BOOKING Version 2.3.2 Release 2020-03-13
+ =================================================
+1.Accessibility 2.0
+JILL BOOKING Version 2.3.1 Release 2020-01-15
+ =================================================
+1. Minor fixes to the home menu and update bugs
+JILL BOOKING version 2.3 released 2019-05-09
+ =================================================
+1. Fully support XoopsModules\Tadtools\Utility and remove unnecessary introduced files.
+JILL BOOKING version 2.2 released 2019-01-16
+ =================================================
+1. Adding Booking Helper appointment assistant to the backend
+JILL BOOKING version 2.10 released 2019-01-11
+ =================================================
+1. Bootstrap4 support.
+2. Fix the personal appointment list in the front desk, add "week" in the appointment date and support PHP 5.6 downward.
+JILL BOOKING Version 2.02 Released 2018-09-27
+ =================================================
+1. Fix that the backstage session setting is not enabled from Monday to Sunday, and is still invalid after update.
+2. Add "Day" to the list of personal appointments at the front desk.
+JILL BOOKING Version 2.01 Released 2018-08-15
+ =================================================
+ 1. Fix the problem of administrator's inability to audit
+JILL BOOKING Version 2.0 Released 2017-10-06
+ =================================================
+ 1.PHP 7.1 support
+jill booking version 1.3 released 2017-09-29
+ =================================================
+ 1. Add venue description at the front desk
+ 2.PHP 7.0 support
+
+jill booking version 1.21 released 2017-01-11
+ =================================================
+ 1. Adjust RWD to 1024
+ 2. support XOOPS 2.5.8
+
+JILL BOOKING version 1.2 released 2016-11-30
+ =================================================
+ 1. New block [Reserve this week].
+ 2. The checklist adds a reminder whether or not to check the appointment.
+
+JILL BOOKING Version 1.12 Released 2016-06-20
+ =================================================
+ 1. New area [Reserve Today].
+ 2. Only bootstrap3 is supported.
+ 3. Backstage [Venue Management] added sorting function.
+
+ JILL BOOKING Version 1.11 Released 2016-02-01
+ =================================================
+ 1. Fix the error of showing multiple reservations at the audited venue.
+
+JILL BOOKING Version 1.1 Released 2016-01-26
+ =================================================
+ 1. Fix a bunch of bugs.
+ 2. Individual appointment list can list the person who made the appointment
+ 3. Adding an auditor mechanism
+ 4. Preferences for the number of weeks you can limit borrowing
+
+JILL BOOKING Version 1.01 Released 2015-04-28
+ =================================================
+ 1. Fix the backstage menu [Venue Management]: When adding (editing) a venue, there is no deactivation date, so the frontstage cannot make an appointment.
+
+ JILL BOOKING Version 1.0 Released 2015-04-15
+ =================================================
+ 1. Formal release
+
+Translated with www.DeepL.com/Translator (free version)
