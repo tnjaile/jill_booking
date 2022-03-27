@@ -29,7 +29,7 @@ class Update
 {
     public static function del_interface()
     {
-        if (file_exists(XOOPS_ROOT_PATH . '/modules/jill_booking/interface_menu.php')) {
+        if (is_file(XOOPS_ROOT_PATH . '/modules/jill_booking/interface_menu.php')) {
             unlink(XOOPS_ROOT_PATH . '/modules/jill_booking/interface_menu.php');
         }
     }
