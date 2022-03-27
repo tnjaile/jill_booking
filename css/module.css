@@ -1,0 +1,12 @@
+.show_reason {
+    font-size: 90%;
+    color:rgb(70, 69, 69);
+}
+
+.edit {
+    cursor: url('../images/typing.cur'), auto;
+}
+
+.edit:hover {
+    color:rgb(196, 5, 46);
+}

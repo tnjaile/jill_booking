@@ -1,12 +1,11 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tnjaile 製作
-// 製作日期：2015-01-14
-// $Id:$
-// ------------------------------------------------------------------------- //
-
+use Xmf\Request;
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\Jeditable;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = 'jill_booking_adm_time.html';
+$xoopsOption['template_main'] = 'jill_booking_adm_time.tpl';
 include_once "header.php";
 include_once "../function.php";
 
@@ -15,10 +14,11 @@ include_once "../function.php";
 
 
 //自動取得jill_booking_time的最新排序
-function jill_booking_time_max_sort($jbi_sn=""){
+function jill_booking_time_max_sort($jbi_sn = "")
+{
   global $xoopsDB;
   $sql = "select max(`jbt_sort`) from `".$xoopsDB->prefix("jill_booking_time")."` where jbi_sn=$jbi_sn ";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
   list($sort)=$xoopsDB->fetchRow($result);
   return ++$sort;
 }
@@ -28,10 +28,11 @@ function jill_booking_time_max_sort($jbi_sn=""){
 
 
 //新增資料到jill_booking_time中
-function insert_jill_booking_time(){
+function insert_jill_booking_time()
+{
   global $xoopsDB;
 
-  $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
   $_POST['jbt_title'] = $myts->addSlashes($_POST['jbt_title']);
   $week=implode(",",$_POST['jbt_week']);
 
@@ -39,7 +40,7 @@ function insert_jill_booking_time(){
   $sql = "insert into `".$xoopsDB->prefix("jill_booking_time")."`
   (`jbi_sn` , `jbt_title` , `jbt_sort`,`jbt_week`)
   values('{$_POST['jbi_sn']}' , '{$_POST['jbt_title']}' , '{$jbt_sort}','{$week}')";
-  $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->query($sql) or Utility::web_error($sql);
 
   //取得最後新增資料的流水編號
   $jbt_sn = $xoopsDB->getInsertId();
@@ -48,29 +49,34 @@ function insert_jill_booking_time(){
 
 
 //刪除jill_booking_time某筆資料資料
-function delete_jill_booking_time($jbt_sn=""){
+function delete_jill_booking_time($jbt_sn = "")
+{
   global $xoopsDB , $isAdmin;
-  if(empty($jbt_sn))return;
+    if (empty($jbt_sn)) {
+        return;
+    }
+
   $sql = "delete from `".$xoopsDB->prefix("jill_booking_time")."` where `jbt_sn` = '{$jbt_sn}'";
-  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
 }
 
 //列出所有jill_booking_time資料
-function list_jill_booking_time($jbi_sn=""){
+function list_jill_booking_time($jbi_sn = "")
+{
   global $xoopsDB , $xoopsTpl , $isAdmin;
-  if(empty($jbi_sn))return;
+    if (empty($jbi_sn)) {
+        return;
+    }
 
   $item=get_jill_booking_item($jbi_sn);
 
-  include_once XOOPS_ROOT_PATH."/modules/tadtools/jeditable.php";
-  $jeditable = new jeditable();
+    $jeditable = new Jeditable();
 
-  $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
   $sql = "select * from `".$xoopsDB->prefix("jill_booking_time")."`
           where `jbi_sn`='$jbi_sn' order by `jbt_sort`";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $total=$xoopsDB->getRowsNum($result);
-  $all_content="";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $all_content = array();
   $i=0;
   while($all=$xoopsDB->fetchArray($result)){
     //以下會產生這些變數： $jbt_sn , $jbi_sn , $jbt_title , $jbt_sort
@@ -94,7 +100,11 @@ function list_jill_booking_time($jbi_sn=""){
     $w_arr=explode(',',$jbt_week);
     for($j=0;$j<=7;$j++){
       $name="w{$j}";
+            if ($jbt_week == null) {
+                $pic = "no.gif";
+            } else {
       $pic=in_array($j, $w_arr)?"yes.gif":"no.gif";
+            }
 
       $all_content[$i][$name]="<img src='../images/{$pic}' id='{$jbt_sn}_{$j}' onClick=\"change_enable($jbt_sn,$j);\" style='cursor: pointer;'>";
     }
@@ -105,27 +115,17 @@ function list_jill_booking_time($jbi_sn=""){
   //刪除確認的JS
 
   $xoopsTpl->assign('item' , $item);
-  $xoopsTpl->assign('bar' , $bar);
   $xoopsTpl->assign('action' , $_SERVER['PHP_SELF']);
   $xoopsTpl->assign('isAdmin' , $isAdmin);
   $xoopsTpl->assign('all_content' , $all_content);
   $xoopsTpl->assign('now_op' , 'list_jill_booking_time');
   $xoopsTpl->assign('jbi_sn' , $jbi_sn);
 
-  if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php")){
-    redirect_header("index.php",3, _MA_NEED_TADTOOLS);
-  }
-  include_once XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php";
-  $sweet_alert=new sweet_alert();
-  $delete_jill_booking_time_func=$sweet_alert->render('delete_jill_booking_time_func',"{$_SERVER['PHP_SELF']}?op=delete_jill_booking_time&jbi_sn=$jbi_sn&jbt_sn=","jbt_sn");
-  $xoopsTpl->assign('delete_jill_booking_time_func',$delete_jill_booking_time_func);
+    $sweet_alert = new SweetAlert();
+    $sweet_alert->render('delete_jill_booking_time_func', "{$_SERVER['PHP_SELF']}?op=delete_jill_booking_time&jbi_sn=$jbi_sn&jbt_sn=", "jbt_sn");
 
   //套用formValidator驗證機制
-  if(!file_exists(TADTOOLS_PATH."/formValidator.php")){
-    redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
-  }
-  include_once TADTOOLS_PATH."/formValidator.php";
-  $formValidator= new formValidator("#myForm",true);
+    $formValidator = new FormValidator("#myForm", true);
   $formValidator_code=$formValidator->render();
   $xoopsTpl->assign('formValidator_code',$formValidator_code);
 
@@ -134,36 +134,37 @@ function list_jill_booking_time($jbi_sn=""){
 
   //找出現有場地
   $i=0;
-  $place_time="";
+    $place_time = array();
   $sql = "select a.* , count(b.jbt_sn) as counter from `".$xoopsDB->prefix("jill_booking_item")."` as a join `".$xoopsDB->prefix("jill_booking_time")."` as b on a.jbi_sn=b.jbi_sn where a.jbi_enable='1' group by b.jbi_sn";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
   while($data=$xoopsDB->fetchArray($result)){
     $data['jbi_link']=sprintf(_MA_JILLBOOKIN_IMPORT_PLACE,$data['jbi_title'],$data['counter']);
     $place_time[$i]=$data;
     $i++;
   }
   $xoopsTpl->assign('place_time',$place_time);
-  $xoopsTpl->assign('jquery', get_jquery(true));
-
+    // Utility::get_jquery(true);
 }
 
 //取得該節被預約的次數
-function get_booking_times($jbt_sn=""){
+function get_booking_times($jbt_sn = "")
+{
   global $xoopsDB;
 
   $sql = "select count(*) from ".$xoopsDB->prefix("jill_booking_date")." where jbt_sn='{$jbt_sn}' ";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
   list($all)=$xoopsDB->fetchRow($result);
   return $all;
 }
 
 //複製時間區段
-function copy_time($jbi_sn="",$to_jbi_sn=""){
+function copy_time($jbi_sn = "", $to_jbi_sn = "")
+{
   global $xoopsDB;
 
   $sql = "select * from ".$xoopsDB->prefix("jill_booking_time")." where jbi_sn='{$jbi_sn}' ";
 
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
   while($all=$xoopsDB->fetchArray($result)){
     //以下會產生這些變數： $jbt_sn,$jbi_sn,$jbt_title,$jbt_sort
     foreach($all as $k=>$v){
@@ -178,13 +179,14 @@ function copy_time($jbi_sn="",$to_jbi_sn=""){
   $sql = "insert into ".$xoopsDB->prefix("jill_booking_time")."
   (`jbi_sn` , `jbt_title` , `jbt_sort`,`jbt_week`)
   values{$ins_sql}";
-  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
 }
 
 
 
 //從範本快速匯入時段設定
-function import_time($jbi_sn="",$type=""){
+function import_time($jbi_sn = "", $type = "")
+{
   global $xoopsDB,$xoopsTpl;
   if($type=='18'){
     for($i=1;$i<=8;$i++){
@@ -192,10 +194,9 @@ function import_time($jbi_sn="",$type=""){
       $sql = "insert into ".$xoopsDB->prefix("jill_booking_time")."
       (`jbi_sn` , `jbt_title` , `jbt_sort`,`jbt_week`)
       values('{$jbi_sn}' , '{$jbt_title}' , $i , '1,2,3,4,5')";
-      $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-    }
+            $xoopsDB->queryF($sql) or Utility::web_error($sql);
   }
-  elseif($type=='apm'){
+    } elseif ($type == 'apm') {
     $apm_arr[1]=_MA_JILLBOOKIN_AM;
     $apm_arr[2]=_MA_JILLBOOKIN_PM;
    for($i=1;$i<=2;$i++){
@@ -203,13 +204,14 @@ function import_time($jbi_sn="",$type=""){
      $sql = "insert into ".$xoopsDB->prefix("jill_booking_time")."
      (`jbi_sn` , `jbt_title` , `jbt_sort`,`jbt_week`)
      values('{$jbi_sn}' , '{$jbt_title}' , $i , '1,2,3,4,5')";
-     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+            $xoopsDB->queryF($sql) or Utility::web_error($sql);
    }
   }
 }
 
 //改變啟用狀態
-function change_enable($jbt_sn="",$week=""){
+function change_enable($jbt_sn = "", $week = "")
+{
   global $xoopsDB,$xoopsTpl;
   $time=get_jill_booking_time($jbt_sn);
   $jbt_week=strval($time['jbt_week']);
@@ -230,27 +232,27 @@ function change_enable($jbt_sn="",$week=""){
   }
 
   $sql = "update ".$xoopsDB->prefix("jill_booking_time")." set `jbt_week`='{$new_week}' where jbt_sn='{$jbt_sn}'";
-  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
+
   return $new_pic;
 }
 
-function save_jbt_title($jbt_sn){
+function save_jbt_title($jbt_sn)
+{
   global $xoopsDB,$xoopsTpl;
-  $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
   $jbt_title = $myts->addSlashes($_POST['value']);
   $sql = "update `".$xoopsDB->prefix("jill_booking_time")."` set `jbt_title` = '{$jbt_title}'
   where `jbt_sn` = '$jbt_sn'";
-  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->queryF($sql) or Utility::web_error($sql);
 }
 
 /*-----------執行動作判斷區----------*/
-$op=empty($_REQUEST['op'])?"":$_REQUEST['op'];
-$jb_sn=empty($_REQUEST['jb_sn'])?"":intval($_REQUEST['jb_sn']);
-$jbt_sn=empty($_REQUEST['jbt_sn'])?"":intval($_REQUEST['jbt_sn']);
-$jbi_sn=empty($_REQUEST['jbi_sn'])?"":intval($_REQUEST['jbi_sn']);
-$to_jbi_sn=empty($_REQUEST['to_jbi_sn'])?"":intval($_REQUEST['to_jbi_sn']);
-$jbt_sn=empty($_REQUEST['jbt_sn'])?"":intval($_REQUEST['jbt_sn']);
-
+$op = Request::getString('op');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+$to_jbi_sn = Request::getInt('to_jbi_sn');
 
 switch($op){
   /*---判斷動作請貼在下方---*/
@@ -293,11 +295,9 @@ switch($op){
   list_jill_booking_time($jbi_sn);
   break;
 
-
   /*---判斷動作請貼在上方---*/
 }
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign("isAdmin" , true);
 include_once 'footer.php';
-?>
