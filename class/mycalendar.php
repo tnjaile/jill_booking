@@ -31,7 +31,7 @@ class weekCalendar
     //檢查日期格式
     public function is_date($date)
     {
-        if (preg_match("/^[12][0-9]{3}-([0][1-9])|([1][12])-([0][1-9])|([12][0-9])|([3][01])$/", $date)) {
+        if (preg_match('/^[12][0-9]{3}-([0][1-9])|([1][12])-([0][1-9])|([12][0-9])|([3][01])$/', $date)) {
             return 1;
         } else {
             return 0;

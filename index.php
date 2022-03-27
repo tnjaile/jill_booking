@@ -3,15 +3,15 @@ use Xmf\Request;
 use XoopsModules\Tadtools\Jeditable;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-include "header.php";
-$xoopsOption['template_main'] = "jill_booking_index.tpl";
-include_once XOOPS_ROOT_PATH . "/header.php";
+include 'header.php';
+$xoopsOption['template_main'] = 'jill_booking_index.tpl';
+include_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------功能函數區--------------*/
-function booking_table($jbi_sn = "", $getdate = "")
+function booking_table($jbi_sn = '', $getdate = '')
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig, $can_booking, $Isapproval, $xoTheme;
-    $uid = !empty($xoopsUser) ? $xoopsUser->uid() : "";
+    $uid = !empty($xoopsUser) ? $xoopsUser->uid() : '';
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn);
 
@@ -19,7 +19,7 @@ function booking_table($jbi_sn = "", $getdate = "")
         //可啟用場地資訊
         $itemArr = get_jill_booking_item($jbi_sn, 1);
 
-        $jbi_sn = empty($itemArr['jbi_sn']) ? "" : $itemArr['jbi_sn'];
+        $jbi_sn = empty($itemArr['jbi_sn']) ? '' : $itemArr['jbi_sn'];
 
         if (!empty($itemArr)) {
             //場地預約起始日期
@@ -46,7 +46,7 @@ function booking_table($jbi_sn = "", $getdate = "")
             $xoopsTpl->assign('timeArr', $timeArr);
 
             //週曆
-            $getdate = (empty($getdate)) ? date("Y-m-d") : $getdate;
+            $getdate = (empty($getdate)) ? date('Y-m-d') : $getdate;
             $weekArr = weekArr($getdate);
 
             //產生預約者資訊表格狀態值
@@ -71,45 +71,45 @@ function booking_table($jbi_sn = "", $getdate = "")
                         $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
                     }
                     $uid_name = (empty($jbArr['jb_status'])) ? _MD_APPROVING . ":{$uid_name}" : $uid_name;
-                    $color = "transparent";
-                    $content = "";
+                    $color = 'transparent';
+                    $content = '';
                     $status = [];
                     //過去預約
                     if ($start > $item_date) {
                         if (!empty($jbArr['jb_uid'])) {
                             $content = $uid_name;
-                            $color = "#959595";
+                            $color = '#959595';
                         }
                     } elseif (($start <= $item_date and $end >= $item_date) or $end == 0) {
                         //可預約期間
                         if (strpos($jbt_week, strval($wk)) !== false) {
                             if (empty($jbArr['jb_sn'])) {
                                 if ($can_booking) {
-                                    $content = "";
-                                    $status['func'] = "single_insert_booking";
+                                    $content = '';
+                                    $status['func'] = 'single_insert_booking';
                                     $status['time'] = $time['jbt_sn'];
                                     $status['weekinfo'] = $weekinfo['d'];
                                     $status['jbi_sn'] = $jbi_sn;
                                 } else {
                                     $content = _MD_JILLBOOKIN_NO;
-                                    $color = "#EA4335";
+                                    $color = '#EA4335';
                                 }
                             } else {
                                 if ($uid == $jbArr['jb_uid']) {
 
-                                    $jeditable->setTextCol("#jb_booking_content{$jbArr['jb_sn']}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jbArr['jb_sn']}', 'op' : 'save_jb_booking_content'}", "Edit");
+                                    $jeditable->setTextCol("#jb_booking_content{$jbArr['jb_sn']}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jbArr['jb_sn']}', 'op' : 'save_jb_booking_content'}", 'Edit');
 
                                     if ($can_booking) {
                                         $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div id='jb_booking_content{$jbArr['jb_sn']}' class='edit show_reason'>{$jbArr['jb_booking_content']}</div>";
-                                        $color = "#000000";
+                                        $color = '#000000';
                                     }
                                 } else {
                                     if ($Isapproval) {
                                         $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div class='show_reason'>{$jbArr['jb_booking_content']}</div>";
-                                        $color = "#000000";
+                                        $color = '#000000';
                                     } else {
                                         $content = "{$uid_name}{$usershtml}";
-                                        $color = "#000000";
+                                        $color = '#000000';
                                     }
 
                                 }
@@ -136,12 +136,12 @@ function booking_table($jbi_sn = "", $getdate = "")
     }
     $xoopsTpl->assign('jbi_sn', $jbi_sn);
     $xoopsTpl->assign('item_opt', $item_opt);
-    $xoopsTpl->assign('now_op', "booking_table");
+    $xoopsTpl->assign('now_op', 'booking_table');
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
 }
 
 //產生刪除預約鈕
-function delete_booking_icon($t = "", $wk = "", $jbt_sn = "", $jb_date = "", $jbi_sn = "")
+function delete_booking_icon($t = '', $wk = '', $jbt_sn = '', $jb_date = '', $jbi_sn = '')
 {
     global $xoopsUser;
     if (!isset($xoopsUser)) {
@@ -165,7 +165,7 @@ function save_jb_booking_content($jb_sn)
     global $xoopsDB;
     $myts = \MyTextSanitizer::getInstance();
     $value = $myts->addSlashes($_POST['value']);
-    $sql = "update " . $xoopsDB->prefix("jill_booking") . " set `jb_booking_content`='{$value}' where
+    $sql = 'update ' . $xoopsDB->prefix('jill_booking') . " set `jb_booking_content`='{$value}' where
     jb_sn='{$jb_sn}'";
     $xoopsDB->queryF($sql);
     die($value);
@@ -184,19 +184,19 @@ switch ($op) {
         save_jb_booking_content($jb_sn);
         break;
 
-    case "single_insert_booking":
+    case 'single_insert_booking':
         $jb_sn = insert_jill_booking(1);
-        $jb_week[$jbt_sn] = date("w", strtotime($_POST['jb_date']));
+        $jb_week[$jbt_sn] = date('w', strtotime($_POST['jb_date']));
         insert_jill_booking_week($jb_sn, $jbt_sn, 1, $jb_week);
         insert_jill_booking_date($jb_sn, 1, $jbi_sn);
         $jeditable = new Jeditable();
-        $jeditable->setTextCol("#jb_booking_content{$jb_sn}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jb_sn}', 'op' : 'save_jb_booking_content'}", "Edit");
+        $jeditable->setTextCol("#jb_booking_content{$jb_sn}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jb_sn}', 'op' : 'save_jb_booking_content'}", 'Edit');
         $jeditablecode = $jeditable->render('force');
-        $icon = $jeditablecode . delete_booking_icon($jbt_sn - 1, $jb_week[$jbt_sn], $jbt_sn, $_POST['jb_date'], $jbi_sn) . "<div id='jb_booking_content{$jb_sn}' class='edit show_reason'>" . _MD_INDIVIDUAL_BOOKING . "</div>";
+        $icon = $jeditablecode . delete_booking_icon($jbt_sn - 1, $jb_week[$jbt_sn], $jbt_sn, $_POST['jb_date'], $jbi_sn) . "<div id='jb_booking_content{$jb_sn}' class='edit show_reason'>" . _MD_INDIVIDUAL_BOOKING . '</div>';
         die($icon);
         break;
 
-    case "delete_booking":
+    case 'delete_booking':
         if (is_date($_REQUEST['jb_date']) == 1) {
             //die($jbt_sn."==".$jbi_sn."==".$_REQUEST['jb_date']);
             delete_booking($jbt_sn, $_REQUEST['jb_date'], $jbi_sn);
@@ -205,13 +205,13 @@ switch ($op) {
 
         break;
 
-    case "jill_booking_form":
+    case 'jill_booking_form':
         if (is_date($_REQUEST['jb_date']) == 1) {
             jill_booking_form($jbt_sn, $_REQUEST['jb_date']);
         }
         break;
 
-    case "booking_table":
+    case 'booking_table':
         if (is_date($_REQUEST['getdate']) == 1) {
             booking_table($jbi_sn, $_REQUEST['getdate']);
         } else {
@@ -227,10 +227,10 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("isAdmin", $isAdmin);
-$xoopsTpl->assign("can_booking", $can_booking);
-$xoopsTpl->assign("Isapproval", $Isapproval);
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('isAdmin', $isAdmin);
+$xoopsTpl->assign('can_booking', $can_booking);
+$xoopsTpl->assign('Isapproval', $Isapproval);
 
 $xoTheme->addStylesheet('modules/jill_booking/css/module.css');
 include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -17,7 +17,7 @@ define('_MA_JILLBOOKIN_JBI_ENABLE', 'Enabled');
 define('_MA_JILLBOOKIN_JBI_APPROVAL', 'Approved');
 define('_MA_JILLBOOKIN_BACK', 'Back to the venue management');
 define('_MA_JILLBOOKIN_SETTIME', 'Scheduling');
-define("_MA_JILLBOOKIN_SETAPPROVAL", "Set Approver");
+define('_MA_JILLBOOKIN_SETAPPROVAL', 'Set Approver');
 define('_MA_JILLBOOKIN_COPY', 'Copy');
 define('_MA_JILLBOOKIN_COPY_DESC1', 'Or batch copy:');
 define('_MA_JILLBOOKIN_COPY_DESC2', 'Period');
@@ -39,11 +39,11 @@ define('_MA_JILLBOOKIN_N_TIME', '"%s" per Day');
 define('_MA_JILLBOOKIN_BOOKING_TIME', 'It has "%s" reservations, can not be deleted.');
 define('_MA_JILLBOOKIN_AM', 'AM');
 define('_MA_JILLBOOKIN_PM', 'PM');
-define("_MA_JILLBOOKIN_APPROVAL", "Set the manager of 「%s」");
-define("_MA_JILLBOOKIN_ALLUSERS", "All user");
-define("_MA_JILLBOOKIN_APPROVER", "Approver");
-define("_MA_UPDATE_COMPLETED", "Update completed");
-define("_MA_UPDATE_FAILED", "Update failed");
+define('_MA_JILLBOOKIN_APPROVAL', 'Set the manager of 「%s」');
+define('_MA_JILLBOOKIN_ALLUSERS', 'All user');
+define('_MA_JILLBOOKIN_APPROVER', 'Approver');
+define('_MA_UPDATE_COMPLETED', 'Update completed');
+define('_MA_UPDATE_FAILED', 'Update failed');
 
 
 define('_MA_JILLBOOKIN_SELECT_APPOINTMENT_VENUE', 'Choose an appointment venue');

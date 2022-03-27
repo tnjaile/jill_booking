@@ -2,9 +2,9 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\Utility;
-$xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
-include_once "header.php";
-include_once "../function.php";
+$xoopsOption['template_main'] = 'booking_helper_adm_main.tpl';
+include_once 'header.php';
+include_once '../function.php';
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
 
@@ -46,7 +46,7 @@ switch ($op) {
         die();
 
     case 'create_orders':
-        $data = file_get_contents("php://input");
+        $data = file_get_contents('php://input');
 
         $result = createOrders(json_decode($data, true));
 
@@ -221,5 +221,5 @@ function getJSONResponse($data)
     return json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("isAdmin", true);
+$xoopsTpl->assign('isAdmin', true);
 include_once 'footer.php';
