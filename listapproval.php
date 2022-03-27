@@ -110,9 +110,9 @@ function update_jb_status($jb_sn = '', $jb_date = '', $jbt_sn = '', $jbi_sn = ''
         $jb_week = date('w', strtotime($jb_date));
 
         $booking      = XoopsUser::getUnameFromId($bookingArr['jb_uid'], 1);
-        $booking_user = &$member_handler->getUser($bookingArr['jb_uid']);
+        $booking_user = $member_handler->getUser($bookingArr['jb_uid']);
         if (is_object($booking_user)) {
-            $booking_ts    = &\MyTextSanitizer::getInstance();
+            $booking_ts    = \MyTextSanitizer::getInstance();
             $booking_email = $booking_ts->htmlSpecialChars($booking_user->getVar('email'));
             send_now($booking_email, "Auto-Reply:{$booking}於 {$jb_date} {$itemArr['jbi_title']} 審核通過",
                 "<!DOCTYPE html>
@@ -128,9 +128,9 @@ function update_jb_status($jb_sn = '', $jb_date = '', $jbt_sn = '', $jbi_sn = ''
         }
 
         foreach ($checkapproval as $key => $approval_uid) {
-            $user = &$member_handler->getUser($approval_uid);
+            $user = $member_handler->getUser($approval_uid);
             if (is_object($user)) {
-                $ts    = &\MyTextSanitizer::getInstance();
+                $ts    = \MyTextSanitizer::getInstance();
                 $email = $ts->htmlSpecialChars($user->getVar('email'));
                 send_now($email, "Auto-Reply:{$booking}於 {$jb_date} {$itemArr['jbi_title']} 審核通過",
                     "<!DOCTYPE html>

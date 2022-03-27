@@ -109,7 +109,7 @@ if (!function_exists('send_now')) {
     function send_now($email = '', $title = '', $content = '')
     {
         global $xoopsConfig, $xoopsDB, $xoopsModuleConfig, $xoopsModule;
-        $xoopsMailer                           = &getMailer();
+        $xoopsMailer                           = getMailer();
         $xoopsMailer->multimailer->ContentType = 'text/html';
         $xoopsMailer->addHeaders('MIME-Version: 1.0');
 
