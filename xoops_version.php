@@ -10,7 +10,7 @@ $modversion['credits']     = _MI_JILLBOOKIN_CREDITS;
 $modversion['help']        = 'page=help';
 $modversion['license']     = 'GNU GPL 2.0';
 $modversion['image']       = 'images/logo.png';
-$modversion['dirname']     = basename(dirname(__FILE__));
+$modversion['dirname']     = basename(__DIR__);
 
 //---模組狀態資訊---//
 $modversion['status_version']      = '2.4';
