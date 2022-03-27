@@ -102,7 +102,7 @@ function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = ""
         $xoopsDB->queryF($sql) or die('0');
 
         //寄送email
-        $member_handler = &xoops_gethandler('member');
+        $member_handler = xoops_getHandler('member');
 
         $bookingArr = get_jill_booking($jb_sn);
         $timeArr    = get_jill_booking_time($jbt_sn);

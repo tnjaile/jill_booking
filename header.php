@@ -6,7 +6,7 @@ $isAdmin                                = false;
 $can_booking                            = false;
 $Isapproval                             = false;
 $interface_menu[_MD_JILLBOOKIN_SMNAME1] = "index.php";
-$modhandler                             = xoops_gethandler('module');
+$modhandler                             = xoops_getHandler('module');
 $xoopsModule                            = $modhandler->getByDirname("jill_booking");
 $module_id                              = $xoopsModule->getVar('mid');
 
