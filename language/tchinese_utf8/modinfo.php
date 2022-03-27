@@ -27,3 +27,13 @@ define('_MI_JB_BDESC1', '今日預約(jb_b_today_list)');
 define('_MI_JB_BOPT0_DEF', '伸縮頁籤');
 define('_MI_JB_BNAME2', '本週預約');
 define('_MI_JB_BDESC2', '本週預約區塊 (jill_booking_week_list)');
+
+//1.1 (mamba)
+
+// The name of this module
+define('_MI_JILLBOOKIN_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_JILLBOOKIN_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_JILLBOOKIN_BACK_2_ADMIN', 'Back to Administration of ');
+
+//help
+define('_MI_JILLBOOKIN_HELP_OVERVIEW', 'Overview');
