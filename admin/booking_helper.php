@@ -28,7 +28,7 @@ switch ($op) {
         // can_order: false
         // event: "個人預約"
         // order_user: "管理員"
-        $data = array_map(function ($orig) use ($used, $used_sn) {
+        $data = array_map(static function ($orig) use ($used, $used_sn) {
             $key = array_search($orig['jbt_sn'], $used_sn);
             if ($key !== false) {
                 // 已被預約，則設為不可預約且附加預約者姓名與事由
