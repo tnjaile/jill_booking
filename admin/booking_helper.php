@@ -146,7 +146,6 @@ function getAllItems()
     while ($item = $xoopsDB->fetchArray($result)) {
         $data[] = $item;
     }
-    ;
 
     return $data;
 }
@@ -173,7 +172,6 @@ function getTimesByItem($jbi_sn, $date)
         $item['opened'] = in_array($w, explode(',', $item['jbt_week']));
         $data[] = $item;
     }
-    ;
 
     return $data;
 }
@@ -208,7 +206,6 @@ function getUsedTimes($times, $date)
         $item['name'] = XoopsUser::getUnameFromId($item['jb_uid'], 1);
         $data[] = $item;
     }
-    ;
 
     return $data;
 }
