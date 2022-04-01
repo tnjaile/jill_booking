@@ -19,3 +19,4 @@ define("_MD_JILLBOOKIN_NO", "Available");
 define("_MD_APPROVING", "On approving");
 define("_MD_JILLBOOKIN_JB_UID", "Reserved by");
 define("_MD_NO_RECORD", "No reservation");
+define("_MD_PASS", "Pass");

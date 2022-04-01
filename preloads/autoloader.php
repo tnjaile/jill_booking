@@ -2,7 +2,7 @@
 /**
  * @see http://www.php-fig.org/psr/psr-4/examples/
  */
-spl_autoload_register(function ($class) {
+spl_autoload_register(static function ($class) {
 
     // project-specific namespace prefix
     $prefix = 'XoopsModules\\' . ucfirst(basename(dirname(__DIR__)));
@@ -24,7 +24,7 @@ spl_autoload_register(function ($class) {
     $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
 
     // if the file exists, require it
-    if (file_exists($file)) {
+    if (is_file($file)) {
         require $file;
     }
 });

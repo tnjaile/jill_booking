@@ -2,9 +2,9 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\Utility;
-$xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
-include_once "header.php";
-include_once "../function.php";
+$xoopsOption['template_main'] = 'booking_helper_adm_main.tpl';
+include_once 'header.php';
+include_once '../function.php';
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
 
@@ -28,7 +28,7 @@ switch ($op) {
         // can_order: false
         // event: "個人預約"
         // order_user: "管理員"
-        $data = array_map(function ($orig) use ($used, $used_sn) {
+        $data = array_map(static function ($orig) use ($used, $used_sn) {
             $key = array_search($orig['jbt_sn'], $used_sn);
             if ($key !== false) {
                 // 已被預約，則設為不可預約且附加預約者姓名與事由
@@ -46,7 +46,7 @@ switch ($op) {
         die();
 
     case 'create_orders':
-        $data = file_get_contents("php://input");
+        $data = file_get_contents('php://input');
 
         $result = createOrders(json_decode($data, true));
 
@@ -146,7 +146,6 @@ function getAllItems()
     while ($item = $xoopsDB->fetchArray($result)) {
         $data[] = $item;
     }
-    ;
 
     return $data;
 }
@@ -173,7 +172,6 @@ function getTimesByItem($jbi_sn, $date)
         $item['opened'] = in_array($w, explode(',', $item['jbt_week']));
         $data[] = $item;
     }
-    ;
 
     return $data;
 }
@@ -208,7 +206,6 @@ function getUsedTimes($times, $date)
         $item['name'] = XoopsUser::getUnameFromId($item['jb_uid'], 1);
         $data[] = $item;
     }
-    ;
 
     return $data;
 }
@@ -218,8 +215,9 @@ function getJSONResponse($data)
 {
     header('Content-Type:application/json;charset=utf-8');
 
-    return json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $jsonResponse = json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    return $jsonResponse;
 }
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("isAdmin", true);
+$xoopsTpl->assign('isAdmin', true);
 include_once 'footer.php';

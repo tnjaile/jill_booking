@@ -13,7 +13,7 @@
  * @since        2.5.0
  * @author
  * @version      $Id $
- **/
+**/
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 
 xoops_loadLanguage('main', $xoopsModule->getVar('dirname'));
