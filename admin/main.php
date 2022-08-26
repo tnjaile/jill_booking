@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+
 $xoopsOption['template_main'] = 'jill_booking_adm_main.tpl';
 include_once "header.php";
 include_once "../function.php";
@@ -251,7 +252,7 @@ function list_jill_booking_item()
         if (empty($jbi_approval)) {
             $jbi_approval = '<img src="../images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
         } else {
-            $jbi_approvalArr = explode(";", $jbi_approval);
+            $jbi_approvalArr = explode(",", $jbi_approval);
             //die(var_dump($jbi_approvalArr));
             $jbi_approval = "";
             foreach ($jbi_approvalArr as $approval_uid) {
@@ -336,4 +337,6 @@ switch ($op) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign("isAdmin", true);
+$xoTheme->addStylesheet('/modules/tadtools/css/font-awesome/css/font-awesome.css');
+$xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SEESION['bootstrap']}.css");
 include_once 'footer.php';

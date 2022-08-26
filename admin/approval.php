@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\Tmt;
 use XoopsModules\Tadtools\Utility;
 
 $xoopsOption['template_main'] = 'jill_booking_adm_approval.tpl';
@@ -23,20 +24,23 @@ function jbi_approval_form($jbi_sn = "")
     $op = "save_jbi_approval";
     $sql = "select `uid`,`name`,`uname` from `" . $xoopsDB->prefix("users") . "` order by `uname` ";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
-    $all_content = array();
-    $all_content2 = array();
+    // $all_content = array();
+    // $all_content2 = array();
+    $from_arr = $to_arr = [];
     $i = 0;
     while (list($uid, $name, $uname) = $xoopsDB->fetchRow($result)) {
-        $jbi_approvalArr = explode(";", $DBV['jbi_approval']);
+        $jbi_approvalArr = explode(",", $DBV['jbi_approval']);
         if (in_array($uid, $jbi_approvalArr)) {
-            $all_content2[$i]['uid'] = $uid;
-            $all_content2[$i]['name'] = $name;
-            $all_content2[$i]['uname'] = $uname;
+            // $all_content2[$i]['uid'] = $uid;
+            // $all_content2[$i]['name'] = $name;
+            // $all_content2[$i]['uname'] = $uname;
+            $to_arr[$uid] = "{$name} ({$uname})";
 
         } else {
-            $all_content[$i]['uid'] = $uid;
-            $all_content[$i]['name'] = $name;
-            $all_content[$i]['uname'] = $uname;
+            // $all_content[$i]['uid'] = $uid;
+            // $all_content[$i]['name'] = $name;
+            // $all_content[$i]['uname'] = $uname;
+            $from_arr[$uid] = "{$name} ({$uname})";
         }
 
         $i++;
@@ -47,14 +51,19 @@ function jbi_approval_form($jbi_sn = "")
     $token_form = $token->render();
     $xoopsTpl->assign("token_form", $token_form);
     $xoopsTpl->assign('action', $_SERVER["PHP_SELF"]);
-    $xoopsTpl->assign('all_content', $all_content);
-    $xoopsTpl->assign('all_content2', $all_content2);
+    // $xoopsTpl->assign('all_content', $all_content);
+    // $xoopsTpl->assign('all_content2', $all_content2);
     $xoopsTpl->assign('jbi_title', sprintf(_MA_JILLBOOKIN_APPROVAL, $DBV['jbi_title']));
     $xoopsTpl->assign('jbi_sn', $jbi_sn);
     $xoopsTpl->assign('now_op', 'jbi_approval_form');
     $xoopsTpl->assign('jbi_approval', $DBV['jbi_approval']);
     $xoopsTpl->assign('next_op', $op);
+
+    $hidden_arr = ['op' => $op, 'jbi_sn' => $jbi_sn];
+    $tmt_box = Tmt::render('jbi_approval', $from_arr, $to_arr, $hidden_arr);
+    $xoopsTpl->assign('tmt_box', $tmt_box);
 }
+
 function save_jbi_approval($jbi_sn = "")
 {
     global $xoopsDB;
@@ -69,9 +78,7 @@ function save_jbi_approval($jbi_sn = "")
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $sql = "update `" . $xoopsDB->prefix("jill_booking_item") . "` set
-   `jbi_approval` = '{$_POST['jbi_approval']}'  where `jbi_sn` = '$jbi_sn'";
-    //die($sql);
+    $sql = "update `" . $xoopsDB->prefix("jill_booking_item") . "` set `jbi_approval` = '{$_POST['jbi_approval']}'  where `jbi_sn` = '$jbi_sn'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
     return $jbi_sn;
@@ -86,7 +93,7 @@ switch ($op) {
     case "save_jbi_approval":
         $jbi_sn = save_jbi_approval($jbi_sn);
         header("location: main.php");
-        break;
+        exit;
 
     default:
         jbi_approval_form($jbi_sn);
@@ -97,4 +104,6 @@ switch ($op) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign("isAdmin", true);
+$xoTheme->addStylesheet('/modules/tadtools/css/font-awesome/css/font-awesome.css');
+$xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SEESION['bootstrap']}.css");
 include_once 'footer.php';

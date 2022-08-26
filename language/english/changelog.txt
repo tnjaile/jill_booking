@@ -15,6 +15,10 @@ Unzip the module and upload the jill booking directory to the modules
 2. Go to the backstage for module installation.
 
 [History Update]
+JILL BOOKING Version 2.4.1 Release  2022-08-24
+ =================================================
+1.Support Bootstrap5
+
 JILL BOOKING Version 2.4 Release 2021-08-19
  =================================================
  1.conformance level AA
