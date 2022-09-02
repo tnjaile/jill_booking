@@ -14,7 +14,7 @@ function get_jill_booking_item($jbi_sn = "", $jbi_enable = "")
 
     $where = ($jbi_enable == "1") ? " where `jbi_sn` = '{$jbi_sn}' and `jbi_enable`='{$jbi_enable}' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) " : " where `jbi_sn` = '{$jbi_sn}'";
     $sql = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` $where ";
-    //die($sql);
+    // die($sql);
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     $data = $xoopsDB->fetchArray($result);
     return $data;
@@ -24,8 +24,8 @@ function get_jill_booking_item($jbi_sn = "", $jbi_enable = "")
 function get_jill_booking_time_options($def_jbi_sn = "", $approval = "")
 {
     global $xoopsDB;
-    $where_approval = (empty($approval)) ? "" : " && (`jbi_approval` LIKE '%;{$approval}' || `jbi_approval` LIKE '{$approval};%' || `jbi_approval`='{$approval}')";
-    $sql = "select jbi_sn,jbi_title,jbi_approval from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) $where_approval order by jbi_sort";
+    // $where_approval = (empty($approval)) ? "" : " && (`jbi_approval` LIKE '%,{$approval}' || `jbi_approval` LIKE '{$approval},%' || `jbi_approval`='{$approval}')";
+    $sql = "select jbi_sn,jbi_title,jbi_approval from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) order by jbi_sort";
     // die($sql);
     $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     $opt = "";
@@ -34,6 +34,12 @@ function get_jill_booking_time_options($def_jbi_sn = "", $approval = "")
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $jbi_approval_arr = explode(',', $jbi_approval);
+        if (!empty($approval) and !in_array($approval, $jbi_approval_arr)) {
+            continue;
+        }
+
         $is_approval = (empty($jbi_approval)) ? "" : _MD_IS_APPROVAL;
         $selected = ($jbi_sn == $def_jbi_sn) ? "selected" : "";
         $opt .= "<option value='$jbi_sn' $selected>$jbi_title{$is_approval}</option>";

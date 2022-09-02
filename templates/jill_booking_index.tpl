@@ -110,14 +110,12 @@
           </tbody>
         </table>
     <{else}>
-      <div class="jumbotron">
         <div class="alert alert-info">
           <ul>
             <li><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEMINFO}></li>
             <li><{$smarty.const._MD_JILLBOOKIN_PLEASE_LOGIN}></li>
           </ul>
         </div>
-      </div>
     <{/if}>
   </form>
 <{/if}>

@@ -19,7 +19,7 @@ function jill_booking_approvallist($jbi_sn = "")
     $myts = \MyTextSanitizer::getInstance();
     //場地設定
     $item_opt = get_jill_booking_time_options($jbi_sn, $uid);
-    //die(var_export($item_opt));
+    // Utility::dd($item_opt);
     if (!empty($jbi_sn)) {
         $itemArr = get_jill_booking_item($jbi_sn, 1);
         $checkapproval = explode(",", $itemArr['jbi_approval']);

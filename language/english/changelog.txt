@@ -15,6 +15,10 @@ Unzip the module and upload the jill booking directory to the modules
 2. Go to the backstage for module installation.
 
 [History Update]
+jill booking 2.4.2 版  2022-09-02 Release
+ =================================================
+1.Fixed the problem of not being able to audit
+
 JILL BOOKING Version 2.4.1 Release  2022-08-24
  =================================================
 1.Support Bootstrap5
@@ -22,7 +26,7 @@ JILL BOOKING Version 2.4.1 Release  2022-08-24
 JILL BOOKING Version 2.4 Release 2021-08-19
  =================================================
  1.conformance level AA
-jill booking 2.3.5 2020-09-09 釋出
+jill booking 2.3.5 2020-09-09 Release
  =================================================
 1.Approved by mail to the user and reviewer mailbox
 JILL BOOKING Version 2.3.4 Release 2020-08-04
