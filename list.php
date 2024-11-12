@@ -7,6 +7,34 @@ include "header.php";
 $xoopsOption['template_main'] = "jill_booking_list.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$primary = Request::getString('primary');
+$jb_sn = Request::getInt('jb_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+
+switch ($op) {
+/*---判斷動作請貼在下方---*/
+    case "delete_jill_booking":
+        $primaryArr = explode("_", $primary);
+        //jbi_sn=$primaryArr[0], jb_date=$primaryArr[1], jbt_sn=$primaryArr[2]
+        delete_booking($primaryArr[2], $primaryArr[1], $primaryArr[0]);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+        break;
+
+    default:
+        jill_booking_list($jbi_sn);
+        break;
+
+        /*---判斷動作請貼在上方---*/
+}
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
+$xoTheme->addStylesheet('modules/jill_booking/css/module.css');
+include_once XOOPS_ROOT_PATH . '/footer.php';
+
 /*-----------功能函數區--------------*/
 //列出所有jill_booking資料
 function jill_booking_list($def_jbi_sn = "")
@@ -27,14 +55,14 @@ function jill_booking_list($def_jbi_sn = "")
     join `" . $xoopsDB->prefix("jill_booking_time") . "` as c  on a.jbt_sn=c.jbt_sn
     join `" . $xoopsDB->prefix("jill_booking_item") . "` as d  on c.jbi_sn=d.jbi_sn
     where b.`jb_uid`='{$uid}' $where_jbisn order by a.jb_status desc,a.`jb_date` desc,a.`jb_waiting`,a.jbt_sn  ";
-    //die($sql);
+
     //Utility::getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
     $PageBar = Utility::getPageBar($sql, 20, 10, null, null);
     $bar = $PageBar['bar'];
     $sql = $PageBar['sql'];
     $total = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $result = Utility::query($sql);
 
     $all_content = array();
     $i = 0;
@@ -88,33 +116,3 @@ function get_chinese_weekday($datetime)
     $weekday = date('w', strtotime($datetime));
     return '星期' . $cw[$weekday];
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$primary = Request::getString('primary');
-$jb_sn = Request::getInt('jb_sn');
-$jbi_sn = Request::getInt('jbi_sn');
-
-switch ($op) {
-/*---判斷動作請貼在下方---*/
-    case "delete_jill_booking":
-        $primaryArr = explode("_", $primary);
-        //jbi_sn=$primaryArr[0], jb_date=$primaryArr[1], jbt_sn=$primaryArr[2]
-        delete_booking($primaryArr[2], $primaryArr[1], $primaryArr[0]);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-        break;
-
-    default:
-        jill_booking_list($jbi_sn);
-        break;
-
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("isAdmin", $isAdmin);
-$xoopsTpl->assign("can_booking", $can_booking);
-$xoopsTpl->assign("Isapproval", $Isapproval);
-include_once XOOPS_ROOT_PATH . '/footer.php';

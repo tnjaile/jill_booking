@@ -1,6 +1,6 @@
 .show_reason {
     font-size: 90%;
-    color:rgb(70, 69, 69);
+    color: rgb(70, 69, 69);
 }
 
 .edit {
@@ -8,5 +8,11 @@
 }
 
 .edit:hover {
-    color:rgb(196, 5, 46);
+    color: rgb(196, 5, 46);
+}
+
+.th_style {
+    background-color: #a2ccee ! important;
+    text-align: center;
+    vertical-align: middle;
 }

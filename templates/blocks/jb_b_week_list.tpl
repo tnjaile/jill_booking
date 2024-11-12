@@ -29,13 +29,13 @@
             </tr>
            </thead>
            <tbody>
-            <{if $data.timeArr}>
+            <{if $data.timeArr|default:false}>
               <{foreach from=$data.timeArr key=t item=time}>
                <tr >
                  <td style="text-align:center;vertical-align: middle;"><{$time.jbt_title}></td>
                  <{foreach from=$block.weekArr key=wk item=week}>
                   <td>
-                    <div  id="submit<{$t}>_<{$wk}>" style='text-align: center; vertical-align: middle; color:<{$data.bookingArr.$t.$wk.color}>;'>
+                    <div  id="submit<{$t|default:''}>_<{$wk|default:''}>" style='text-align: center; vertical-align: middle; color:<{$data.bookingArr.$t.$wk.color}>;'>
                         <{$data.bookingArr.$t.$wk.content}>
                     </div>
                   </td>

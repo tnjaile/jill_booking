@@ -41,7 +41,7 @@ class Update
         // show columns from xx_jill_booking_item where `Null`='no' && `Field`='jbi_end'
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where `Null`='no' && `Field`='jbi_end'";
 
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $result = Utility::query($sql);
 
         if (empty($result->num_rows)) {
             return true;
@@ -54,7 +54,7 @@ class Update
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_item") . " CHANGE `jbi_end` `jbi_end` date NOT NULL  COMMENT '停用日期' AFTER `jbi_start` ";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        Utility::query($sql);
         return true;
     }
 
@@ -64,7 +64,7 @@ class Update
         global $xoopsDB;
         $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Extra='auto_increment' ";
 
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $result = Utility::query($sql);
         if (empty($result->num_rows)) {
             return false;
         }
@@ -77,7 +77,7 @@ class Update
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " CHANGE `jbt_sn` `jbt_sn` mediumint(8) unsigned NOT NULL COMMENT '時段編號' AFTER `jb_date` ";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        Utility::query($sql);
         return true;
     }
 
@@ -85,8 +85,8 @@ class Update
     public static function chk_chk2()
     {
         global $xoopsDB;
-        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $sql = "show columns from " . $xoopsDB->prefix("jill_booking_item") . " where Field='jbi_approval' && Type='enum(\'0\',\'1\')' ";
+        $result = Utility::query($sql);
         if (empty($result->num_rows)) {
             return false;
         }
@@ -98,7 +98,7 @@ class Update
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_item") . " CHANGE `jbi_approval` `jbi_approval` varchar(255) COLLATE 'utf8_general_ci' NOT NULL COMMENT '審核人員' AFTER `jbi_enable` ";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        Utility::query($sql);
         return true;
     }
 
@@ -106,8 +106,8 @@ class Update
     public static function chk_chk3()
     {
         global $xoopsDB;
-        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Field='approver' ";
-        $result = $xoopsDB->query($sql);
+        $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Field='approver' ";
+        $result = Utility::query($sql);
         if (empty($result->num_rows)) {
             return true;
         }
@@ -119,7 +119,7 @@ class Update
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " ADD `approver` mediumint(8) unsigned NOT NULL default 0";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        Utility::query($sql);
 
         return true;
     }
@@ -128,8 +128,8 @@ class Update
     public static function chk_chk4()
     {
         global $xoopsDB;
-        $sql    = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Field='pass_date' ";
-        $result = $xoopsDB->query($sql);
+        $sql = "show columns from " . $xoopsDB->prefix("jill_booking_date") . " where Field='pass_date' ";
+        $result = Utility::query($sql);
         if (empty($result->num_rows)) {
             return true;
         }
@@ -142,20 +142,20 @@ class Update
     {
         global $xoopsDB;
         $sql = "ALTER TABLE " . $xoopsDB->prefix("jill_booking_date") . " ADD `pass_date` date NOT NULL ";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        Utility::query($sql);
 
         //正確抓取XOOPS時間
         $now = date('Y-m-d', xoops_getUserTimestamp(time()));
         //1.今天以前的2.今天起以後的，若jb_staus=1 3.今天起以後的，若jb_staus=0，節次相同，更新日期
         $sql = "update " . $xoopsDB->prefix("jill_booking_date") . " set `pass_date`='{$now}' where jb_date<'{$now}' || (`jb_status`='1' && jb_date>='{$now}')";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        Utility::query($sql);
 
         $sql = "select  `jb_date`, `jbt_sn`  from " . $xoopsDB->prefix("jill_booking_date") . " where
             `jb_status`='1' && jb_date>='{$now}'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        $result = Utility::query($sql);
         while (list($jb_date, $jbt_sn) = $xoopsDB->fetchRow($result)) {
             $sql2 = "update " . $xoopsDB->prefix("jill_booking_date") . " set `pass_date`='{$now}' where  `jb_date`='{$jb_date}' and `jbt_sn`='{$jbt_sn}'";
-            $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
+            Utility::query($sql2);
         }
         return true;
     }

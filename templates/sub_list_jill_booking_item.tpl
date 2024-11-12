@@ -1,7 +1,7 @@
-<{if $all_content}>
-    <{if $isAdmin}>
-        <{$delete_jill_booking_item_func}>
-        <{$jill_booking_item_jquery_ui}>
+<{if $all_content|default:false}>
+    <{if $smarty.session.jill_book_adm|default:false}>
+        <{$delete_jill_booking_item_func|default:''}>
+        <{$jill_booking_item_jquery_ui|default:''}>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#jill_booking_item_sort").sortable({ opacity: 0.6, cursor: "move", update: function() {
@@ -34,7 +34,7 @@
             <!--審核者-->
             <{$smarty.const._MA_JILLBOOKIN_JBI_APPROVAL}>
             </th>
-            <{if $isAdmin}>
+            <{if $smarty.session.jill_book_adm|default:false}>
             <th><{$smarty.const._TAD_FUNCTION}></th>
             <{/if}>
         </tr>
@@ -61,9 +61,9 @@
                 <{$data.jbi_approval}>
             </td>
 
-            <{if $isAdmin}>
+            <{if $smarty.session.jill_book_adm|default:false}>
                 <td>
-                <a href="javascript:delete_jill_booking_item_func(<{$data.jbi_sn}>);" class="btn btn-sm btn-danger"><{$smarty.const._TAD_DEL}></a>
+                <a href="javascript:delete_jill_booking_item_func(<{$data.jbi_sn}>);" class="btn btn-sm btn-danger"><i class="fa fa-times" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form&jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-warning"><{$smarty.const._TAD_EDIT}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/time.php?op=list_jill_booking_time&jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-success"><{$smarty.const._MA_JILLBOOKIN_SETTIME}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/approval.php?jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-primary"><{$smarty.const._MA_JILLBOOKIN_SETAPPROVAL}></a>
@@ -76,15 +76,15 @@
     </table>
 
 
-    <{if $isAdmin}>
+    <{if $smarty.session.jill_book_adm|default:false}>
         <div class="text-right text-end">
         <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form" class="btn btn-info"><{$smarty.const._MA_JILLBOOKIN_ADD}></a>
         </div>
     <{/if}>
 
-    <{$bar}>
+    <{$bar|default:''}>
     <{else}>
-    <{if $isAdmin}>
+    <{if $smarty.session.jill_book_adm|default:false}>
         <div class="jumbotron text-center">
         <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form" class="btn btn-info"><{$smarty.const._MA_JILLBOOKIN_ADD}></a>
         </div>

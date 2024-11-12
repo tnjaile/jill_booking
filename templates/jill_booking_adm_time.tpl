@@ -1,8 +1,8 @@
 
 <{if $now_op=="list_jill_booking_time"}>
-  <{$formValidator_code}>
-  <{$jeditable_set}>
-  <{$delete_jill_booking_time_func}>
+  <{$formValidator_code|default:''}>
+  <{$jeditable_set|default:''}>
+  <{$delete_jill_booking_time_func|default:''}>
 
   <script type='text/javascript'>
     $(document).ready(function(){
@@ -23,11 +23,11 @@
   </script>
   <h2><{$item.jbi_title}><{$smarty.const._MA_JILLBOOKIN_SETTIME}></h2>
 
-  <{if $jbi_desc}>
+  <{if $jbi_desc|default:false}>
     <!--場地說明-->
     <div class="row">
         <div class="card card-body bg-light m-1">
-          <{$jbi_desc}>
+          <{$jbi_desc|default:''}>
         </div>
     </div>
   <{/if}>
@@ -84,7 +84,7 @@
           </thead>
 
           <tbody id="sort">
-            <{if $all_content}>
+            <{if $all_content|default:false}>
               <{foreach from=$all_content item=data}>
                 <tr id='tr_<{$data.jbt_sn}>'>
                   <td style="text-align: center;">
@@ -117,7 +117,7 @@
                     <{if $data.booking_times!=""}>
                       <{$data.booking_times}>
                     <{else}>
-                      <a href="javascript:delete_jill_booking_time_func(<{$data.jbt_sn}>);" class="btn btn-sm btn-danger"><{$smarty.const._TAD_DEL}></a>
+                      <a href="javascript:delete_jill_booking_time_func(<{$data.jbt_sn}>);" class="btn btn-sm btn-danger"><i class="fa fa-times" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
                     <{/if}>
                   </td>
                 </tr>
@@ -126,7 +126,7 @@
           </tbody>
           <tr>
             <td>
-              <input type="text" name="jbt_title" id="jbt_title" class="form-control validate[required] " value="<{$jbt_title}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBT_TITLE}>">
+              <input type="text" name="jbt_title" id="jbt_title" class="form-control validate[required] " value="<{$jbt_title|default:''}>" placeholder="<{$smarty.const._MA_JILLBOOKIN_JBT_TITLE}>">
             </td>
             <td style="text-align: center;">
               <input type="checkbox" name="jbt_week[]" value="1" checked="checked">
@@ -150,7 +150,7 @@
               <input type="checkbox" name="jbt_week[]" value="0">
             </td>
             <td>
-              <input type="hidden" name="jbi_sn" value="<{$jbi_sn}>">
+              <input type="hidden" name="jbi_sn" value="<{$jbi_sn|default:''}>">
               <input type="hidden" name="op" value="insert_jill_booking_time">
               <button type="submit" class="btn  btn-outline-primary"><{$smarty.const._MA_JILLBOOKIN_ADD_TIME}></button>
             </td>
@@ -164,10 +164,10 @@
           <a href="#" class="list-group-item active">
             <{$smarty.const._MA_JILLBOOKIN_IMPORT}>
           </a>
-          <a href="time.php?op=import_time&jbi_sn=<{$jbi_sn}>&type=18" class="list-group-item"><{$smarty.const._MA_JILLBOOKIN_IMPORT_18}></a>
-          <a href="time.php?op=import_time&jbi_sn=<{$jbi_sn}>&type=apm" class="list-group-item"><{$smarty.const._MA_JILLBOOKIN_IMPORT_APM}></a>
+          <a href="time.php?op=import_time&jbi_sn=<{$jbi_sn|default:''}>&type=18" class="list-group-item"><{$smarty.const._MA_JILLBOOKIN_IMPORT_18}></a>
+          <a href="time.php?op=import_time&jbi_sn=<{$jbi_sn|default:''}>&type=apm" class="list-group-item"><{$smarty.const._MA_JILLBOOKIN_IMPORT_APM}></a>
           <{foreach from=$place_time item=place}>
-            <a href="time.php?op=copy_time&jbi_sn=<{$place.jbi_sn}>&to_jbi_sn=<{$jbi_sn}>" class="list-group-item"><{$place.jbi_link}></a>
+            <a href="time.php?op=copy_time&jbi_sn=<{$place.jbi_sn}>&to_jbi_sn=<{$jbi_sn|default:''}>" class="list-group-item"><{$place.jbi_link}></a>
           <{/foreach}>
         </div>
       <{/if}>

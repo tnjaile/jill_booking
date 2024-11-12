@@ -1,18 +1,18 @@
-<{$toolbar}>
+<{$toolbar|default:''}>
 <h3 class='sr-only'><{$smarty.const._MD_JILLBOOKIN_SMNAME3}></h3>
 <!--列出所有資料-->
 <{if $now_op=="jill_booking_list"}>
   <div class="row mb-2">
     <div class="col-auto">
-      <select id="jbi_sn" name="jbi_sn" class="form-control " onchange="location.href='<{$action}>?jbi_sn='+this.value" title='jbi_sn'>
-        <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSE}></option>
-        <{$item_opt}>
+      <select id="jbi_sn" name="jbi_sn" class="form-select " style="width: auto;" onchange="location.href='<{$action|default:''}>?jbi_sn='+this.value" title='jbi_sn'>
+        <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEM}></option>
+        <{$item_opt|default:''}>
       </select>
     </div>
   </div>
 
-  <{if $all_content}>
-    <{$delete_jill_booking_func}>
+  <{if $all_content|default:false}>
+    <{$delete_jill_booking_func|default:''}>
 
     <table class="table table-striped table-hover">
       <thead>
@@ -71,15 +71,15 @@
             </td>
             <td>
               <!--是否核准-->
-              <{if $data.jb_status}>
+              <{if $data.jb_status|default:false}>
                 <img src="<{$xoops_url}>/modules/jill_booking/images/yes.gif" alt="<{$smarty.const._YES}>" title="<{$smarty.const._YES}>">
               <{else}>
                 <img src="<{$xoops_url}>/modules/jill_booking/images/no.gif" alt="<{$smarty.const._NO}>" title="<{$smarty.const._NO}>">
               <{/if}>
             </td>
             <td>
-              <{if $data.fun}>
-                <a href="javascript:delete_jill_booking_func('<{$data.primary}>');" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+              <{if $data.fun|default:false}>
+                <a href="javascript:delete_jill_booking_func('<{$data.primary}>');" class="btn btn-sm btn-danger"><i class="fa fa-times" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
               <{/if}>
             </td>
           </tr>
@@ -87,7 +87,7 @@
       </tbody>
     </table>
 
-    <{$bar}>
+    <{$bar|default:''}>
   <{else}>
     <div class="row">
       <div class="alert alert-info text-center"><{$smarty.const._MD_NO_RECORD}></div>

@@ -23,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <{if $data.todaylist}>
+            <{if $data.todaylist|default:false}>
               <{foreach from=$data.todaylist item=tlist}>
                 <tr>
                   <td><{$tlist.jbt_title}></td>

@@ -5,6 +5,7 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
 include_once "header.php";
 include_once "../function.php";
+$xoopsLogger->activated = false;
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
 
@@ -108,8 +109,8 @@ function createOrders($data)
     $event = trim($data['event']); // 理由
     $event = $event === '' ? _MD_INDIVIDUAL_BOOKING : $event;
 
-    $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking')} (`jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES ('{$uid}', '{$orderAt}', '{$event}', '{$jb_date}', '{$jb_date_end}')";
-    $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('jill_booking') . '` (`jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES (?, ?, ?, ?, ?)';
+    Utility::query($sql, 'issss', [$uid, $orderAt, $event, $jb_date, $jb_date_end]);
     $jb_sn = $xoopsDB->getInsertId(); // 取得最新的預約單 id
 
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking_date')} (`jb_sn`, `jb_date`, `jbt_sn`, `jb_waiting`, `jb_status`, `approver`, `pass_date`) VALUES ";
@@ -122,11 +123,11 @@ function createOrders($data)
     }
 
     $sql .= implode(',', $date_values);
-    $xoopsDB->query($sql) or Utility::web_error($sql);
+    Utility::query($sql);
 
     $sql = "INSERT INTO {$xoopsDB->prefix('jill_booking_week')} (`jb_sn`, `jb_week`, `jbt_sn`) VALUES ";
     $sql .= implode(',', $week_values);
-    $xoopsDB->query($sql) or Utility::web_error($sql);
+    Utility::query($sql);
 
     return true;
 }
@@ -136,11 +137,8 @@ function getAllItems()
 {
     global $xoopsDB;
 
-    $sql = "SELECT
-                jbi_sn, jbi_title
-            FROM
-                {$xoopsDB->prefix('jill_booking_item')}";
-    $result = $xoopsDB->query($sql);
+    $sql = 'SELECT `jbi_sn`, `jbi_title` FROM `' . $xoopsDB->prefix('jill_booking_item') . '`';
+    $result = Utility::query($sql);
 
     $data = [];
     while ($item = $xoopsDB->fetchArray($result)) {
@@ -156,15 +154,8 @@ function getTimesByItem($jbi_sn, $date)
 {
     global $xoopsDB;
 
-    $sql = "SELECT
-                jbt_sn, jbi_sn, jbt_title, jbt_week
-            FROM
-                {$xoopsDB->prefix('jill_booking_time')}
-            WHERE
-                jbi_sn = {$jbi_sn}
-            ORDER BY
-                jbt_sort ASC";
-    $result = $xoopsDB->query($sql);
+    $sql = 'SELECT `jbt_sn`, `jbi_sn`, `jbt_title`, `jbt_week` FROM `' . $xoopsDB->prefix('jill_booking_time') . '` WHERE `jbi_sn` = ? ORDER BY `jbt_sort` ASC';
+    $result = Utility::query($sql, 'i', [$jbi_sn]);
 
     $data = [];
     $w = date('w', strtotime($date)); // 0-6，日一二....六
@@ -188,17 +179,8 @@ function getUsedTimes($times, $date)
     $all_sn = array_column($times, 'jbt_sn');
     $all_sn = implode(',', $all_sn);
 
-    $sql = "SELECT
-            `jbt_sn`, `jb_uid`, `jb_booking_content`
-        FROM
-            {$xoopsDB->prefix('jill_booking_date')} AS t_date
-        LEFT JOIN
-            {$xoopsDB->prefix('jill_booking')} AS booking
-        ON
-            t_date.jb_sn = booking.jb_sn
-        WHERE
-            `jb_date` = '{$date}' AND `jbt_sn` IN ({$all_sn})";
-    $result = $xoopsDB->query($sql);
+    $sql = 'SELECT `jbt_sn`, `jb_uid`, `jb_booking_content` FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS t_date LEFT JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS booking ON t_date.`jb_sn` = booking.`jb_sn` WHERE `jb_date` = ? AND `jbt_sn` IN (?)';
+    $result = Utility::query($sql, 'ss', [$date, $all_sn]);
 
     // 已預約之時段資料陣列，
     // jbt_sn, jb_uid, jb_booking_content, name
@@ -221,5 +203,4 @@ function getJSONResponse($data)
     return json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("isAdmin", true);
 include_once 'footer.php';

@@ -36,3 +36,6 @@ define('_MI_JILLBOOKIN_BACK_2_ADMIN', 'Back to Administration of ');
 
 //help
 define('_MI_JILLBOOKIN_HELP_OVERVIEW', 'Overview');
+
+define('_MI_JILLBOOKIN_CAN_SEND_MAIL', 'Are notification letters sent?');
+define('_MI_JILLBOOKIN_CAN_SEND_MAIL_DESC', 'Close the system if you can\'t send mail.');

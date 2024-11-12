@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Jill_booking\Tools;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
@@ -7,6 +8,47 @@ use XoopsModules\Tadtools\Utility;
 include "header.php";
 $xoopsOption['template_main'] = "jill_booking_batch.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
+
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+
+switch ($op) {
+/*---判斷動作請貼在下方---*/
+
+//新增資料
+    case "insert_jill_booking":
+        $sn = bath_insert();
+
+        header("location: {$_SERVER['PHP_SELF']}?op=list_jill_booking&jb_sn={$sn['jb_sn']}&jbi_sn={$sn['jbi_sn']}");
+        break;
+
+    case "insert_jill_booking_date":
+        $jbi_sn = insert_jill_booking_date($jb_sn, 0, $jbi_sn);
+        header("location:index.php?jbi_sn=$jbi_sn");
+        break;
+
+    case "list_jill_booking":
+        list_jill_booking($jb_sn, $jbi_sn);
+        break;
+
+    case "jill_booking_form":
+        jill_booking_form($jbt_sn, $jb_date);
+        break;
+
+    default:
+        jill_booking_form($jbi_sn);
+        break;
+
+        /*---判斷動作請貼在上方---*/
+}
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
+$xoTheme->addStylesheet('modules/jill_booking/css/module.css');
+include_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------功能函數區--------------*/
 
@@ -52,7 +94,7 @@ function jill_booking_form($jbi_sn = "")
         $xoopsTpl->assign('max_date', $max_date);
 
         //時段資訊
-        $timeArr = get_bookingtime_jbisn($jbi_sn);
+        $timeArr = Tools::get_bookingtime_jbisn($jbi_sn);
         $xoopsTpl->assign('timeArr', $timeArr);
         //die(var_export($timeArr));
         $weektime = array();
@@ -186,11 +228,11 @@ function list_jill_booking($jb_sn = "", $jbi_sn = "")
 function get_jbwaiting($jbt_sn = "", $jb_date = "")
 {
     global $xoopsDB;
-    $sql = "select a.jb_waiting,b.jb_uid from `" . $xoopsDB->prefix("jill_booking_date") . "` as a
-          join `" . $xoopsDB->prefix("jill_booking") . "` as b on a.jb_sn=b.jb_sn
-          where a.jbt_sn=$jbt_sn and a.jb_date='{$jb_date}' order by a.jb_waiting ";
-    //die($sql);
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = 'SELECT a.jb_waiting, b.jb_uid FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
+        JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b ON a.jb_sn=b.jb_sn
+        WHERE a.jbt_sn=? AND a.jb_date=? ORDER BY a.jb_waiting';
+    $result = Utility::query($sql, 'is', [$jbt_sn, $jb_date]);
+
     $data = array();
     $i = 0;
     while (list($jb_waiting, $jb_uid) = $xoopsDB->fetchRow($result)) {
@@ -204,11 +246,11 @@ function get_jbwaiting($jbt_sn = "", $jb_date = "")
 function get_maxwaiting_byrange($jb_start_date = "", $jb_end_date = "", $str = "")
 {
     global $xoopsDB;
-    //die($str);
-    $where = ($jb_end_date == '0000-00-00') ? "where `jbt_sn` in({$str}) and `jb_date` >= '{$jb_start_date}' " : "where `jbt_sn` in({$str}) and (`jb_date` between '{$jb_start_date}' and '{$jb_end_date}' ) ";
-    $sql = "select max(`jb_waiting`) from `" . $xoopsDB->prefix("jill_booking_date") . "` $where ";
-    //die($sql);
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $where = ($jb_end_date == '0000-00-00') ? 'WHERE `jbt_sn` IN(?) AND `jb_date` >= ?' : 'WHERE `jbt_sn` IN(?) AND (`jb_date` BETWEEN ? AND ?)';
+    $sql = 'SELECT MAX(`jb_waiting`) FROM `' . $xoopsDB->prefix('jill_booking_date') . '` ' . $where;
+    $params = ($jb_end_date == '0000-00-00') ? ['ss', [$str, $jb_start_date]] : ['sss', [$str, $jb_start_date, $jb_end_date]];
+    $result = Utility::query($sql, ...$params);
+
     list($max) = $xoopsDB->fetchRow($result);
     return $max;
 }
@@ -221,8 +263,9 @@ function get_booking_weekArr($jb_sn = "")
         return;
     }
 
-    $sql = "select * from `" . $xoopsDB->prefix("jill_booking_week") . "` where `jb_sn` = '{$jb_sn}'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('jill_booking_week') . '` WHERE `jb_sn` =?';
+    $result = Utility::query($sql, 'i', [$jb_sn]);
+
     $data = array();
     $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -238,46 +281,3 @@ function get_booking_weekArr($jb_sn = "")
     }
     return $data;
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$jb_sn = Request::getInt('jb_sn');
-$jbt_sn = Request::getInt('jbt_sn');
-$jbi_sn = Request::getInt('jbi_sn');
-
-switch ($op) {
-/*---判斷動作請貼在下方---*/
-
-//新增資料
-    case "insert_jill_booking":
-        $sn = bath_insert();
-
-        header("location: {$_SERVER['PHP_SELF']}?op=list_jill_booking&jb_sn={$sn['jb_sn']}&jbi_sn={$sn['jbi_sn']}");
-        break;
-
-    case "insert_jill_booking_date":
-        $jbi_sn = insert_jill_booking_date($jb_sn, 0, $jbi_sn);
-        header("location:index.php?jbi_sn=$jbi_sn");
-        break;
-
-    case "list_jill_booking":
-        list_jill_booking($jb_sn, $jbi_sn);
-        break;
-
-    case "jill_booking_form":
-        jill_booking_form($jbt_sn, $jb_date);
-        break;
-
-    default:
-        jill_booking_form($jbi_sn);
-        break;
-
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("isAdmin", $isAdmin);
-$xoopsTpl->assign("can_booking", $can_booking);
-$xoopsTpl->assign("Isapproval", $Isapproval);
-include_once XOOPS_ROOT_PATH . '/footer.php';

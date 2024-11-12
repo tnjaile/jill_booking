@@ -7,8 +7,9 @@ function jb_b_today_list($options)
 {
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
-    $sql = "select jbi_sn,jbi_title from `" . $xoopsDB->prefix("jill_booking_item") . "` where jbi_enable='1' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) order by `jbi_sort`";
-    $result = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
+    $sql = 'SELECT `jbi_sn`,`jbi_title` FROM `' . $xoopsDB->prefix('jill_booking_item') . '` WHERE `jbi_enable`=1 AND ((NOW() BETWEEN `jbi_start` AND `jbi_end`) OR (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 AND `jbi_end`="0000-00-00")) ORDER BY `jbi_sort`';
+    $result = Utility::query($sql);
+
     //die($sql);
     $block['content'] = array();
     $i = 0;
@@ -65,18 +66,20 @@ function get_todaylist($jbi_sn = "")
     global $xoopsDB;
     $jb_date = date("Y-m-d");
     $w_today = date("w");
-    $sql2 = "select jbt_sn,jbt_title,jbt_week from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
-    $result2 = $xoopsDB->query($sql2) or XoopsModules\Tadtools\Utility::web_error($sql);
+
+    $sql2 = 'SELECT `jbt_sn`, `jbt_title`, `jbt_week` FROM `' . $xoopsDB->prefix('jill_booking_time') . '` WHERE `jbi_sn`=? ORDER BY `jbt_sort`';
+    $result2 = Utility::query($sql2, 'i', [$jbi_sn]);
     $data = array();
     $j = 0;
     while (list($jbt_sn, $jbt_title, $jbt_week) = $xoopsDB->fetchRow($result2)) {
         $data[$j]['jbt_sn'] = $jbt_sn;
         $data[$j]['jbt_title'] = $jbt_title;
         // //抓預約者
-        $sql = "select b.jb_sn,b.jb_uid from " . $xoopsDB->prefix("jill_booking_date") . " as a
-                left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-                where a.`jb_date`='{$jb_date}' && jb_status=1 && a.jbt_sn='{$jbt_sn}' order by a.jb_waiting limit 0,1";
-        $result = $xoopsDB->query($sql) or XoopsModules\Tadtools\Utility::web_error($sql);
+        $sql = 'SELECT b.`jb_sn`, b.`jb_uid` FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
+        LEFT JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b ON a.`jb_sn` = b.`jb_sn`
+        WHERE a.`jb_date` = ? AND `jb_status` = 1 AND a.`jbt_sn` = ? ORDER BY a.`jb_waiting` LIMIT 0, 1';
+        $result = Utility::query($sql, 'si', [$jb_date, $jbt_sn]);
+
         // die($sql);
         $i = 0;
         list($jb_sn, $jb_uid) = $xoopsDB->fetchRow($result);

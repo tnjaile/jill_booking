@@ -6,6 +6,27 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_approval.tpl';
 include_once "header.php";
 include_once "../function.php";
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$jbi_sn = Request::getInt('jbi_sn');
+
+switch ($op) {
+    /*---判斷動作請貼在下方---*/
+
+    case "save_jbi_approval":
+        $jbi_sn = save_jbi_approval($jbi_sn);
+        header("location: main.php");
+        exit;
+
+    default:
+        jbi_approval_form($jbi_sn);
+        break;
+
+        /*---判斷動作請貼在上方---*/
+}
+
+/*-----------秀出結果區--------------*/
+include_once 'footer.php';
 
 /*-----------功能函數區--------------*/
 function jbi_approval_form($jbi_sn = "")
@@ -22,8 +43,9 @@ function jbi_approval_form($jbi_sn = "")
     //設定 jbi_approval 欄位的預設值
     $xoopsTpl->assign('approval', (int) $DBV['jbi_approval']);
     $op = "save_jbi_approval";
-    $sql = "select `uid`,`name`,`uname` from `" . $xoopsDB->prefix("users") . "` order by `uname` ";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+
+    $sql = 'SELECT `uid`,`name`,`uname` FROM `' . $xoopsDB->prefix('users') . '` ORDER BY `uname`';
+    $result = Utility::query($sql);
     // $all_content = array();
     // $all_content2 = array();
     $from_arr = $to_arr = [];
@@ -78,32 +100,8 @@ function save_jbi_approval($jbi_sn = "")
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $sql = "update `" . $xoopsDB->prefix("jill_booking_item") . "` set `jbi_approval` = '{$_POST['jbi_approval']}'  where `jbi_sn` = '$jbi_sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('jill_booking_item') . '` SET `jbi_approval` = ? WHERE `jbi_sn` = ?';
+    Utility::query($sql, 'si', [$_POST['jbi_approval'], $jbi_sn]);
 
     return $jbi_sn;
 }
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$jbi_sn = Request::getInt('jbi_sn');
-
-switch ($op) {
-    /*---判斷動作請貼在下方---*/
-
-    case "save_jbi_approval":
-        $jbi_sn = save_jbi_approval($jbi_sn);
-        header("location: main.php");
-        exit;
-
-    default:
-        jbi_approval_form($jbi_sn);
-        break;
-
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign("isAdmin", true);
-$xoTheme->addStylesheet('/modules/tadtools/css/font-awesome/css/font-awesome.css');
-$xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SEESION['bootstrap']}.css");
-include_once 'footer.php';

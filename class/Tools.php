@@ -1,17 +1,23 @@
 <?php
+namespace XoopsModules\Jill_booking;
+
 use XoopsModules\Tadtools\Utility;
-if (!function_exists("booking_users")) {
+
+class Tools
+{
+
     //取得用了該日期時段的所有者
-    function booking_users($jbt_sn = "", $jb_date = "")
+    public static function booking_users($jbt_sn = "", $jb_date = "")
     {
         global $xoopsDB;
 
-        $sql = "select a.`jb_waiting`,a.`jb_status`, b.`jb_booking_content`, c.`name`
-        from " . $xoopsDB->prefix("jill_booking_date") . " as a
-        left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-        left join " . $xoopsDB->prefix("users") . " as c on b.`jb_uid`=c.`uid`
-        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' order by a.`jb_waiting` ";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $sql = 'SELECT a.`jb_waiting`, a.`jb_status`, b.`jb_booking_content`, c.`name`
+            FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
+            LEFT JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b ON a.`jb_sn`=b.`jb_sn`
+            LEFT JOIN `' . $xoopsDB->prefix('users') . '` AS c ON b.`jb_uid`=c.`uid`
+            WHERE a.`jbt_sn`=? AND a.`jb_date`=? ORDER BY a.`jb_waiting`';
+        $result = Utility::query($sql, 'is', [$jbt_sn, $jb_date]);
+
         $totalnum = $xoopsDB->getRowsNum($result);
         $usershtml = "";
         if ($totalnum > 1) {
@@ -30,35 +36,33 @@ if (!function_exists("booking_users")) {
         }
         return $usershtml;
     }
-}
 
-if (!function_exists("get_booking_uid")) {
     //取得用了該日期時段的uid
-    function get_booking_uid($jbt_sn = "", $jb_date = "")
+    public static function get_booking_uid($jbt_sn = "", $jb_date = "")
     {
         global $xoopsDB;
         //先抓核准通過的順位
-        $sql = "select jb_waiting from " . $xoopsDB->prefix("jill_booking_date") . "
-	    where `jbt_sn`='{$jbt_sn}' && `jb_date`='{$jb_date}' && jb_status='1' ORDER BY jb_waiting ASC LIMIT 1 ";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+        $sql = 'SELECT `jb_waiting` FROM `' . $xoopsDB->prefix('jill_booking_date') . '` WHERE `jbt_sn` =? AND `jb_date` =? AND `jb_status`=? ORDER BY `jb_waiting` ASC LIMIT 1';
+        $result = Utility::query($sql, 'iss', [$jbt_sn, $jb_date, '1']);
+
         list($jb_waiting) = $xoopsDB->fetchRow($result);
-        $where_jb_waiting = (empty($jb_waiting)) ? "ORDER BY a.jb_waiting ASC LIMIT 1" : " && a.jb_waiting='{$jb_waiting}' ";
-        $sql2 = "select b.jb_sn,b.jb_uid,a.jb_status,b.jb_booking_content from " . $xoopsDB->prefix("jill_booking_date") . " as a
-        left join " . $xoopsDB->prefix("jill_booking") . " as b on a.`jb_sn`=b.`jb_sn`
-        where a.`jbt_sn`='{$jbt_sn}' and a.`jb_date`='{$jb_date}' $where_jb_waiting  ";
-        $result2 = $xoopsDB->query($sql2) or Utility::web_error($sql);
+        $where_jb_waiting = (empty($jb_waiting)) ? 'ORDER BY a.`jb_waiting` ASC LIMIT 1' : ' AND a.`jb_waiting`=? ';
+        $sql2 = 'SELECT b.`jb_sn`, b.`jb_uid`, a.`jb_status`, b.`jb_booking_content` FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
+                    LEFT JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b ON a.`jb_sn` = b.`jb_sn`
+                    WHERE a.`jbt_sn` = ? AND a.`jb_date` = ? ' . $where_jb_waiting;
+        $result2 = (empty($jb_waiting)) ? Utility::query($sql2, 'is', [$jbt_sn, $jb_date]) : Utility::query($sql2, 'iss', [$jbt_sn, $jb_date, $jb_waiting]);
+
         $data = $xoopsDB->fetchArray($result2);
         return $data;
     }
-}
 
-if (!function_exists("get_bookingtime_jbisn")) {
     //以jbi_sn取得jill_booking_time陣列
-    function get_bookingtime_jbisn($jbi_sn = "")
+    public static function get_bookingtime_jbisn($jbi_sn = "")
     {
         global $xoopsDB;
-        $sql = "select * from `" . $xoopsDB->prefix("jill_booking_time") . "` where jbi_sn=$jbi_sn order by `jbt_sort`";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('jill_booking_time') . '` WHERE `jbi_sn`=? ORDER BY `jbt_sort`';
+        $result = Utility::query($sql, 'i', [$jbi_sn]);
         $data = array();
         $i = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -77,11 +81,8 @@ if (!function_exists("get_bookingtime_jbisn")) {
         return $data;
     }
 
-}
-
-if (!function_exists("weekArr")) {
     //週曆
-    function weekArr($getdate = "")
+    public static function weekArr($getdate = "")
     {
         if (!$getdate) {
             $getdate = date("Y-m-d");
@@ -103,17 +104,22 @@ if (!function_exists("weekArr")) {
         //die(var_export($week));
         return $week;
     }
-}
-if (!function_exists("send_now")) {
-    //立即寄出
-    function send_now($email = "", $title = "", $content = "")
-    {
-        global $xoopsConfig, $xoopsDB, $xoopsModuleConfig, $xoopsModule;
-        $xoopsMailer = &getMailer();
-        $xoopsMailer->multimailer->ContentType = "text/html";
-        $xoopsMailer->addHeaders("MIME-Version: 1.0");
 
-        $msg .= ($xoopsMailer->sendMail($email, $title, $content, $headers)) ? "已寄發通知信給 {$email}" : "通知信寄發給 {$email} 失敗！";
+    //立即寄出
+    public static function send_now($email = "", $title = "", $content = "")
+    {
+        global $xoopsModuleConfig;
+        $msg = '';
+        if ($xoopsModuleConfig['can_send_mail']) {
+            $xoopsMailer = &getMailer();
+            $xoopsMailer->multimailer->ContentType = 'text/html';
+            $xoopsMailer->addHeaders('MIME-Version: 1.0');
+
+            $msg .= ($xoopsMailer->sendMail($email, $title, $content, $headers)) ? "已寄發通知信給 {$email}" : "通知信寄發給 {$email} 失敗！";
+        } else {
+            $msg = '目前設定為不寄發通知，請設法告知預約者預約結果';
+        }
         return $msg;
     }
+
 }

@@ -1,15 +1,48 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Jill_booking\Tools;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include "header.php";
 $xoopsOption['template_main'] = "jill_booking_listapproval.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
-include_once "function_block.php";
-if (empty($Isapproval)) {
+if (empty($_SESSION['Isapproval'])) {
     redirect_header(XOOPS_URL, 3, _MD_JILLBOOKIN_NOAPPROVAL);
 }
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$jb_info = Request::getString('jb_info');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+
+switch ($op) {
+/*---判斷動作請貼在下方---*/
+    case "update_jb_status":
+        if (is_date($_REQUEST['jb_date']) == 1) {
+            update_jb_status($jb_sn, $_REQUEST['jb_date'], $jbt_sn, $jbi_sn);
+        }
+        break;
+
+    case "delete_booking":
+        $infoArr = explode("_", $jb_info);
+        $jbi_sn = delete_booking($infoArr[1], $infoArr[2], $infoArr[3]);
+        header("location: {$_SERVER['PHP_SELF']}?jbi_sn={$jbi_sn}");
+        break;
+
+    default:
+        jill_booking_approvallist($jbi_sn);
+        break;
+
+        /*---判斷動作請貼在上方---*/
+}
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
+$xoTheme->addStylesheet('modules/jill_booking/css/module.css');
+include_once XOOPS_ROOT_PATH . '/footer.php';
+
 /*-----------功能函數區--------------*/
 //列出所有jill_booking資料
 function jill_booking_approvallist($jbi_sn = "")
@@ -36,7 +69,7 @@ function jill_booking_approvallist($jbi_sn = "")
             $sql = $PageBar['sql'];
             $total = $PageBar['total'];
 
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+            $result = Utility::query($sql);
 
             $all_content = array();
             $i = 0;
@@ -84,22 +117,18 @@ function jill_booking_approvallist($jbi_sn = "")
 //審核通過
 function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = "")
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser;
+    global $xoopsDB, $xoopsUser, $xoopsLogger;
+    $xoopsLogger->activated = false;
     $uid = $xoopsUser->uid();
+    $myts = \MyTextSanitizer::getInstance();
     //正確抓取XOOPS時間
     $now = date('Y-m-d', xoops_getUserTimestamp(time()));
     $itemArr = get_jill_booking_item($jbi_sn, 1);
     $checkapproval = explode(",", $itemArr['jbi_approval']);
-    // die(var_dump($checkapproval));
+
     if (in_array($uid, $checkapproval)) {
-        //jb_sn, jb_date,jbt_sn, jbi_sn
-        $sql = "update `" . $xoopsDB->prefix("jill_booking_date") . "` set
-                `jb_status` = '1',
-                `approver` = '{$uid}' ,
-                `pass_date` = '{$now}'
-                where `jb_sn` = '$jb_sn' && `jb_date`='{$jb_date}' && `jbt_sn`='$jbt_sn' ";
-        //die($sql);
-        $xoopsDB->queryF($sql) or die('0');
+        $sql = 'UPDATE `' . $xoopsDB->prefix('jill_booking_date') . '` SET `jb_status` = ?, `approver` = ?, `pass_date` = ? WHERE `jb_sn` = ? AND `jb_date` = ? AND `jbt_sn` = ?';
+        Utility::query($sql, 'sisisi', ['1', $uid, $now, $jb_sn, $jb_date, $jbt_sn]) or die('0');
 
         //寄送email
         $member_handler = &xoops_gethandler('member');
@@ -111,38 +140,18 @@ function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = ""
 
         $booking = XoopsUser::getUnameFromId($bookingArr['jb_uid'], 1);
         $booking_user = &$member_handler->getUser($bookingArr['jb_uid']);
+        $mail_title = "Auto-Reply:{$booking}於 {$jb_date} {$itemArr['jbi_title']} 審核通過";
+        $mail_content = Utility::html5("{$booking}於 {$jb_date} 預約了{$itemArr['jbi_title']}:星期 {$jb_week} {$timeArr['jbt_title']}審核通過");
         if (is_object($booking_user)) {
-            $booking_ts = &\MyTextSanitizer::getInstance();
-            $booking_email = $booking_ts->htmlSpecialChars($booking_user->getVar('email'));
-            send_now($booking_email, "Auto-Reply:{$booking}於 {$jb_date} {$itemArr['jbi_title']} 審核通過",
-                "<!DOCTYPE html>
-                <html lang='zh-TW'>
-                  <head>
-                    <meta charset='utf-8'>
-                  </head>
-                  <body>
-                  {$booking}於 {$jb_date} 預約了{$itemArr['jbi_title']}:星期 {$jb_week} {$timeArr['jbt_title']}審核通過
-                  </body>
-                </html>"
-            );
+            $booking_email = $myts->htmlSpecialChars($booking_user->getVar('email'));
+            Tools::send_now($booking_email, $mail_title, $mail_content);
         }
 
         foreach ($checkapproval as $key => $approval_uid) {
             $user = &$member_handler->getUser($approval_uid);
             if (is_object($user)) {
-                $ts = &\MyTextSanitizer::getInstance();
-                $email = $ts->htmlSpecialChars($user->getVar('email'));
-                send_now($email, "Auto-Reply:{$booking}於 {$jb_date} {$itemArr['jbi_title']} 審核通過",
-                    "<!DOCTYPE html>
-                <html lang='zh-TW'>
-                  <head>
-                    <meta charset='utf-8'>
-                  </head>
-                  <body>
-                  {$booking}於 {$jb_date} 預約了{$itemArr['jbi_title']}:星期 {$jb_week} {$timeArr['jbt_title']}審核通過
-                  </body>
-                </html>"
-                );
+                $email = $myts->htmlSpecialChars($user->getVar('email'));
+                Tools::send_now($email, $mail_title, $mail_content);
             }
         }
 
@@ -155,12 +164,10 @@ function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = ""
 function get_had_pass($jbt_sn = "", $jb_date = "")
 {
     global $xoopsDB;
-
-    $sql = "select a.pass_date,b.jb_uid from  `" . $xoopsDB->prefix("jill_booking_date") . "` as a
-            join `" . $xoopsDB->prefix("jill_booking") . "` as b on b.jb_sn=a.jb_sn
-            where a.pass_date!='0000-00-00' && a.jb_date='{$jb_date}'  && a.jbt_sn='{$jbt_sn}' && a.jb_waiting='1' order by a.jb_waiting";
-    //die($sql);
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = 'SELECT a.`pass_date`, b.`jb_uid` FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
+    JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b ON b.`jb_sn`=a.`jb_sn`
+    WHERE a.`pass_date` !=? AND a.`jb_date` =? AND a.`jbt_sn` =? AND a.`jb_waiting` = 1 ORDER BY a.`jb_waiting`';
+    $result = Utility::query($sql, 'ssi', ['0000-00-00', $jb_date, $jbt_sn]);
 
     list($pass_date, $jb_uid) = $xoopsDB->fetchRow($result);
     //列出預約者資訊
@@ -171,37 +178,3 @@ function get_had_pass($jbt_sn = "", $jb_date = "")
 
     return $users;
 }
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$jb_info = Request::getString('jb_info');
-$jb_sn = Request::getInt('jb_sn');
-$jbt_sn = Request::getInt('jbt_sn');
-$jbi_sn = Request::getInt('jbi_sn');
-
-switch ($op) {
-/*---判斷動作請貼在下方---*/
-    case "update_jb_status":
-        if (is_date($_REQUEST['jb_date']) == 1) {
-            update_jb_status($jb_sn, $_REQUEST['jb_date'], $jbt_sn, $jbi_sn);
-        }
-        break;
-
-    case "delete_booking":
-        $infoArr = explode("_", $jb_info);
-        $jbi_sn = delete_booking($infoArr[1], $infoArr[2], $infoArr[3]);
-        header("location: {$_SERVER['PHP_SELF']}?jbi_sn={$jbi_sn}");
-        break;
-
-    default:
-        jill_booking_approvallist($jbi_sn);
-        break;
-
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("isAdmin", $isAdmin);
-$xoopsTpl->assign("can_booking", $can_booking);
-$xoopsTpl->assign("Isapproval", $Isapproval);
-include_once XOOPS_ROOT_PATH . '/footer.php';

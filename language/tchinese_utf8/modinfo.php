@@ -27,3 +27,6 @@ define("_MI_JB_BDESC1", "今日預約(jb_b_today_list)");
 define('_MI_JB_BOPT0_DEF', '伸縮頁籤');
 define('_MI_JB_BNAME2', '本週預約');
 define('_MI_JB_BDESC2', '本週預約區塊 (jill_booking_week_list)');
+
+define('_MI_JILLBOOKIN_CAN_SEND_MAIL', '是否寄發通知信？');
+define('_MI_JILLBOOKIN_CAN_SEND_MAIL_DESC', '若系統無法寄信請關閉');

@@ -1,8 +1,8 @@
-  <div class="jumbotron">
+
     <div class="row">
       <div class="col-xs-3 col-sm-2">
         <p>選擇預約場地：</p>
-        <select name="jbi_sn" id="jbi-sn" size="10" style="width: 100%;"  title='jbi_sn'>
+        <select name="jbi_sn" id="jbi-sn" size="10" class="form-select"  title='jbi_sn'>
           <{foreach from=$items item=item}>
             <option value="<{$item.jbi_sn}>"><{$item.jbi_title}></option>
           <{/foreach}>
@@ -28,7 +28,7 @@
         <div id="time-list"></div>
       </div>
     </div>
-  </div>
+
 
 <script>
     ;(function($) {

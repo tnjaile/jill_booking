@@ -8,13 +8,60 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_main.tpl';
 include_once "header.php";
 include_once "../function.php";
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$jb_sn = Request::getInt('jb_sn');
+$jbt_sn = Request::getInt('jbt_sn');
+$jbi_sn = Request::getInt('jbi_sn');
+
+switch ($op) {
+    /*---判斷動作請貼在下方---*/
+
+    //新增資料
+    case "insert_jill_booking_item":
+        $jbi_sn = insert_jill_booking_item();
+        header("location: {$_SERVER['PHP_SELF']}?jbi_sn=$jbi_sn");
+        exit;
+
+    //更新資料
+    case "update_jill_booking_item":
+        update_jill_booking_item($jbi_sn);
+        header("location: {$_SERVER['PHP_SELF']}?jbi_sn=$jbi_sn");
+        exit;
+
+    case "jill_booking_item_form":
+        jill_booking_item_form($jbi_sn);
+        break;
+
+    case "delete_jill_booking_item":
+        delete_jill_booking_item($jbi_sn);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+    //更新排序
+    case "update_jill_booking_item_sort":
+        $msg = update_jill_booking_item_sort();
+        die($msg);
+
+    default:
+        if (empty($jbi_sn)) {
+            list_jill_booking_item();
+        } else {
+            show_one_jill_booking_item($jbi_sn);
+        }
+        break;
+
+        /*---判斷動作請貼在上方---*/
+}
+
+/*-----------秀出結果區--------------*/
+include_once 'footer.php';
 
 /*-----------功能函數區--------------*/
 
 //jill_booking_item編輯表單
 function jill_booking_item_form($jbi_sn = "")
 {
-    global $xoopsDB, $xoopsTpl;
+    global $xoopsTpl;
 
     //抓取預設值
     if (!empty($jbi_sn)) {
@@ -87,8 +134,9 @@ function jill_booking_item_form($jbi_sn = "")
 function jill_booking_item_max_sort()
 {
     global $xoopsDB;
-    $sql = "select max(`jbi_sort`) from `" . $xoopsDB->prefix("jill_booking_item") . "`";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = 'SELECT MAX(`jbi_sort`) FROM `' . $xoopsDB->prefix('jill_booking_item') . '`';
+    $result = Utility::query($sql);
+
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -103,16 +151,9 @@ function insert_jill_booking_item()
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-    $_POST['jbi_start'] = $myts->addSlashes($_POST['jbi_start']);
-    $_POST['jbi_end'] = $myts->addSlashes($_POST['jbi_end']);
-    $_POST['jbi_title'] = $myts->addSlashes($_POST['jbi_title']);
-    $_POST['jbi_desc'] = $myts->addSlashes($_POST['jbi_desc']);
     $jbi_sort = jill_booking_item_max_sort();
-    $sql = "insert into `" . $xoopsDB->prefix("jill_booking_item") . "`
-    (`jbi_title`,`jbi_desc` , `jbi_sort` ,`jbi_start` , `jbi_end`, `jbi_enable`, `jbi_approval` )
-    values( '{$_POST['jbi_title']}' , '{$_POST['jbi_desc']}', '{$jbi_sort}'  , '{$_POST['jbi_start']}' , '{$_POST['jbi_end']}' , '{$_POST['jbi_enable']}','{$_POST['jbi_approval']}' )";
-    $xoopsDB->query($sql) or Utility::web_error($sql);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('jill_booking_item') . '` (`jbi_title`, `jbi_desc`, `jbi_sort`, `jbi_start`, `jbi_end`, `jbi_enable`, `jbi_approval`) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    Utility::query($sql, 'ssissss', [(string) $_POST['jbi_title'], (string) $_POST['jbi_desc'], $jbi_sort, (string) $_POST['jbi_start'], (string) $_POST['jbi_end'], (string) $_POST['jbi_enable'], (string) $_POST['jbi_approval']]);
 
     //取得最後新增資料的流水編號
     $jbi_sn = $xoopsDB->getInsertId();
@@ -132,22 +173,17 @@ function update_jill_booking_item($jbi_sn = "")
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-    $_POST['jbi_start'] = $myts->addSlashes($_POST['jbi_start']);
-    $_POST['jbi_end'] = empty($_POST['jbi_end']) ? '0000-00-00' : $myts->addSlashes($_POST['jbi_end']);
-    $_POST['jbi_title'] = $myts->addSlashes($_POST['jbi_title']);
-    $_POST['jbi_desc'] = $myts->addSlashes($_POST['jbi_desc']);
-    $_POST['jbi_sort'] = (int) $_POST['jbi_sort'];
+    $_POST['jbi_end'] = empty($_POST['jbi_end']) ? '0000-00-00' : $_POST['jbi_end'];
 
-    $sql = "update `" . $xoopsDB->prefix("jill_booking_item") . "` set
-    `jbi_title` = '{$_POST['jbi_title']}' ,
-    `jbi_desc` = '{$_POST['jbi_desc']}' ,
-    `jbi_sort` = '{$_POST['jbi_sort']}' ,
-    `jbi_start` = '{$_POST['jbi_start']}' ,
-    `jbi_end` = '{$_POST['jbi_end']}' ,
-    `jbi_enable` = '{$_POST['jbi_enable']}'
-    where `jbi_sn` = '$jbi_sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('jill_booking_item') . '` SET
+    `jbi_title` = ? ,
+    `jbi_desc` = ? ,
+    `jbi_sort` = ? ,
+    `jbi_start` = ? ,
+    `jbi_end` = ? ,
+    `jbi_enable` = ?
+    WHERE `jbi_sn` = ?';
+    Utility::query($sql, 'ssisssi', [(string) $_POST['jbi_title'], (string) $_POST['jbi_desc'], (int) $_POST['jbi_sort'], (string) $_POST['jbi_start'], (string) $_POST['jbi_end'], (string) $_POST['jbi_enable'], $jbi_sn]);
 
     return $jbi_sn;
 }
@@ -157,8 +193,8 @@ function update_jill_booking_item_sort()
     global $xoopsDB;
     $sort = 1;
     foreach ($_POST['tr'] as $jbi_sn) {
-        $sql = "update " . $xoopsDB->prefix("jill_booking_item") . " set `jbi_sort`='{$sort}' where `jbi_sn`='{$jbi_sn}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")");
+        $sql = 'UPDATE `' . $xoopsDB->prefix('jill_booking_item') . '` SET `jbi_sort`=? WHERE `jbi_sn`=?';
+        Utility::query($sql, 'ii', [$sort, $jbi_sn]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')');
         $sort++;
     }
     return _TAD_SORTED . " (" . date("Y-m-d H:i:s") . ")";
@@ -166,28 +202,28 @@ function update_jill_booking_item_sort()
 //刪除jill_booking_item某筆資料資料
 function delete_jill_booking_item($jbi_sn = "")
 {
-    global $xoopsDB, $isAdmin;
+    global $xoopsDB;
     if (empty($jbi_sn)) {
         return;
     }
 
-    $sql = "delete from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_sn` = '{$jbi_sn}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql);
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('jill_booking_item') . '` WHERE `jbi_sn` = ?';
+    Utility::query($sql, 'i', [$jbi_sn]);
 
 }
 
 //以流水號秀出某筆jill_booking_item資料內容
 function show_one_jill_booking_item($jbi_sn = "")
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsDB, $xoopsTpl;
 
     if (empty($jbi_sn)) {
         return;
     }
     $myts = \MyTextSanitizer::getInstance();
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('jill_booking_item') . '` WHERE `jbi_sn` = ?';
+    $result = Utility::query($sql, 'i', [$jbi_sn]);
 
-    $sql = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` where `jbi_sn` = '{$jbi_sn}' ";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $jbi_sn , $jbi_start , $jbi_end , $jbi_title , $jbi_desc , $jbi_approval , $jbi_sort , $jbi_enable
@@ -225,7 +261,7 @@ function show_one_jill_booking_item($jbi_sn = "")
 //列出所有jill_booking_item資料
 function list_jill_booking_item()
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsDB, $xoopsTpl;
 
     $myts = \MyTextSanitizer::getInstance();
 
@@ -237,7 +273,7 @@ function list_jill_booking_item()
     $sql = $PageBar['sql'];
     $total = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
+    $result = Utility::query($sql);
 
     $all_content = array();
     $i = 0;
@@ -285,58 +321,6 @@ function list_jill_booking_item()
     Utility::get_jquery(true);
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
     $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('now_op', 'list_jill_booking_item');
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$jb_sn = Request::getInt('jb_sn');
-$jbt_sn = Request::getInt('jbt_sn');
-$jbi_sn = Request::getInt('jbi_sn');
-
-switch ($op) {
-    /*---判斷動作請貼在下方---*/
-
-    //新增資料
-    case "insert_jill_booking_item":
-        $jbi_sn = insert_jill_booking_item();
-        header("location: {$_SERVER['PHP_SELF']}?jbi_sn=$jbi_sn");
-        exit;
-
-    //更新資料
-    case "update_jill_booking_item":
-        update_jill_booking_item($jbi_sn);
-        header("location: {$_SERVER['PHP_SELF']}?jbi_sn=$jbi_sn");
-        exit;
-
-    case "jill_booking_item_form":
-        jill_booking_item_form($jbi_sn);
-        break;
-
-    case "delete_jill_booking_item":
-        delete_jill_booking_item($jbi_sn);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-    //更新排序
-    case "update_jill_booking_item_sort":
-        $msg = update_jill_booking_item_sort();
-        die($msg);
-
-    default:
-        if (empty($jbi_sn)) {
-            list_jill_booking_item();
-        } else {
-            show_one_jill_booking_item($jbi_sn);
-        }
-        break;
-
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign("isAdmin", true);
-$xoTheme->addStylesheet('/modules/tadtools/css/font-awesome/css/font-awesome.css');
-$xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SEESION['bootstrap']}.css");
-include_once 'footer.php';
