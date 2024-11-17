@@ -10,11 +10,9 @@ function jb_b_week_list($options)
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
     $block['weekArr'] = Tools::weekArr();
-    //die(var_dump($block['weekArr']));
 
     $sql = 'SELECT `jbi_sn`,`jbi_title` FROM `' . $xoopsDB->prefix('jill_booking_item') . '` WHERE `jbi_enable`=1 AND ((NOW() BETWEEN `jbi_start` AND `jbi_end`) OR (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 AND `jbi_end`="0000-00-00")) ORDER BY `jbi_sort`';
-    $result = Utility::query($sql);
-    //die($sql);
+    $result = $xoopsDB->query($sql);
     $block['content'] = array();
     $i = 0;
     while (list($jbi_sn, $jbi_title) = $xoopsDB->fetchRow($result)) {

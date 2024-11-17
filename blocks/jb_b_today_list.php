@@ -8,7 +8,7 @@ function jb_b_today_list($options)
     global $xoopsDB, $xoTheme;
     $block['options0'] = $options[0];
     $sql = 'SELECT `jbi_sn`,`jbi_title` FROM `' . $xoopsDB->prefix('jill_booking_item') . '` WHERE `jbi_enable`=1 AND ((NOW() BETWEEN `jbi_start` AND `jbi_end`) OR (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 AND `jbi_end`="0000-00-00")) ORDER BY `jbi_sort`';
-    $result = Utility::query($sql);
+    $result = $xoopsDB->query($sql);
 
     //die($sql);
     $block['content'] = array();
@@ -77,8 +77,8 @@ function get_todaylist($jbi_sn = "")
         // //抓預約者
         $sql = 'SELECT b.`jb_sn`, b.`jb_uid` FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
         LEFT JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b ON a.`jb_sn` = b.`jb_sn`
-        WHERE a.`jb_date` = ? AND `jb_status` = 1 AND a.`jbt_sn` = ? ORDER BY a.`jb_waiting` LIMIT 0, 1';
-        $result = Utility::query($sql, 'si', [$jb_date, $jbt_sn]);
+        WHERE a.`jb_date` = ? AND `jb_status` = ? AND a.`jbt_sn` = ? ORDER BY a.`jb_waiting` LIMIT 0, 1';
+        $result = Utility::query($sql, 'ssi', [$jb_date, '1', $jbt_sn]);
 
         // die($sql);
         $i = 0;

@@ -1,5 +1,5 @@
 <{if $all_content|default:false}>
-    <{if $smarty.session.jill_book_adm|default:false}>
+    <{if $jill_book_adm|default:false}>
         <{$delete_jill_booking_item_func|default:''}>
         <{$jill_booking_item_jquery_ui|default:''}>
         <script type="text/javascript">
@@ -34,7 +34,7 @@
             <!--審核者-->
             <{$smarty.const._MA_JILLBOOKIN_JBI_APPROVAL}>
             </th>
-            <{if $smarty.session.jill_book_adm|default:false}>
+            <{if $jill_book_adm|default:false}>
             <th><{$smarty.const._TAD_FUNCTION}></th>
             <{/if}>
         </tr>
@@ -61,7 +61,7 @@
                 <{$data.jbi_approval}>
             </td>
 
-            <{if $smarty.session.jill_book_adm|default:false}>
+            <{if $jill_book_adm|default:false}>
                 <td>
                 <a href="javascript:delete_jill_booking_item_func(<{$data.jbi_sn}>);" class="btn btn-sm btn-danger"><i class="fa fa-times" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
                 <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form&jbi_sn=<{$data.jbi_sn}>" class="btn btn-sm btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -76,7 +76,7 @@
     </table>
 
 
-    <{if $smarty.session.jill_book_adm|default:false}>
+    <{if $jill_book_adm|default:false}>
         <div class="text-right text-end">
         <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form" class="btn btn-info"><{$smarty.const._MA_JILLBOOKIN_ADD}></a>
         </div>
@@ -84,7 +84,7 @@
 
     <{$bar|default:''}>
     <{else}>
-    <{if $smarty.session.jill_book_adm|default:false}>
+    <{if $jill_book_adm|default:false}>
         <div class="jumbotron text-center">
         <a href="<{$xoops_url}>/modules/jill_booking/admin/main.php?op=jill_booking_item_form" class="btn btn-info"><{$smarty.const._MA_JILLBOOKIN_ADD}></a>
         </div>

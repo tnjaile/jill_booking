@@ -78,20 +78,20 @@ function get_jill_booking_time($jbt_sn = "")
 //取得用了該日期時段的uid
 function get_bookingArr($jbt_sn = "", $jb_date = "")
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB, $xoopsUser, $jill_book_adm;
     if (!isset($xoopsUser)) {
         return;
     }
 
     $uid = $xoopsUser->uid();
-    $where = ($_SESSION['Isapproval'] or $_SESSION['jill_book_adm']) ? "WHERE a.`jbt_sn`=? AND a.`jb_date`=? " : "WHERE a.`jbt_sn`=? AND a.`jb_date`=? AND b.`jb_uid`=?";
+    $where = ($_SESSION['Isapproval'] or $jill_book_adm) ? "WHERE a.`jbt_sn`=? AND a.`jb_date`=? " : "WHERE a.`jbt_sn`=? AND a.`jb_date`=? AND b.`jb_uid`=?";
 
     $sql = 'SELECT a.`jb_waiting`, b.`jb_sn`, b.`jb_uid`, b.`jb_booking_time`, b.`jb_booking_content`, b.`jb_start_date`, b.`jb_end_date`
             FROM `' . $xoopsDB->prefix('jill_booking_date') . '` AS a
             JOIN `' . $xoopsDB->prefix('jill_booking') . '` AS b
             ON a.`jb_sn`=b.`jb_sn` ' . $where . '
             ORDER BY a.`jb_waiting`';
-    $params = ($_SESSION['Isapproval'] or $_SESSION['jill_book_adm']) ? ['is', [$jbt_sn, $jb_date]] : ['isi', [$jbt_sn, $jb_date, $uid]];
+    $params = ($_SESSION['Isapproval'] or $jill_book_adm) ? ['is', [$jbt_sn, $jb_date]] : ['isi', [$jbt_sn, $jb_date, $uid]];
     $result = Utility::query($sql, ...$params);
 
     $data = $xoopsDB->fetchArray($result);
@@ -271,10 +271,10 @@ function delete_booking($jbt_sn = "", $jb_date = "", $jbi_sn = "")
 //檢查是否具有預約權限
 function booking_perm($mode = "booking_group")
 {
-    global $xoopsUser, $xoopsModuleConfig;
+    global $xoopsUser, $xoopsModuleConfig, $jill_book_adm;
     $_SESSION['can_booking'] = false;
     if ($xoopsUser) {
-        if ($_SESSION['jill_book_adm']) {
+        if ($jill_book_adm) {
             return true;
             exit;
         }
@@ -291,11 +291,11 @@ function booking_perm($mode = "booking_group")
 //檢查是否具有審核權限
 function booking_approval()
 {
-    global $xoopsUser, $xoopsDB;
+    global $xoopsUser, $xoopsDB, $jill_book_adm;
 
     $can_approval = false;
     if ($xoopsUser) {
-        if ($_SESSION['jill_book_adm']) {
+        if ($jill_book_adm) {
             return true;
             exit;
         }
