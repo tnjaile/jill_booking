@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\Utility;
 include "../../../mainfile.php";
 include '../../../include/cp_header.php';
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
 $sort = 1;

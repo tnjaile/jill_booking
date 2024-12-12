@@ -4,9 +4,9 @@ use XoopsModules\Jill_booking\Tools;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-include "header.php";
+require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = "jill_booking_listapproval.tpl";
-include_once XOOPS_ROOT_PATH . "/header.php";
+require_once XOOPS_ROOT_PATH . '/header.php';
 if (empty($_SESSION['Isapproval'])) {
     redirect_header(XOOPS_URL, 3, _MD_JILLBOOKIN_NOAPPROVAL);
 }
@@ -119,6 +119,7 @@ function jill_booking_approvallist($jbi_sn = "")
 function update_jb_status($jb_sn = "", $jb_date = "", $jbt_sn = "", $jbi_sn = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsLogger;
+    header('HTTP/1.1 200 OK');
     $xoopsLogger->activated = false;
     $uid = $xoopsUser->uid();
     $myts = \MyTextSanitizer::getInstance();

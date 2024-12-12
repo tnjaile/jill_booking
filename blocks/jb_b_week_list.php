@@ -1,8 +1,15 @@
 <?php
 
 use XoopsModules\Jill_booking\Tools;
+if (!class_exists('XoopsModules\Jill_booking\Tools')) {
+    require XOOPS_ROOT_PATH . '/modules/jill_booking/preloads/autoloader.php';
+}
+
 use XoopsModules\Tadtools\EasyResponsiveTabs;
 use XoopsModules\Tadtools\Utility;
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
 
 //區塊主函式 (jb_b_week_list)
 function jb_b_week_list($options)
@@ -91,14 +98,17 @@ function get_booking_table($weekArr = "", $timeArr = "")
             $item_date = strtotime($weekinfo['d']);
             //預約者資訊
             $jbArr = Tools::get_booking_uid($time['jbt_sn'], $weekinfo['d']);
-
             //取得用了該日期時段的所有者
             $usershtml = Tools::booking_users($time['jbt_sn'], $weekinfo['d']);
             //將 uid 編號轉換成使用者姓名（或帳號）
-            $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 1);
-            if (empty($uid_name)) {
-                $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
+            $uid_name = '';
+            if (isset($jbArr['jb_uid'])) {
+                $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 1);
+                if (empty($uid_name)) {
+                    $uid_name = XoopsUser::getUnameFromId($jbArr['jb_uid'], 0);
+                }
             }
+
             $uid_name = (empty($jbArr['jb_status'])) ? _MD_APPROVING . ":{$uid_name}" : $uid_name;
             $color = "transparent";
             $content = "";

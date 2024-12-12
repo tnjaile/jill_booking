@@ -11,11 +11,9 @@ function get_jill_booking_item($jbi_sn = "", $jbi_enable = "")
         return;
     }
 
-    $where = ($jbi_enable == "1") ? " WHERE `jbi_sn` = ? AND `jbi_enable` = ? AND ((NOW() BETWEEN `jbi_start` AND `jbi_end`) OR  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 AND `jbi_end`='0000-00-00')) " : " WHERE `jbi_sn` = ?";
-    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('jill_booking_item') . '` ' . $where;
-    $params = ($jbi_enable == "1") ? ['is', [$jbi_sn, $jbi_enable]] : ['i', [$jbi_sn]];
-    $result = Utility::query($sql, ...$params);
-
+    $where = ($jbi_enable == "1") ? " where `jbi_sn` = '{$jbi_sn}' and `jbi_enable`='{$jbi_enable}' and ((NOW() between `jbi_start` and `jbi_end`) or  (TO_DAYS(NOW()) - TO_DAYS(`jbi_start`) >=0 and `jbi_end`='0000-00-00')) " : " where `jbi_sn` = '{$jbi_sn}'";
+    $sql = "select * from `" . $xoopsDB->prefix("jill_booking_item") . "` $where ";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql);
     $data = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -113,13 +111,13 @@ function insert_jill_booking($single = "")
 
     $jb_start_date = ($single == 1) ? $_POST['jb_date'] : $_POST['jb_start_date'];
     if ($single == 1) {
-        $jb_end_date = $_POST['jb_date'];
+        $jb_end_date = (string) $_POST['jb_date'];
     } else {
-        $endtime = $_POST['jb_end_date'];
-        $max_date = $_POST['max_date'];
+        $endtime = (string) $_POST['jb_end_date'];
+        $max_date = (string) $_POST['max_date'];
         $jb_end_date = (strtotime($max_date) < strtotime($endtime)) ? $max_date : $endtime;
     }
-    $jb_week = ($single == 1) ? date("w", strtotime($_POST['jb_date'])) : $jb_weekArr;
+    // $jb_week = ($single == 1) ? date("w", strtotime($_POST['jb_date'])) : $jb_weekArr;
     //新增到jill_booking
     $sql = 'INSERT INTO `' . $xoopsDB->prefix('jill_booking') . '` (`jb_uid`, `jb_booking_time`, `jb_booking_content`, `jb_start_date`, `jb_end_date`) VALUES (?, ?, ?, ?, ?)';
     Utility::query($sql, 'issss', [$uid, date('Y-m-d H:i:s', xoops_getUserTimestamp(time())), $jb_booking_content, $jb_start_date, $jb_end_date]);

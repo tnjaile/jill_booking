@@ -4,7 +4,7 @@
 <{if $now_op=="jill_booking_list"}>
   <div class="row mb-2">
     <div class="col-auto">
-      <select id="jbi_sn" name="jbi_sn" class="form-select " style="width: auto;" onchange="location.href='<{$action|default:''}>?jbi_sn='+this.value" title='jbi_sn'>
+      <select id="jbi_sn" name="jbi_sn" class="form-control form-select " style="width: auto;" onchange="location.href='<{$action|default:''}>?jbi_sn='+this.value" title='jbi_sn'>
         <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEM}></option>
         <{$item_opt|default:''}>
       </select>

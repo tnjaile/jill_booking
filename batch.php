@@ -5,9 +5,9 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
-include "header.php";
+require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = "jill_booking_batch.tpl";
-include_once XOOPS_ROOT_PATH . "/header.php";
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
@@ -137,7 +137,7 @@ function bath_insert()
         insert_jill_booking_week($jb_sn, $jbt_sn, "", $jb_week);
     }
     $sn['jb_sn'] = $jb_sn;
-    $sn['jbi_sn'] = $_POST['jbi_sn'];
+    $sn['jbi_sn'] = (int) $_POST['jbi_sn'];
     return $sn;
 }
 //列出所有批次預約表單

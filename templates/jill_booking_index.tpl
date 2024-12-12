@@ -45,7 +45,7 @@
 
   <h3 class='sr-only'><{$smarty.const._MD_JILLBOOKIN_SMNAME1}></h3>
 
-    <select name="jbi_sn" id="jbi_sn" class="form-select mb-3" style="width: auto;" onChange="location.href='<{$action|default:''}>?jbi_sn='+this.value" title='jbi_sn'>
+    <select name="jbi_sn" id="jbi_sn" class="form-control form-select mb-3" style="width: auto;" onChange="location.href='<{$action|default:''}>?jbi_sn='+this.value" title='jbi_sn'>
         <option value=""><{$smarty.const._MD_JILLBOOKIN_CHOOSEITEM}></option>
           <{$item_opt|default:''}>
     </select>
@@ -63,8 +63,8 @@
                 </div >
                 <div class="col-sm-4 text-center" >
                   <span style="font-size:1.5rem;"><{$itemArr.jbi_title}></span>
-                  <{if $itemArr.jbi_desc}>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal" data-bs-toggle="modal" data-bs-target=".bs-example-modal"><i class="fa fa-commenting-o" aria-hidden="true"></i></button>
+                  <{if $itemArr.jbi_desc|default:false}>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal" data-bs-toggle="modal" data-bs-target=".bs-example-modal"><i class="fa fa-comment-dots" aria-hidden="true"></i></button>
                     <div class="modal fade bs-example-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content  text-left text-start p-4">

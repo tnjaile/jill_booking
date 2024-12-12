@@ -26,6 +26,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign("jill_book_adm", $jill_book_adm);
 include_once 'footer.php';
 
 /*-----------功能函數區--------------*/

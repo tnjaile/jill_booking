@@ -8,6 +8,7 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'jill_booking_adm_time.tpl';
 include_once "header.php";
 include_once "../function.php";
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
@@ -58,6 +59,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign("jill_book_adm", $jill_book_adm);
 include_once 'footer.php';
 
 /*-----------功能函數區--------------*/
@@ -269,7 +271,7 @@ function save_jbt_title($jbt_sn)
 {
     global $xoopsDB;
 
-    $jbt_title = $_POST['value'];
+    $jbt_title = (string) $_POST['value'];
     $sql = 'UPDATE `' . $xoopsDB->prefix('jill_booking_time') . '` SET `jbt_title` = ? WHERE `jbt_sn` = ?';
     Utility::query($sql, 'si', [$jbt_title, $jbt_sn]);
 }

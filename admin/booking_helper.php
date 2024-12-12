@@ -5,6 +5,7 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = "booking_helper_adm_main.tpl";
 include_once "header.php";
 include_once "../function.php";
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
@@ -58,6 +59,7 @@ switch ($op) {
         break;
 }
 
+$xoopsTpl->assign("jill_book_adm", $jill_book_adm);
 include_once 'footer.php';
 
 /*-----------function區--------------*/
@@ -202,5 +204,3 @@ function getJSONResponse($data)
 
     return json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
-/*-----------秀出結果區--------------*/
-include_once 'footer.php';

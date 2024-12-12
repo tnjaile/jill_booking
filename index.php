@@ -3,10 +3,14 @@ use Xmf\Request;
 use XoopsModules\Jill_booking\Tools;
 use XoopsModules\Tadtools\Jeditable;
 use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
-include "header.php";
+require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = "jill_booking_index.tpl";
-include_once XOOPS_ROOT_PATH . "/header.php";
+require_once XOOPS_ROOT_PATH . '/header.php';
+if (!class_exists('XoopsModules\Jill_booking\Tools')) {
+    require XOOPS_ROOT_PATH . '/modules/jill_booking/preloads/autoloader.php';
+}
 
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
@@ -22,6 +26,7 @@ switch ($op) {
         break;
 
     case "single_insert_booking":
+        header('HTTP/1.1 200 OK');
         $xoopsLogger->activated = false;
         $jb_sn = insert_jill_booking(1);
         $jb_week[$jbt_sn] = date("w", strtotime($_POST['jb_date']));
@@ -83,7 +88,6 @@ function booking_table($jbi_sn = "", $getdate = "")
         $itemArr = get_jill_booking_item($jbi_sn, 1);
 
         $jbi_sn = empty($itemArr['jbi_sn']) ? "" : $itemArr['jbi_sn'];
-
         if (!empty($itemArr)) {
             //場地預約起始日期
             $start = strtotime($itemArr['jbi_start']);
@@ -162,7 +166,7 @@ function booking_table($jbi_sn = "", $getdate = "")
 
                                     $jeditable->setTextCol("#jb_booking_content{$jbArr['jb_sn']}", 'index.php', '100px', '1.5em', "{'jb_sn':'{$jbArr['jb_sn']}', 'op' : 'save_jb_booking_content'}", "Edit");
 
-                                    if ($can_booking) {
+                                    if ($_SESSION['can_booking']) {
                                         $content = delete_booking_icon($t, $wk, $time['jbt_sn'], $weekinfo['d'], $jbi_sn) . $usershtml . "<div id='jb_booking_content{$jbArr['jb_sn']}' class='edit show_reason'>{$jbArr['jb_booking_content']}</div>";
                                         $color = "#000000";
                                     }
@@ -185,6 +189,7 @@ function booking_table($jbi_sn = "", $getdate = "")
                 }
             }
             $jeditable->render();
+            Utility::test($bookingArr, 'bookingArr', 'dd');
             $xoopsTpl->assign('bookingArr', $bookingArr);
             $xoopsTpl->assign('itemArr', $itemArr);
             $xoopsTpl->assign('weekArr', $weekArr);
@@ -227,7 +232,7 @@ function save_jb_booking_content($jb_sn)
 {
     global $xoopsDB;
 
-    $value = $_POST['value'];
+    $value = (string) $_POST['value'];
 
     $sql = 'UPDATE `' . $xoopsDB->prefix('jill_booking') . '` SET `jb_booking_content`=? WHERE `jb_sn`=?';
     Utility::query($sql, 'si', [$value, $jb_sn]);
